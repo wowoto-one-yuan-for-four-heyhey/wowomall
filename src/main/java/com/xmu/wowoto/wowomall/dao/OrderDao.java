@@ -30,6 +30,7 @@ public class OrderDao {
     public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
         List<WowoOrder> wowoOrderList = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        System.out.println(orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order));
         return wowoOrderList;
     }
 }
