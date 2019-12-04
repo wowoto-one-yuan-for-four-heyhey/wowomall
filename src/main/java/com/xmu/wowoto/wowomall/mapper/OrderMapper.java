@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.mapper;
 
-import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.WowoOrder;
 
 import java.util.List;
 
@@ -20,5 +20,5 @@ public interface OrderMapper {
      * @param limit     分页大小
      * @return 订单列表
      */
-    List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 }

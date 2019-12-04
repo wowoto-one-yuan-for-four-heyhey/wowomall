@@ -72,7 +72,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "WowoUser{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +

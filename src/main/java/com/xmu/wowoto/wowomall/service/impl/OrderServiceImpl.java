@@ -1,12 +1,9 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.dao.OrderDao;
-import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.service.OrderService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -30,10 +27,10 @@ public class OrderServiceImpl implements OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public List<WowoOrder> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
        //if(userId==null)  return;
-        List<Order> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        return orderList;
+        List<WowoOrder> wowoOrderList =orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        return wowoOrderList;
     }
 }

@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.controller.vo;
 
-import com.xmu.wowoto.wowomall.entity.Address;
+
+import com.xmu.wowoto.wowomall.domain.WowoAddress;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class SubmitOrderVo {
     /**
      * 配送的地址
      */
-    private Address address;
+    private WowoAddress wowoAddress;
     /**
      * 优惠卷id
      */
@@ -26,7 +27,7 @@ public class SubmitOrderVo {
     public String toString() {
         return "SubmitOrderVo{" +
                 "cartItemIds=" + cartItemIds +
-                ", address=" + address +
+                ", wowoAddress=" + wowoAddress +
                 ", couponId=" + couponId +
                 ", message='" + message + '\'' +
                 '}';
@@ -40,12 +41,12 @@ public class SubmitOrderVo {
         this.cartItemIds = cartItemIds;
     }
 
-    public Address getAddress() {
-        return address;
+    public WowoAddress getWowoAddress() {
+        return wowoAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setWowoAddress(WowoAddress wowoAddress) {
+        this.wowoAddress = wowoAddress;
     }
 
     public Integer getCouponId() {

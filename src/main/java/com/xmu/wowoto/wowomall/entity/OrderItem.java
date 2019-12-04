@@ -47,7 +47,7 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        return "OrderItem{" +
+        return "WowoOrderItem{" +
                 "id=" + id +
                 ", orderId=" + orderId +
                 ", itemType=" + itemType +
