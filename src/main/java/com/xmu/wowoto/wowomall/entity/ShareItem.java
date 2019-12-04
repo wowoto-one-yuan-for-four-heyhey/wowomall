@@ -1,40 +1,44 @@
-package com.xmu.wowoto.wowomall.domain;
+package com.xmu.wowoto.wowomall.entity;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description: 购物车明细
- * @Date: Created in 14:30 2019/11/29
+ * @Description: 分享明细
+ * @Date: Created in 16:00 2019/11/29
  * @Modified By:
  **/
-public class CartItem {
+
+public class ShareItem {
     private Integer id;
-    /**
-     * 购物车归属的用户id
-     */
+    /*
+    *分享者ID
+    * */
     private Integer userId;
-    /**
-     * 货品ID
-     */
-    private Integer productId;
-    /**
-     * 是否选中，0未选中，1已选中
-     */
-    private Boolean beCheck;
+    /*
+    *商品ID
+    * */
+    private Integer goodsId;
+    /*
+    *（谁分享了某件商品到达的级数状态，如张山已经分享了一个杯子50件了，按照这杯子的规则，他现在的分享状态是2级）
+    * */
+    private short statusCode;
+
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
-        return "CartItem{" +
+        return "ShareItem{" +
                 "id=" + id +
                 ", userId=" + userId +
-                ", productId=" + productId +
-                ", beCheck=" + beCheck +
+                ", goodsId=" + goodsId +
+                ", statusCode=" + statusCode +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -42,8 +46,8 @@ public class CartItem {
     public boolean equals(Object o) {
         if (this == o) {return true;}
         if (o == null || getClass() != o.getClass()) {return false;}
-        CartItem cartItem = (CartItem) o;
-        return Objects.equals(id, cartItem.id);
+        ShareItem shareItem = (ShareItem) o;
+        return Objects.equals(id, shareItem.id);
     }
 
     @Override
@@ -67,20 +71,20 @@ public class CartItem {
         this.userId = userId;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getGoodsId() {
+        return goodsId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 
-    public Boolean getBeCheck() {
-        return beCheck;
+    public short getStatusCode() {
+        return statusCode;
     }
 
-    public void setBeCheck(Boolean beCheck) {
-        this.beCheck = beCheck;
+    public void setStatusCode(short statusCode) {
+        this.statusCode = statusCode;
     }
 
     public LocalDateTime getGmtCreate() {
@@ -97,5 +101,13 @@ public class CartItem {
 
     public void setGmtModified(LocalDateTime gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBeDeleted() {
+        return beDeleted;
+    }
+
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 }
