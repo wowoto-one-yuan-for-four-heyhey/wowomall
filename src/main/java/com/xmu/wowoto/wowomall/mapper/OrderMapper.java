@@ -1,10 +1,14 @@
 package com.xmu.wowoto.wowomall.mapper;
 
+import com.xmu.wowoto.wowomall.domain.Order;
+
+import java.util.List;
+
 public interface OrderMapper {
     /**
      * 根据订单查询信息返回订单对象
      * @param userId   用户ID
-     * @param StatusCode 订单信息：
+     * @param statusCode 订单信息：
      *                 1未付款，
      *                 2未发货，
      *                 3未收获，
@@ -16,5 +20,5 @@ public interface OrderMapper {
      * @param limit     分页大小
      * @return 订单列表
      */
-    Object findOrderByStatusCode(Integer userId, Integer StatusCode, Integer page, Integer limit,String sort,String order);
+    List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 }

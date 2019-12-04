@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmu.wowoto.wowomall.orderMapper">
 
-    <select id="findOrderByStatusCode" parameterType="" resultType="Order">
-            select id,
-                   quantity,
-                   add_time,
-                   update_time,
-                   product_id,
-                   user_id
-            from order where id = #{id}
+    <select id="getOrdersByStatusCode" parameterType="" resultType="Order">
+        select id,
+               order_sn,
+               goods_Price,
+        from order
+        where userId=#{id} and status=#{statusCode}
+        order by #{sort} #{order}
+        limit #{page} #{lmit}
     </select>
 
 </mapper>

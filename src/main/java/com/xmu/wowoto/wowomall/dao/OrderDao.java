@@ -14,7 +14,7 @@ public class OrderDao {
      * 获取用户订单列表
      *
      * @param userId   用户ID
-     * @param StatusCode 订单信息：
+     * @param statusCode 订单信息：
      *                 1未付款，
      *                 2未发货，
      *                 3未收获，
@@ -26,9 +26,9 @@ public class OrderDao {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public Object getOrdersByStatusCode(Integer userId, Integer StatusCode, Integer page, Integer limit,String sort,String order)
+    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
-
-
+        List<Order> orderList=orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        return orderList;
     }
 }

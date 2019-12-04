@@ -30,10 +30,10 @@ public class OrderServiceImpl implements OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
        //if(userId==null)  return;
         List<Order> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-
+        return orderList;
     }
 }
