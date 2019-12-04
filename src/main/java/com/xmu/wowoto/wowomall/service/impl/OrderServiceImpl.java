@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.dao.OrderDao;
+import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -37,4 +39,12 @@ public class OrderServiceImpl implements OrderService {
         List<WowoOrder> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
         return orderList;
     }
+
+
+    public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems)
+    {
+        WowoOrder a=new WowoOrder();
+        return a;
+    }
+
 }
