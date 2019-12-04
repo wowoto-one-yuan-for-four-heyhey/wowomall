@@ -6,10 +6,11 @@ import com.xmu.wowoto.wowomall.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired

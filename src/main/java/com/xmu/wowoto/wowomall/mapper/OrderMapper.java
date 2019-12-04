@@ -1,8 +1,13 @@
 package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.domain.Order;
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+@Repository
+@Mapper
 
 public interface OrderMapper {
     /**

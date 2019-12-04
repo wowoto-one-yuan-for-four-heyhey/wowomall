@@ -3,9 +3,10 @@ package com.xmu.wowoto.wowomall.dao;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class OrderDao {
 
     @Autowired
