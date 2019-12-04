@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -40,11 +39,8 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
 
-
-    public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems)
-    {
-        WowoOrder a=new WowoOrder();
-        return a;
+    @Override
+    public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
+        return null;
     }
-
 }
