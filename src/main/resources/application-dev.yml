@@ -11,7 +11,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:wowomall.mapper/*Mapper.xml
-  typeAliasesmapper-locationsPackage: com.xmu.wowoto.wowomall.domain
+  type-aliases-package: com.xmu.wowoto.wowomall.domain
   configuration:
     map-underscore-to-camel-case: true
 
