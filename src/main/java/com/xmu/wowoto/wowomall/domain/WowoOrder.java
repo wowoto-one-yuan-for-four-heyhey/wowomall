@@ -1,5 +1,7 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.xmu.wowoto.wowomall.entity.Order;
+
 import java.util.List;
 
 public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
@@ -8,7 +10,7 @@ public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
 
     private List<WowoOrderItem> wowoOrderItems;
 
-    private WowoAddress realWowoAddress;
+    private WowoAddress wowoAddress;
 
     public WowoUser getWowoUser() {
         return wowoUser;
@@ -24,5 +26,13 @@ public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
 
     public void setWowoOrderItems(List<WowoOrderItem> wowoOrderItems) {
         this.wowoOrderItems = wowoOrderItems;
+    }
+
+    public WowoAddress getWowoAddress() {
+        return wowoAddress;
+    }
+
+    public void setWowoAddress(WowoAddress wowoAddress) {
+        this.wowoAddress = wowoAddress;
     }
 }

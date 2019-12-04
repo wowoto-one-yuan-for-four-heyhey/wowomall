@@ -1,6 +1,10 @@
 package com.xmu.wowoto.wowomall.controller;
 
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
+import com.xmu.wowoto.wowomall.domain.WowoAddress;
+import com.xmu.wowoto.wowomall.domain.WowoCartItem;
+import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.service.CartItemService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -12,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Api(value="Order",tags = "订单")
 @RestController
@@ -22,14 +27,28 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private CartItemService cartItemService;
+
     @PostMapping("order")
     public Object submit(@RequestBody SubmitOrderVo submitOrderVo){
 
         logger.debug("submit: " + submitOrderVo);
 
+        WowoOrder wowoOrder = new WowoOrder();
+        wowoOrder.setWowoAddress((WowoAddress) submitOrderVo.getAddress());
 
-        return ResponseUtil.ok();
+        List<WowoCartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
+        for(Integer cartItemId: submitOrderVo.getCartItemIds()){
+            WowoCartItem wowoCartItem = cartItemService.findCartItemById(cartItemId);
+            wowoCartItems.add(wowoCartItem);
+        }
+
+        wowoOrder = orderService.submit(wowoOrder, wowoCartItems);
+
+        return ResponseUtil.ok(wowoOrder);
     }
+
 
     /**
      * 获取用户订单列表
