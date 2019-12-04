@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
-    <select id="getOrdersByStatusCode" parameterType="" resultType="Order">
+    <select id="getOrdersByStatusCode" parameterType="" resultType="WowoOrder">
         select id,
                order_sn,
                goods_Price,

@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.dao;
 
-import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,9 +27,9 @@ public class OrderDao {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
-        List<Order> orderList=orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        return orderList;
+        List<WowoOrder> wowoOrderList =orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        return wowoOrderList;
     }
 }

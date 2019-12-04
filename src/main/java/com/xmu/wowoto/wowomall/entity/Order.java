@@ -98,7 +98,7 @@ public class Order {
 
     @java.lang.Override
     public java.lang.String toString() {
-        return "Order{" +
+        return "WowoOrder{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", beSharedItemIds=" + beSharedItemIds +
