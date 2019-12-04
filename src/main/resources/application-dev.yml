@@ -4,7 +4,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://148.70.28.112:3306/wowomall?useSSL=false&useUnicode=true&characterEncoding=UTF-8&characterSetResults=utf8&se
+    url: jdbc:mysql://148.70.28.112:3306/wowomall?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: wowoto
     password: zqhlovekly
     driver-class-name: com.mysql.jdbc.Driver

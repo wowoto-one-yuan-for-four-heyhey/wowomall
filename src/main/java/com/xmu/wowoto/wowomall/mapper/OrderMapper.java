@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 @Mapper
-
 public interface OrderMapper {
     /**
      * 根据订单查询信息返回订单对象
