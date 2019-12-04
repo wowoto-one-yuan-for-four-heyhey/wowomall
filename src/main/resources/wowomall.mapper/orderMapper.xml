@@ -5,11 +5,9 @@
     <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
         select id,
                order_sn,
-               goods_Price,
-        from order
-        where userId=#{id} and status=#{statusCode}
-        order by #{sort} #{order}
-        limit #{page} #{lmit}
+               goods_Price
+        from wowomall_order
+        where user_id = #{userId}
     </select>
 
 </mapper>
