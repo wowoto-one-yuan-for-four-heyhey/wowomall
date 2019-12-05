@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -32,10 +34,11 @@ public class OrderServiceImpl implements OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<WowoOrder> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
        //if(userId==null)  return;
-        List<WowoOrder> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        List<Map<String,Object>> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+
         return orderList;
     }
 

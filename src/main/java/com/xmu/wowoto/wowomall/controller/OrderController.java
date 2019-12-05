@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Api(value="Order",tags = "订单")
 @RestController
@@ -62,11 +63,11 @@ public class OrderController {
     @GetMapping("orders")
     @ApiOperation("查看用户的全部订单")
     public Object getOrders(Integer userId,
-                            @ApiParam(name="showType",value="订单信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode,
-                            @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
-                            @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-                            @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
-                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+                                              @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode,
+                                              @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
+                                              @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
+                                              @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
+                                              @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
         return orderService.getOrders(userId,statusCode,page,limit,sort,order);
     }

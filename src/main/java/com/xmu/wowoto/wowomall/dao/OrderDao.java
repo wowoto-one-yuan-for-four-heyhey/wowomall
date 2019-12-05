@@ -1,16 +1,24 @@
 package com.xmu.wowoto.wowomall.dao;
 
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
+import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public class OrderDao {
 
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
     /**
      * 获取用户订单列表
      *
@@ -27,10 +35,32 @@ public class OrderDao {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Map<String,Object>> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
+        page=page-1;
         List<WowoOrder> wowoOrderList = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        System.out.println(orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order));
-        return wowoOrderList;
+        //System.out.println(orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order));
+        List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
+        for(WowoOrder oneOrder:wowoOrderList)
+        {
+            Map<String, Object> wowoOrderVo=new HashMap<>();
+            wowoOrderVo.put("id",oneOrder.getId());
+            wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
+            wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
+            List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(oneOrder.getId());
+            System.out.println(wowoOrderItemList);
+            List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
+            for(WowoOrderItem oneItem:wowoOrderItemList)
+            {
+                Map<String, Object> wowoOrderItemVo=new HashMap<>();
+                wowoOrderItemVo.put("id",oneItem.getId());
+                wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
+                wowoOrderItemVo.put("productId",oneItem.getProductId());
+                wowoOrderItemVoList.add(wowoOrderItemVo);
+            }
+            wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
+            wowoOrderVoList.add(wowoOrderVo);
+        }
+        return  wowoOrderVoList;
     }
 }

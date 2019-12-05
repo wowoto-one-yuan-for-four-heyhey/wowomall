@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface OrderService {
@@ -26,7 +27,7 @@ public interface OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order);
+    public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 
 
 }

@@ -43,7 +43,7 @@ public class Order {
     /**
      * 订单费用
      */
-    private BigDecimal goodPrice;
+    private BigDecimal goodsPrice;
     /**
      * 优惠卷减免费用
      */
@@ -107,7 +107,7 @@ public class Order {
                 ", consignee='" + consignee + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", message='" + message + '\'' +
-                ", goodPrice=" + goodPrice +
+                ", goodPrice=" + goodsPrice +
                 ", couponPrice=" + couponPrice +
                 ", rebatePrice=" + rebatePrice +
                 ", freightPrice=" + freightPrice +
@@ -203,12 +203,12 @@ public class Order {
         this.message = message;
     }
 
-    public BigDecimal getGoodPrice() {
-        return goodPrice;
+    public BigDecimal getGoodsPrice() {
+        return goodsPrice;
     }
 
     public void setGoodPrice(BigDecimal goodPrice) {
-        this.goodPrice = goodPrice;
+        this.goodsPrice = goodPrice;
     }
 
     public BigDecimal getCouponPrice() {
