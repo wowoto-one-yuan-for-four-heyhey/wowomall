@@ -3,6 +3,7 @@ package com.xmu.wowoto.wowomall.service.impl;
 import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +40,29 @@ public class OrderServiceImpl implements OrderService {
     public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
        //if(userId==null)  return;
-        List<Map<String,Object>> orderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-
-        return orderList;
+        List<WowoOrder> wowoOrderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
+        for(WowoOrder oneOrder:wowoOrderList)
+        {
+            Map<String, Object> wowoOrderVo=new HashMap<>();
+            wowoOrderVo.put("id",oneOrder.getId());
+            wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
+            wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
+            List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+            System.out.println(wowoOrderItemList);
+            List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
+            for(WowoOrderItem oneItem:wowoOrderItemList)
+            {
+                Map<String, Object> wowoOrderItemVo=new HashMap<>();
+                wowoOrderItemVo.put("id",oneItem.getId());
+                wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
+                wowoOrderItemVo.put("productId",oneItem.getProductId());
+                wowoOrderItemVoList.add(wowoOrderItemVo);
+            }
+            wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
+            wowoOrderVoList.add(wowoOrderVo);
+        }
+        return wowoOrderVoList;
     }
 
     @Override

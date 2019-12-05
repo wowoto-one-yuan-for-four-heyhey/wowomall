@@ -35,32 +35,21 @@ public class OrderDao {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Map<String,Object>> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
-    {
-        page=page-1;
-        List<WowoOrder> wowoOrderList = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        //System.out.println(orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order));
-        List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
-        for(WowoOrder oneOrder:wowoOrderList)
+    public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
         {
-            Map<String, Object> wowoOrderVo=new HashMap<>();
-            wowoOrderVo.put("id",oneOrder.getId());
-            wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
-            wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
-            List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(oneOrder.getId());
-            System.out.println(wowoOrderItemList);
-            List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
-            for(WowoOrderItem oneItem:wowoOrderItemList)
-            {
-                Map<String, Object> wowoOrderItemVo=new HashMap<>();
-                wowoOrderItemVo.put("id",oneItem.getId());
-                wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
-                wowoOrderItemVo.put("productId",oneItem.getProductId());
-                wowoOrderItemVoList.add(wowoOrderItemVo);
-            }
-            wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
-            wowoOrderVoList.add(wowoOrderVo);
-        }
-        return  wowoOrderVoList;
+            page=page-1;
+            List<WowoOrder> wowoOrderList = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+            return  wowoOrderList;
+    }
+
+    /**
+     * 根据订单Id信息返回订单物品列表
+     * @param orderId   订单ID
+     * @return 订单物品列表
+     */
+    public List<WowoOrderItem> getOrderItemsByOrderId(int orderId)
+    {
+        List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(orderId);
+        return wowoOrderItemList;
     }
 }

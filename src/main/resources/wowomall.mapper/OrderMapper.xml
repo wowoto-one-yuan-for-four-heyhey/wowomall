@@ -3,11 +3,9 @@
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
     <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
-        select id,
-               order_sn,
-               goods_Price
+        select *
         from wowomall_order
-        where user_id=#{userId}
+        where user_id=#{userId} and is_deleted=0
         <if test="statusCode!=0">
         and status=#{statusCode}
         </if>
