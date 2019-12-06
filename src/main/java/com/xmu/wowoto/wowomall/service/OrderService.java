@@ -2,7 +2,11 @@ package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +33,13 @@ public interface OrderService {
      */
     public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 
+    /**
+     * 获取用户特定订单详情
+     *
+     * @param userId   用户ID
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    public Object getOrderDetail( Integer userId,Integer orderId);
 
 }

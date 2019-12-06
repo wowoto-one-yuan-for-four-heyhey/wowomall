@@ -26,4 +26,13 @@ public interface OrderMapper {
      * @return 订单列表
      */
     List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+
+    /**
+     * 根据订单查询信息返回订单对象
+     * @param userId   用户ID
+     * @param orderId 订单ID：
+
+     * @return 订单
+     */
+    WowoOrder getOrderByOrderId(Integer userId, Integer orderId);
 }

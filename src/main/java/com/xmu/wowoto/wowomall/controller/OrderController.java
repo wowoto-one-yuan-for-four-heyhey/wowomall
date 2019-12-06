@@ -63,12 +63,27 @@ public class OrderController {
     @GetMapping("orders")
     @ApiOperation("查看用户的全部订单")
     public Object getOrders(Integer userId,
-                                              @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode,
-                                              @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
-                                              @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-                                              @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
-                                              @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+                      @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode,
+                      @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
+                      @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
+                      @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
+                      @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
         return orderService.getOrders(userId,statusCode,page,limit,sort,order);
+    }
+
+    /**
+     * 获取用户特定订单详情
+     *
+     * @param userId   用户ID
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    @GetMapping("orders/{id}")
+    @ApiOperation("查看特定订单的订单详情")
+    public Object getOrderDetail( Integer userId,
+                                  @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId)
+    {
+        return orderService.getOrderDetail(userId,orderId);
     }
 }

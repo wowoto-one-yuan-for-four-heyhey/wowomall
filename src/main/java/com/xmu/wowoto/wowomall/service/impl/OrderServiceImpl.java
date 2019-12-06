@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,5 +69,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
         return null;
+    }
+
+    /**
+     * 获取用户特定订单详情
+     *
+     * @param userId   用户ID
+     * @param orderId 订单ID
+     * @return 订单列表
+     */
+    public Object getOrderDetail( Integer userId,Integer orderId)
+    {
+        WowoOrder oneOrder=orderDao.getOrderByOrderId(userId,orderId);
+
     }
 }
