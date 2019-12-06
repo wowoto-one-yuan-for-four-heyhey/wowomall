@@ -42,4 +42,7 @@ public interface OrderService {
      */
     public Object getOrderDetail( Integer userId,Integer orderId);
 
+    public Object getOrderDetail(Integer orderId);
+
+
 }

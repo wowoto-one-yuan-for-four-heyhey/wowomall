@@ -64,4 +64,10 @@ public class OrderDao {
     {
         return orderMapper.getOrderByOrderId(userId,orderId);
     }
+
+
+    public WowoOrder getOrderDetail(Integer orderId) {
+        return orderMapper.findOrderById(orderId);
+    }
+
 }

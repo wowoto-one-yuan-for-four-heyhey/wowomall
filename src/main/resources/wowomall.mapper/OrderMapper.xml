@@ -3,19 +3,22 @@
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
     <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
-        select *
+        select id,
+               order_sn,
+               goods_Price
         from wowomall_order
-        where user_id=#{userId} and is_deleted=0
-        <if test="statusCode!=0">
-        and status=#{statusCode}
-        </if>
+        where user_id=#{userId} and status=#{statusCode}
         order by #{sort} #{order}
         limit #{page},#{limit}
     </select>
 
-    <select id="getOrderByOrderId" parameterType="java.util.List" resultType="WowoOrder">
-        select *
+
+    <select id="findOrderById" parameterType="java.util.List" resultType="WowoOrder">
+        select id,
+               order_sn,
+               goods_Price
         from wowomall_order
-        where user_id=#{userId} and is_deleted=0 and id=#{orderId}
+        where id=#{orderId}
     </select>
+
 </mapper>
