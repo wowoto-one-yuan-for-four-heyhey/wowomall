@@ -39,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
+    @Override
     public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
        //if(userId==null)  return;
@@ -82,6 +83,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderId 订单ID
      * @return 订单列表
      */
+    @Override
     public Object getOrderDetail(Integer orderId)
     {
         WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);

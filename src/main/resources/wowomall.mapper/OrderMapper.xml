@@ -2,31 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
-    <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
-        select id,
-               order_sn,
-               goods_Price
+<select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
+    select *
+    from wowomall_order
+    where user_id=#{userId} and is_deleted=0
+    <if test="statusCode!=0">
+        and status=#{statusCode}
+    </if>
+    order by #{sort} #{order}
+    limit #{page},#{limit}
+</select>
+
+<select id="getOrderByOrderId" parameterType="java.util.List" resultType="WowoOrder">
+        select *
         from wowomall_order
-        where user_id=#{userId} and status=#{statusCode}
-        order by #{sort} #{order}
-        limit #{page},#{limit}
+        where user_id=#{userId} and is_deleted=0 and id=#{orderId}
     </select>
 
 
-    <select id="findOrderById" parameterType="java.util.List" resultType="WowoOrder">
-        select id,
-               order_sn,
-               goods_Price
-        from wowomall_order
-        where id=#{orderId}
-    </select>
-
-
-    <update id="updateOrderStatusById" parameterType="java.util.List">
+<update id="updateOrderStatusById" parameterType="java.util.List">
         UPDATE wowomall_order SET
          status=#{statusCode}
         WHERE
          id=#{orderId}
     </update>
-
 </mapper>
