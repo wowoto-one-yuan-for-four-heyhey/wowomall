@@ -25,5 +25,5 @@
          status=#{statusCode}
         WHERE
          id=#{orderId}
-    </update>
+</update>
 </mapper>
