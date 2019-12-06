@@ -1,4 +1,4 @@
-package xmu.good.oomall.domain;
+package com.xmu.wowoto.wowomall.entity;
 
 import java.util.Objects;
 

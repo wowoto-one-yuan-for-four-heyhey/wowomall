@@ -1,4 +1,4 @@
-package xmu.good.oomall.domain;
+package com.xmu.wowoto.wowomall.entity;
 
 import org.apache.ibatis.type.Alias;
 

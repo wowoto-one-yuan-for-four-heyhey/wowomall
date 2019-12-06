@@ -1,39 +1,40 @@
 package com.xmu.wowoto.wowomall.entity;
 
-import org.apache.ibatis.type.Alias;
-
-import javax.annotation.sql.DataSourceDefinition;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
 /**
  * @Author: 数据库与对象模型标准组
- * @Description:商品种类的信息
+ * @Description: 角色权限表
  * @Data:Created in 14:50 2019/11/29
  * @Modified By:
  **/
 
-@Alias("goodsCategory")
-public class GoodsCategory {
+public class Privilege {
     private Integer id;
     /**
-     * 种类的名称
+     * 角色id
+     */
+    private Integer roleId;
+    /**
+     * 名字
      */
     private String name;
-    /**|
-     * 该种类的父种类ID
+    /**
+     * 角色描述
      */
-    private Integer pid;
+    private String description;
+
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Boolean beDeleted;
 
     @Override
     public String toString() {
-        return "GoodsCategory{" +
+        return "Privilege{" +
                 "id=" + id +
+                ", roleId=" + roleId +
                 ", name='" + name + '\'' +
-                ", pid=" + pid +
+                ", description='" + description + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
                 ", beDeleted=" + beDeleted +
@@ -44,8 +45,8 @@ public class GoodsCategory {
     public boolean equals(Object o) {
         if (this == o) {return true;}
         if (o == null || getClass() != o.getClass()) {return false;}
-        GoodsCategory that = (GoodsCategory) o;
-        return Objects.equals(id, that.id);
+        Privilege privilege = (Privilege) o;
+        return Objects.equals(id, privilege.id);
     }
 
     @Override
@@ -61,6 +62,14 @@ public class GoodsCategory {
         this.id = id;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     public String getName() {
         return name;
     }
@@ -69,12 +78,12 @@ public class GoodsCategory {
         this.name = name;
     }
 
-    public Integer getPid() {
-        return pid;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getGmtCreate() {
