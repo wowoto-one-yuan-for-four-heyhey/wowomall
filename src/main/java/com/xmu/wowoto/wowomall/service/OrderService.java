@@ -31,7 +31,7 @@ public interface OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 
     /**
      * 获取用户特定订单详情

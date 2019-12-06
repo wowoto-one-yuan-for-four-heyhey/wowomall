@@ -82,8 +82,9 @@ public class OrderController {
     @GetMapping("orders/{id}")
     @ApiOperation("查看特定订单的订单详情")
     public Object getOrderDetail( Integer userId,
-                                  @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId)
+                                  @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId)
     {
-        return orderService.getOrderDetail(userId,orderId);
+        int id = Integer.parseInt(orderId);
+        return orderService.getOrderDetail(userId,id);
     }
 }

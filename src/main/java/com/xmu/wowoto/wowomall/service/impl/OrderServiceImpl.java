@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
        //if(userId==null)  return;
         List<WowoOrder> wowoOrderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
@@ -50,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
             wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
             wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
             List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
-            System.out.println(wowoOrderItemList);
+       //     System.out.println(wowoOrderItemList);
             List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
             for(WowoOrderItem oneItem:wowoOrderItemList)
             {
@@ -63,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
             wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
             wowoOrderVoList.add(wowoOrderVo);
         }
-        return wowoOrderVoList;
+        return ResponseUtil.ok(wowoOrderVoList);
     }
 
     @Override
@@ -72,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
         for (WowoCartItem wowoCartItem: wowoCartItems){
 
         }
+        return null;
     }
 
     /**
@@ -84,6 +86,26 @@ public class OrderServiceImpl implements OrderService {
     public Object getOrderDetail( Integer userId,Integer orderId)
     {
         WowoOrder oneOrder=orderDao.getOrderByOrderId(userId,orderId);
-        return oneOrder;
+        List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+        oneOrder.setWowoOrderItems(wowoOrderItemList);
+        Map<String, Object> orderVo = new HashMap<String, Object>();
+        orderVo.put("id", oneOrder.getId());
+        orderVo.put("statusCode", oneOrder.getStatusCode());
+        orderVo.put("orderSn", oneOrder.getOrderSn());
+        orderVo.put("message", oneOrder.getMessage());
+        orderVo.put("consignee", oneOrder.getConsignee());
+        orderVo.put("mobile", oneOrder.getMobile());
+        orderVo.put("address", oneOrder.getAddress());
+        orderVo.put("goodsPrice", oneOrder.getGoodsPrice());
+        orderVo.put("couponPrice", oneOrder.getCouponPrice());
+        orderVo.put("freightPrice", oneOrder.getFreightPrice());
+        orderVo.put("integralPrice", oneOrder.getIntegralPrice());
+        orderVo.put("shipSn", oneOrder.getShipSn());
+        orderVo.put("shipChannel", oneOrder.getShipChannel());
+        orderVo.put("shipTime", oneOrder.getShipTime());
+        orderVo.put("payTime", oneOrder.getPayTime());
+        orderVo.put("orderItemList",wowoOrderItemList);
+        System.out.println(orderVo);
+        return ResponseUtil.ok(orderVo);
     }
 }
