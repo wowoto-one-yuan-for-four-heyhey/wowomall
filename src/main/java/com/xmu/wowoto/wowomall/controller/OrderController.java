@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.WowoAddress;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
@@ -54,14 +53,20 @@ public class OrderController {
 
 
     @PostMapping("orders/{id}/ship")
-    public Object updateOrderStatusById(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
-                                        @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode){
-
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId),statusCode);
+    public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        // orderItem
+        return orderService.updateOrderStatusById(Integer.parseInt(orderId),3);
 
 
     }
 
+    @PostMapping("orders/{id}/refund")
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        // orderItem
+        return orderService.updateOrderStatusById(Integer.parseInt(orderId),6);
+
+
+    }
 
     /**
      * 获取用户订单列表
@@ -96,6 +101,8 @@ public class OrderController {
         int id = Integer.parseInt(orderId);
         return orderService.getOrderDetail(id);
     }
+
+
 
 
 

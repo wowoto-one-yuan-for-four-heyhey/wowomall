@@ -137,12 +137,21 @@ public class OrderServiceImpl implements OrderService {
         return ResponseUtil.ok(orderVo);
     }
 
-
+    /**
+     * 获取用户特定订单详情
+     *
+     * @param orderId 订单ID
+     * @param statusCode 订单的状态
+     * @return 订单列表
+     */
     @Override
     public Object updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        WowoOrder oneOrder = orderDao.updateOrderStatusById(orderId,statusCode);
-        return oneOrder;
+        Integer updateNum = orderDao.updateOrderStatusById(orderId,statusCode);
+        if(updateNum == 1){
+            return ResponseUtil.ok(updateNum);
+        }
+        return ResponseUtil.fail(500,"insert faild");
     }
 
 }
