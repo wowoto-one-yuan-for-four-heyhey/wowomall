@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
+import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -71,7 +72,13 @@ public class OrderDao {
      */
     public Integer updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        return orderMapper.updateOrderStatusById(orderId,statusCode);
+        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(orderId);
+        if( statusCode > wowoOrder.getStatusCode()) {
+            return orderMapper.updateOrderStatusById(orderId, statusCode);
+        }
+        else {
+            return -1;
+        }
     }
 
 

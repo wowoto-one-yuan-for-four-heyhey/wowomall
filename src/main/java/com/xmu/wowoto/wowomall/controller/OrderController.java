@@ -106,4 +106,26 @@ public class OrderController {
         int id = Integer.parseInt(orderId);
         return orderService.getOrderDetail(id);
     }
+
+
+    /**
+     * 待评价订单商品信息/goods
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    @GetMapping("orders/{id}")
+    @ApiOperation("查看特定订单的订单详情")
+    public Object getUncomment(@ApiParam(name="orderId",value="订单id",required=true)
+                                   @PathVariable("id")String orderId)
+    {
+        int id = Integer.parseInt(orderId);
+        return orderService.getOrderDetail(id);
+    }
+
+
+
+
+
+
+
 }

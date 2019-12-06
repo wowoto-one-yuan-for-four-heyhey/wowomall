@@ -16,7 +16,7 @@
 <select id="getOrderByOrderId" parameterType="java.util.List" resultType="WowoOrder">
         select *
         from wowomall_order
-        where user_id=#{userId} and is_deleted=0 and id=#{orderId}
+        where is_deleted=0 and id=#{orderId}
     </select>
 
 

@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
         if(updateNum == 1){
             return ResponseUtil.ok(updateNum);
         }
-        return ResponseUtil.fail(500,"update faild");
+        return ResponseUtil.fail(-1,"数据库更新失败");
     }
 
 }
