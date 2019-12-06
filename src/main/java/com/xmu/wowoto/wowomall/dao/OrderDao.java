@@ -55,14 +55,12 @@ public class OrderDao {
 
     /**
      * 根据订单查询信息返回订单对象
-     * @param userId   用户ID
      * @param orderId 订单ID：
-
      * @return 订单
      */
-    public WowoOrder getOrderByOrderId(Integer userId, Integer orderId)
+    public WowoOrder getOrderByOrderId(Integer orderId)
     {
-        return orderMapper.getOrderByOrderId(userId,orderId);
+        return orderMapper.getOrderByOrderId(orderId);
     }
 
 

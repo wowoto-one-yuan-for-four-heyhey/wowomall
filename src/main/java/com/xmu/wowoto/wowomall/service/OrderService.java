@@ -31,16 +31,14 @@ public interface OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Map<String,Object>> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 
     /**
      * 获取用户特定订单详情
-     *
-     * @param userId   用户ID
      * @param orderId 订单ID
      * @return 订单详细
      */
-    public Object getOrderDetail( Integer userId,Integer orderId);
+    public Object getOrderDetail(Integer orderId);
 
     public Object getOrderDetail(Integer orderId);
 
