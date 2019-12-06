@@ -4,6 +4,8 @@ import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
+import com.xmu.wowoto.wowomall.service.CartItemService;
+import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +22,12 @@ import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     @Autowired
     private OrderDao orderDao;
@@ -70,11 +78,30 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        List<WowoOrderItem> wowoOrderItems = new ArrayList<>();
-        for (WowoCartItem wowoCartItem: wowoCartItems){
-
+        if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
+            cartItemService.clearCartItem(wowoCartItems);
+            wowoOrder.cacuDealPrice();
         }
-        return null;
+        return wowoOrder;
+    }
+
+    /**
+     * 用CartItem构造OrderItem
+     * @param wowoOrder 订单对象
+     * @param wowoCartItems 购物车对象列表
+     */
+    private Boolean createOrderItemFromCartItem(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
+        List<WowoOrderItem> wowoOrderItems = new ArrayList<>(wowoCartItems.size());
+        for (WowoCartItem wowoCartItem: wowoCartItems){
+            if(goodsService.deductStock(wowoCartItem.getProductId(), wowoCartItem.getNumber())){
+                WowoOrderItem wowoOrderItem = new WowoOrderItem((wowoCartItem));
+                wowoCartItems.add(wowoCartItem);
+            }else {
+                return false;
+            }
+        }
+        wowoOrder.setWowoOrderItems(wowoOrderItems);
+        return true;
     }
 
     /**
@@ -114,12 +141,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        Integer returnNum = orderDao.updateOrderStatusById(orderId,statusCode);
-        if (returnNum == 1){
-            return ResponseUtil.ok(returnNum);}
-        else {
-            return ResponseUtil.fail(500,"insert failed");
-    }
+        WowoOrder oneOrder = orderDao.updateOrderStatusById(orderId,statusCode);
+        return oneOrder;
     }
 
 }
