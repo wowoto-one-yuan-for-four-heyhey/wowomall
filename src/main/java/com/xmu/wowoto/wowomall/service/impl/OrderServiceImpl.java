@@ -79,13 +79,12 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 获取用户特定订单详情
      *
-     * @param userId   用户ID
      * @param orderId 订单ID
      * @return 订单列表
      */
-    public Object getOrderDetail( Integer userId,Integer orderId)
+    public Object getOrderDetail(Integer orderId)
     {
-        WowoOrder oneOrder=orderDao.getOrderByOrderId(userId,orderId);
+        WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);
         List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         Map<String, Object> orderVo = new HashMap<String, Object>();

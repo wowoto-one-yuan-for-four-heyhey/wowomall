@@ -35,11 +35,9 @@ public interface OrderService {
 
     /**
      * 获取用户特定订单详情
-     *
-     * @param userId   用户ID
      * @param orderId 订单ID
      * @return 订单详细
      */
-    public Object getOrderDetail( Integer userId,Integer orderId);
+    public Object getOrderDetail(Integer orderId);
 
 }
