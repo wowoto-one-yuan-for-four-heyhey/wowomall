@@ -56,9 +56,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId),3);
-
-
+        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
     }
 
     /**
@@ -72,9 +70,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为退款")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId),6);
-
-
+        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
     }
 
     /**
@@ -110,12 +106,4 @@ public class OrderController {
         int id = Integer.parseInt(orderId);
         return orderService.getOrderDetail(id);
     }
-
-
-
-
-
-
-
-
 }
