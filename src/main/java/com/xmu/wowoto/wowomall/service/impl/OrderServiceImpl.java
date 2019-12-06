@@ -114,8 +114,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        WowoOrder oneOrder=orderDao.updateOrderStatusById(orderId,statusCode);
-        return oneOrder;
+        Integer returnNum = orderDao.updateOrderStatusById(orderId,statusCode);
+        if (returnNum == 1){
+            return ResponseUtil.ok(returnNum);}
+        else {
+            return ResponseUtil.fail(500,"insert failed");
+    }
     }
 
 }

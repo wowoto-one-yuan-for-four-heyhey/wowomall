@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.json.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,9 @@ public class OrderController {
     public Object updateOrderStatusById(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
                                         @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode){
 
-        return ResponseUtil.ok(orderService.updateOrderStatusById(Integer.parseInt(orderId),statusCode));
+        return orderService.updateOrderStatusById(Integer.parseInt(orderId),statusCode);
+
+
     }
 
 

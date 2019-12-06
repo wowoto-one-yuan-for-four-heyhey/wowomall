@@ -7,7 +7,7 @@
     from wowomall_order
     where user_id=#{userId} and is_deleted=0
     <if test="statusCode!=0">
-        and status=#{statusCode}
+        and status_code=#{statusCode}
     </if>
     order by #{sort} #{order}
     limit #{page},#{limit}
@@ -22,8 +22,10 @@
 
 <update id="updateOrderStatusById" parameterType="java.util.List">
         UPDATE wowomall_order SET
-         status=#{statusCode}
+         status_code=#{statusCode}
         WHERE
          id=#{orderId}
+
 </update>
+
 </mapper>

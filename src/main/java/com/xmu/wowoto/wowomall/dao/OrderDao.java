@@ -63,7 +63,13 @@ public class OrderDao {
         return orderMapper.getOrderByOrderId(orderId);
     }
 
-    public WowoOrder updateOrderStatusById(Integer orderId,Integer statusCode)
+    /**
+     * 根据订单id修改订单状态
+     * @param orderId 订单ID：
+     * @param statusCode
+     * @return 订单
+     */
+    public Integer updateOrderStatusById(Integer orderId,Integer statusCode)
     {
         return orderMapper.updateOrderStatusById(orderId,statusCode);
     }
