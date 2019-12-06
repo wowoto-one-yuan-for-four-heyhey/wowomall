@@ -21,4 +21,12 @@
         where id=#{orderId}
     </select>
 
+
+    <update id="updateOrderStatusById" parameterType="java.util.List">
+        UPDATE wowomall_order SET
+         status=#{statusCode}
+        WHERE
+         id=#{orderId}
+    </update>
+
 </mapper>

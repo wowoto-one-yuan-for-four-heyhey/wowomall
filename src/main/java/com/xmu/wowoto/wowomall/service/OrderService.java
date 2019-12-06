@@ -40,7 +40,15 @@ public interface OrderService {
      */
     public Object getOrderDetail(Integer orderId);
 
-    public Object getOrderDetail(Integer orderId);
+    /**
+     * 订单发货修改订单状态
+     *
+     * @param orderId 订单ID
+     * @param statusCode 状态码
+     * @return 订单详细
+     */
+    public Object updateOrderStatusById(Integer orderId,Integer statusCode);
+
 
 
 }

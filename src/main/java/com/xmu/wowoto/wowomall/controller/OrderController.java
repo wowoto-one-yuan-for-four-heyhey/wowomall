@@ -1,9 +1,11 @@
 package com.xmu.wowoto.wowomall.controller;
 
+import com.xmu.wowoto.wowomall.controller.vo.OrderVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.WowoAddress;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.entity.Order;
 import com.xmu.wowoto.wowomall.service.CartItemService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
@@ -51,6 +53,14 @@ public class OrderController {
     }
 
 
+    @PostMapping("orders/{id}/ship")
+    public Object updateOrderStatusById(@RequestBody OrderVo orderVo){
+        Integer orderId = orderVo.getOrderId();
+        Short statusCode = orderVo.getStatusCode();
+        return ResponseUtil.ok(orderService.updateOrderStatusById(orderId,statusCode.intValue()));
+    }
+
+
     /**
      * 获取用户订单列表
      *
@@ -84,4 +94,10 @@ public class OrderController {
         int id = Integer.parseInt(orderId);
         return orderService.getOrderDetail(id);
     }
+
+
+
+
+
+
 }

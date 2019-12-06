@@ -33,5 +33,12 @@ public interface OrderMapper {
 
      * @return 订单
      */
+    WowoOrder getOrderByOrderId(Integer userId, Integer orderId);
+
+    WowoOrder updateOrderStatusById(Integer orderId,Integer statusCode);
+
+
+
+
     WowoOrder getOrderByOrderId(Integer orderId);
 }

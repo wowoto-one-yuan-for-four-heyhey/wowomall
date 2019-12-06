@@ -107,4 +107,13 @@ public class OrderServiceImpl implements OrderService {
         System.out.println(orderVo);
         return ResponseUtil.ok(orderVo);
     }
+
+
+    @Override
+    public Object updateOrderStatusById(Integer orderId,Integer statusCode)
+    {
+        WowoOrder oneOrder=orderDao.updateOrderStatusById(orderId,statusCode);
+        return oneOrder;
+    }
+
 }

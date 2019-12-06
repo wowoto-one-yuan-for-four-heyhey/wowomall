@@ -27,7 +27,16 @@ public class OrderVo {
      */
     private Integer isGroupin;
 
+    public Integer getId() {
+        return id;
+    }
 
 
+    public Integer getOrderId() {
+        return orderId;
+    }
 
+    public Short getStatusCode() {
+        return statusCode;
+    }
 }

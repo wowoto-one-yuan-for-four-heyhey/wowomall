@@ -63,9 +63,10 @@ public class OrderDao {
         return orderMapper.getOrderByOrderId(orderId);
     }
 
-
-    public WowoOrder getOrderDetail(Integer orderId) {
-        return orderMapper.findOrderById(orderId);
+    public WowoOrder updateOrderStatusById(Integer orderId,Integer statusCode)
+    {
+        return orderMapper.updateOrderStatusById(orderId,statusCode);
     }
+
 
 }
