@@ -1,4 +1,4 @@
-package com.xmu.wowoto.wowomall.entity;
+package xmu.good.oomall.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

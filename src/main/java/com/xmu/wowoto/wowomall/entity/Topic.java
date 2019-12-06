@@ -1,4 +1,4 @@
-package com.xmu.wowoto.wowomall.entity;
+package xmu.good.oomall.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

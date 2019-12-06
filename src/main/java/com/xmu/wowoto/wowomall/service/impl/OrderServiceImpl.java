@@ -68,7 +68,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        return null;
+        List<WowoOrderItem> wowoOrderItems = new ArrayList<>();
+        for (WowoCartItem wowoCartItem: wowoCartItems){
+
+        }
     }
 
     /**
@@ -81,6 +84,6 @@ public class OrderServiceImpl implements OrderService {
     public Object getOrderDetail( Integer userId,Integer orderId)
     {
         WowoOrder oneOrder=orderDao.getOrderByOrderId(userId,orderId);
-
+        return oneOrder;
     }
 }
