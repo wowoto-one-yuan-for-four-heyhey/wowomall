@@ -53,6 +53,7 @@ public class OrderController {
 
 
     @PostMapping("orders/{id}/ship")
+    @ApiOperation("更改订单状态为发货")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         return orderService.updateOrderStatusById(Integer.parseInt(orderId),3);
@@ -60,7 +61,15 @@ public class OrderController {
 
     }
 
+    /**
+     * 更改订单状态为退款
+     *
+     * @param orderId   用户ID
+     * @return 更改列表
+
+     */
     @PostMapping("orders/{id}/refund")
+    @ApiOperation("更改订单状态为退款")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         return orderService.updateOrderStatusById(Integer.parseInt(orderId),6);
