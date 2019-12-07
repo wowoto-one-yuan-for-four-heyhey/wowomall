@@ -51,26 +51,32 @@ public class OrderController {
         return ResponseUtil.ok(wowoOrder);
     }
 
+    /**
+     * 更改订单状态为发货(管理员操作)
+     *
+     * @param orderId   订单ID
+     * @return 更改列表
 
+     */
     @PostMapping("orders/{id}/ship")
     @ApiOperation("更改订单状态为发货")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+        return orderService.shipOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
     }
 
     /**
-     * 更改订单状态为退款
+     * 更改订单状态为退款(管理员操作)
      *
-     * @param orderId   用户ID
+     * @param orderId   订单ID
      * @return 更改列表
 
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
+
+        return orderService.refundOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
     }
 
     /**
@@ -123,7 +129,27 @@ public class OrderController {
 
 
 
+    /**
+     * 待评价订单商品信息/goods (用户操作)
+     * @param userId 用户ID
+     * @param limit 每页条数
+     * @param page 页码
+     * @param sort 以什么为序
+     * @param order 升/降序
+     * @return 订单详细
+     */
+    @GetMapping("orders/unevaluated")
+    @ApiOperation("查看未评价订单的订单详情")
+    public Object getUnComment(Integer userId,
+                               @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
+                               @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
+                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
+                               @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+    {
 
+        //@RequestBody
+        return orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+    }
 
 
 

@@ -10,6 +10,7 @@ import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -156,14 +157,40 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 获取用户特定订单详情
+     * 更改订单状态为退款(管理员操作)
+     *
+     * @param orderId 订单ID
+     * @param statusCode 订单的状态
+     * @return 订单列表
+     */
+
+    @Override
+    public Object refundOrder(Integer orderId,Integer statusCode){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){ return  ResponseUtil.fail(-1,"数据库中不存在该资源"); }
+        if(statusCode >= oneOrder.getStatusCode()){
+            Integer status = orderDao.updateOrderStatusById(orderId, statusCode);
+            if(status == 1) {
+                Integer userId = oneOrder.getUserId();
+                //return ResponseUtil.ok(updateNum);
+                return ResponseUtil.ok();
+            }
+            else{
+                return ResponseUtil.fail(-1,"数据库更新失败");
+            }
+        }
+       return  ResponseUtil.fail();
+    }
+
+    /**
+     * 更改订单状态为发货(管理员操作)
      *
      * @param orderId 订单ID
      * @param statusCode 订单的状态
      * @return 订单列表
      */
     @Override
-    public Object updateOrderStatusById(Integer orderId,Integer statusCode)
+    public Object shipOrder(Integer orderId,Integer statusCode)
     {
         Integer updateNum = orderDao.updateOrderStatusById(orderId,statusCode);
         if(updateNum == 1){
@@ -171,5 +198,9 @@ public class OrderServiceImpl implements OrderService {
         }
         return ResponseUtil.fail(-1,"数据库更新失败");
     }
+
+
+
+
 
 }

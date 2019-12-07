@@ -72,14 +72,9 @@ public class OrderDao {
      */
     public Integer updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(orderId);
-        if( statusCode > wowoOrder.getStatusCode()) {
-            return orderMapper.updateOrderStatusById(orderId, statusCode);
-        }
-        else {
-            return -1;
-        }
+        return orderMapper.updateOrderStatusById(orderId, statusCode);
     }
+
 
 
 }
