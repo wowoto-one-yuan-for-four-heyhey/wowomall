@@ -77,4 +77,15 @@ public interface OrderService {
     public Object refundOrder(Integer userId,Integer orderId);
 
 
+
+    /**
+     * 确认收货
+     *
+     * @param orderId 订单ID
+     * @param userId 用户ID
+     * @return 订单操作结果
+     */
+    public Object confirm(Integer userId,Integer orderId);
+
+
 }

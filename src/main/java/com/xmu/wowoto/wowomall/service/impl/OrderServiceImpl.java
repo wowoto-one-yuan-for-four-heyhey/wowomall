@@ -218,6 +218,13 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
+    /**
+     * 订单发货
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
     @Override
     public Object shipOrder(Integer userId,Integer orderId){
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
@@ -234,4 +241,28 @@ public class OrderServiceImpl implements OrderService {
     }
     }
 
+    /**
+     * 订单确认
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object confirm(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
+            Integer updateNum = orderDao.updateOrderByOrderId(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+            }
+        } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
+        }
+    }
 }
+
+
