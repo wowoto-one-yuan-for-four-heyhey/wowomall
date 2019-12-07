@@ -171,7 +171,7 @@ public class OrderServiceImpl implements OrderService {
                 // 对item的操作
             }
 
-            Integer status = orderDao.updateOrderByOrderId(oneOrder);
+            Integer status = orderDao.updateOrder(oneOrder);
             if(status == 1) {
                 //对用户 钱进行更新
                 // 对价格进行更新
@@ -236,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
         if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
         if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
-            Integer updateNum = orderDao.updateOrderByOrderId(oneOrder);
+            Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -259,7 +259,7 @@ public class OrderServiceImpl implements OrderService {
         if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
         if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
-            Integer updateNum = orderDao.updateOrderByOrderId(oneOrder);
+            Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -268,6 +268,10 @@ public class OrderServiceImpl implements OrderService {
         } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
         }
     }
+
+
+
+
 }
 
 
