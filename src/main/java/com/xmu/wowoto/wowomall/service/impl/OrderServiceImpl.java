@@ -8,14 +8,8 @@ import com.xmu.wowoto.wowomall.service.CartItemService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
-import com.xmu.wowoto.wowomall.util.WxResponseCode;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,8 +195,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
-        /*syb*/
-        return true;
+        return false;
     }
 
     /**
@@ -214,8 +207,20 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object deleteOrder(Integer userId, Integer orderId){
-        /*syb*/
-        return true;
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        if(null != wowoOrder){
+            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+            for(WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
+                wowoOrderItem.setBeDeleted(true);
+                if(orderDao.updateOrderItem(wowoOrderItem) < 1){
+                    return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+                }
+            }
+            wowoOrder.setBeDeleted(true);
+            return ResponseUtil.ok(orderDao.updateOrder(wowoOrder));
+        }else {
+            return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+        }
     }
 
     /**
