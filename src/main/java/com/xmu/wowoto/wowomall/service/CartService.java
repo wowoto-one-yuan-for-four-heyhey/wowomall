@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface CartItemService {
+public interface CartService {
     /**
      * 用ID获得CartItem对象
      * @param id 对象ID

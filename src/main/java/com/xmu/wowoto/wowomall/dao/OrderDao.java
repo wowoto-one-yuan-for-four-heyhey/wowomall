@@ -16,6 +16,17 @@ public class OrderDao {
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    /**
+     * 新增订单，包括订单明细
+     * @param wowoOrder 订单
+     * @return 新订单，带id的
+     */
+    public WowoOrder addOrder(WowoOrder wowoOrder){
+        orderMapper.addOrder(wowoOrder);
+
+    }
+
     /**
      * 获取用户订单列表
      *

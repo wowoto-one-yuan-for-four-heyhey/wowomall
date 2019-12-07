@@ -4,7 +4,7 @@ import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
-import com.xmu.wowoto.wowomall.service.CartItemService;
+import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.xmu.wowoto.wowomall.util.WxResponseCode.*;
+import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private GoodsService goodsService;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartService cartService;
 
     @Autowired
     private OrderDao orderDao;
@@ -81,11 +81,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
+        WowoOrder newOrder = null;
         if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
-            cartItemService.clearCartItem(wowoCartItems);
+            cartService.clearCartItem(wowoCartItems);
             wowoOrder.cacuDealPrice();
+
+            newOrder = orderDao.addOrder(wowoOrder);
         }
-        return wowoOrder;
+
+
+        return newOrder;
     }
 
     /**
@@ -123,11 +128,11 @@ public class OrderServiceImpl implements OrderService {
         WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);
         if(oneOrder==null)
         {
-            return ResponseUtil.fail(ORDER_UNKNOWN ,"订单不存在");
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
         if(oneOrder.getUserId() != userId)
         {
-            return ResponseUtil.fail(ORDER_INVALID ,"该订单不属于当前用户");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
         oneOrder.setWowoOrderItems(wowoOrderItemList);
@@ -163,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
     public Object refundOrder(Integer userId,Integer orderId){
         /*xbb*/
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
         if(WowoOrder.STATUSCODE.REFUND.getValue() >= oneOrder.getStatusCode()){
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.REFUND.getValue());
             List<WowoOrderItem> orderItems= oneOrder.getWowoOrderItems();
@@ -181,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
                 return ResponseUtil.ok();
             }
             else{
-                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
             }
         }
        return  ResponseUtil.fail();
@@ -196,14 +201,14 @@ public class OrderServiceImpl implements OrderService {
      */
     public Object payOrder(Integer userId, Integer orderId) {
         if (userId == null) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "没有userId不允许直接修改订单状态");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
         }
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
         if (oneOrder == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(), ORDER_UNKNOWN.getMessage());
         }
         if (oneOrder.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID, "该订单不属于该用户");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
         }
         if (WowoOrder.STATUSCODE.PAYED.getValue() >= oneOrder.getStatusCode()) {
             List<WowoOrderItem> orderItems = oneOrder.getWowoOrderItems();
@@ -211,15 +216,16 @@ public class OrderServiceImpl implements OrderService {
                 Integer itemId = item.getOrderId();
                 /**对item的操作 orderItem是否一并更新尚不明确*/
             }
-            Integer status = orderDao.updateOrderByOrderId(oneOrder);
+            Integer status = orderDao.updateOrder(oneOrder);
             if (status == 1) {
                 /**更新成功*/
                 return ResponseUtil.ok();
             } else {
-                return ResponseUtil.fail(ORDER_INVALID, "数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID.getCode(), ORDER_INVALID.getMessage());
             }
 
         }
+        return true;
     }
 
 
@@ -250,13 +256,13 @@ public class OrderServiceImpl implements OrderService {
             for(WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
                 wowoOrderItem.setBeDeleted(true);
                 if(orderDao.updateOrderItem(wowoOrderItem) < 1){
-                    return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+                    return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
                 }
             }
             wowoOrder.setBeDeleted(true);
             return ResponseUtil.ok(orderDao.updateOrder(wowoOrder));
         }else {
-            return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
     }
 
@@ -270,17 +276,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object shipOrder(Integer userId,Integer orderId){
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
         if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
-                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
             }
-        } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
-    }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        }
     }
 
     /**
@@ -293,16 +302,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object confirm(Integer userId,Integer orderId){
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
         if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
-                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
             }
-        } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
     }
 

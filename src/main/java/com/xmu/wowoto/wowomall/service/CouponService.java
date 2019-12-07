@@ -11,5 +11,5 @@ public interface CouponService {
      *
      * @param couponId   优惠券ID
      */
-    public WowoCoupon findCouponById(String couponId);
+    public WowoCoupon findCouponById(Integer couponId);
 }

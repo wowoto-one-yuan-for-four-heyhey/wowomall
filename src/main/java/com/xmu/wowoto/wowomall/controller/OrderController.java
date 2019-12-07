@@ -3,8 +3,10 @@ package com.xmu.wowoto.wowomall.controller;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.WowoAddress;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
+import com.xmu.wowoto.wowomall.domain.WowoCoupon;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
-import com.xmu.wowoto.wowomall.service.CartItemService;
+import com.xmu.wowoto.wowomall.service.CartService;
+import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -30,7 +32,10 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartService cartService;
+
+    @Autowired
+    private CouponService couponService;
 
     @PostMapping("orders")
     public Object submit(@RequestBody SubmitOrderVo submitOrderVo){
@@ -40,9 +45,14 @@ public class OrderController {
         WowoOrder wowoOrder = new WowoOrder();
         wowoOrder.setWowoAddress((WowoAddress) submitOrderVo.getAddress());
 
+        if(null != submitOrderVo.getCouponId()){
+            WowoCoupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());
+            wowoOrder.setWowoCoupon(wowoCoupon);
+        }
+
         List<WowoCartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
-            WowoCartItem wowoCartItem = cartItemService.findCartItemById(cartItemId);
+            WowoCartItem wowoCartItem = cartService.findCartItemById(cartItemId);
             wowoCartItems.add(wowoCartItem);
         }
 
