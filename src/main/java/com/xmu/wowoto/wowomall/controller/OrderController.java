@@ -116,7 +116,7 @@ public class OrderController {
 
 
     /**
-     * 待评价订单商品信息/goods
+     * 待评价订单商品信息/goods (用户操作)
      * @param userId 用户ID
      * @param limit 每页条数
      * @param page 页码
@@ -124,7 +124,7 @@ public class OrderController {
      * @param order 升/降序
      * @return 订单详细
      */
-    @GetMapping("orders/{id}")
+    @GetMapping("orders/unevaluated")
     @ApiOperation("查看未评价订单的订单详情")
     public Object getUnComment(Integer userId,
                                @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
