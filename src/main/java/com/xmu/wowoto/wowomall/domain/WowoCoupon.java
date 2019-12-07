@@ -1,7 +1,5 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.entity.Coupon;
-
 import java.time.LocalDateTime;
 
 public class WowoCoupon extends Coupon {

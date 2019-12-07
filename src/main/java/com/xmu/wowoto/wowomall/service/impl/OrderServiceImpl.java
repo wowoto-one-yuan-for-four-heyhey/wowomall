@@ -199,6 +199,32 @@ public class OrderServiceImpl implements OrderService {
         return ResponseUtil.fail(-1,"数据库更新失败");
     }
 
+    /**
+     * 取消订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object cancelOrder(Integer userId, Integer orderId){
+        /*syb*/
+        return true;
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object deleteOrder(Integer userId, Integer orderId){
+        /*syb*/
+        return true;
+    }
+
 
 
 

@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.entity.Order;
 import org.apache.ibatis.type.Alias;
 
 import java.util.List;

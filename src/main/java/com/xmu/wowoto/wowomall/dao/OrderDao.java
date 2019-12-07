@@ -75,6 +75,14 @@ public class OrderDao {
         return orderMapper.updateOrderStatusById(orderId, statusCode);
     }
 
-
-
+    /**
+     * 根据订单查询信息返回订单对象
+     * @param orderId 订单ID：
+     * @return 订单
+     */
+    public boolean deleteOrderByOrderId(Integer orderId)
+    {
+        /*syb*/
+        return true;
+    }
 }

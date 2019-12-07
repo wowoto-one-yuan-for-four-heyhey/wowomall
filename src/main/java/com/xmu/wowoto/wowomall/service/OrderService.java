@@ -41,13 +41,31 @@ public interface OrderService {
     public Object getOrderDetail(Integer userId,Integer orderId);
 
     /**
-     * 订单发货修改订单状态(管理员操作)
+     * 订单发货修改订单状态
      *
      * @param orderId 订单ID
      * @param statusCode 状态码
      * @return 订单详细
      */
-    public Object shipOrder(Integer orderId,Integer statusCode);
+    public Object updateOrderStatusById(Integer orderId,Integer statusCode);
+
+    /**
+     * 取消订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    public Object cancelOrder(Integer userId, Integer orderId);
+
+    /**
+     * 删除订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    public Object deleteOrder(Integer userId, Integer orderId);
 
     /**
      * 订单修改订单状态为退款(管理员操作)

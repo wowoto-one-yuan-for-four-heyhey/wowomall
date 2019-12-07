@@ -32,7 +32,7 @@ public class OrderController {
     @Autowired
     private CartItemService cartItemService;
 
-    @PostMapping("order")
+    @PostMapping("orders")
     public Object submit(@RequestBody SubmitOrderVo submitOrderVo){
 
         logger.debug("submit: " + submitOrderVo);
@@ -151,9 +151,32 @@ public class OrderController {
         return orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
     }
 
+    /**
+     * 取消一个订单(管理员操作)
+     *
+     * @param orderId   订单ID
+     * @return 更改列表
 
+     */
+    @DeleteMapping("orders/{id}")
+    @ApiOperation("取消一个订单")
+    public Object cancelOrder(Integer userId,
+                              @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
+        return orderService.deleteOrder(userId, Integer.parseInt(orderId));
+    }
 
+    /**
+     * 删除一个订单(管理员操作)
+     *
+     * @param orderId   订单ID
+     * @return 更改列表
 
-
+     */
+    @DeleteMapping("orders/{id}")
+    @ApiOperation("删除一个订单")
+    public Object deleteOrder(Integer userId,
+                              @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
+        return orderService.deleteOrder(userId, Integer.parseInt(orderId));
+    }
 
 }

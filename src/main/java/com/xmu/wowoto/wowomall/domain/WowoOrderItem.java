@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public class WowoOrderItem extends com.xmu.wowoto.wowomall.entity.OrderItem {
 
-
     WowoProduct wowoProduct;
     public WowoOrderItem(){
     }
@@ -15,7 +14,6 @@ public class WowoOrderItem extends com.xmu.wowoto.wowomall.entity.OrderItem {
         this.setProductId(wowoProduct.getId());
         this.setPrice(wowoProduct.getPrice());
         this.setDealPrice(this.getPrice());
-
         this.setGmtCreate(LocalDateTime.now());
     }
 
