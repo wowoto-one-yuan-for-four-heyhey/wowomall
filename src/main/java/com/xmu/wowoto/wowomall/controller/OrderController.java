@@ -116,14 +116,17 @@ public class OrderController {
     }
 
     /**
-     * 提供给支付模块修改订单状态  ->支付成功
+     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * @param userId 用户ID
      * @param id 订单ID
      * statusCode PAYED
      * @return 是否成功
      */
     @PutMapping("orders/{id}/payment")
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
-    public Object payOrder(@ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
+    public Object payOrder(Integer userId,
+                           @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id
+                           )
     {
         return true;
     }
@@ -144,7 +147,7 @@ public class OrderController {
     public Object getUnComment(Integer userId,
                                @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
                                @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
+                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
                                @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
 

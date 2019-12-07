@@ -76,5 +76,13 @@ public interface OrderService {
      */
     public Object refundOrder(Integer userId,Integer orderId);
 
+    /**
+     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * statusCode PAYED
+     * @return 是否成功
+     */
+    public Object payOrder(Integer userId, Integer orderId);
 
 }

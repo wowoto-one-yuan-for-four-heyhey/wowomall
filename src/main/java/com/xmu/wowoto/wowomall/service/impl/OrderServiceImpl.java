@@ -22,8 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_INVALID;
-import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_UNKNOWN;
+import static com.xmu.wowoto.wowomall.util.WxResponseCode.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -76,6 +75,8 @@ public class OrderServiceImpl implements OrderService {
                 wowoOrderItemVo.put("id",oneItem.getId());
                 wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
                 wowoOrderItemVo.put("productId",oneItem.getProductId());
+                wowoOrderItemVo.put("nameWithSpecifications",oneItem.getNameWithSpecifications());
+                wowoOrderItemVo.put("picUrl",oneItem.getPicUrl());
                 wowoOrderItemVoList.add(wowoOrderItemVo);
             }
             wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
@@ -193,12 +194,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 取消订单
-     *
-     * @param userId   用户ID
-     * @param orderId  订单ID
-     * @return 操作结果
+     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * statusCode PAYED
+     * @return 是否成功
      */
+    public Object payOrder(Integer userId, Integer orderId) {
+        if (userId == null) {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION, "没有userId不允许直接修改订单状态");
+        }
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if (oneOrder == null) {
+            return ResponseUtil.fail(ORDER_UNKNOWN, "订单不存在");
+        }
+        if (oneOrder.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ORDER_INVALID, "该订单不属于该用户");
+        }
+        if (WowoOrder.STATUSCODE.PAYED.getValue() >= oneOrder.getStatusCode()) {
+            List<WowoOrderItem> orderItems = oneOrder.getWowoOrderItems();
+            for (WowoOrderItem item : orderItems) {
+                Integer itemId = item.getOrderId();
+                /**对item的操作 orderItem是否一并更新尚不明确*/
+            }
+            Integer status = orderDao.updateOrderByOrderId(oneOrder);
+            if (status == 1) {
+                /**更新成功*/
+                return ResponseUtil.ok();
+            } else {
+                return ResponseUtil.fail(ORDER_INVALID, "数据库更新失败");
+            }
+
+        }
+    }
+
+
+            /**
+             * 取消订单
+             *
+             * @param userId   用户ID
+             * @param orderId  订单ID
+             * @return 操作结果
+             */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
         /*syb*/

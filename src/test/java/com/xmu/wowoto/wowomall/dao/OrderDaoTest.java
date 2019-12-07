@@ -1,25 +1,12 @@
-package com.xmu.wowoto.wowomall.service.impl;
+package com.xmu.wowoto.wowomall.dao;
 
 import com.xmu.wowoto.wowomall.WowomallApplication;
 import com.xmu.wowoto.wowomall.service.OrderService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = WowomallApplication.class)
-public class OrderServiceImplTest {
-
+public class OrderDaoTest {
     @Autowired
-    private OrderService orderService;
-
-    @Test
-    void getOrderDetail(){
-        orderService.getOrderDetail(2, 2);
-    }
-
-    @Test
-    void getOrders()
-    {
-
-    }
+    private OrderDao orderDao;
 }
