@@ -161,18 +161,27 @@ public class OrderServiceImpl implements OrderService {
      * 更改订单状态为退款(管理员操作)
      *
      * @param orderId 订单ID
-     * @param statusCode 订单的状态
+     * @param userId 用户ID
      * @return 订单列表
      */
-
     @Override
-    public Object refundOrder(Integer orderId,Integer statusCode){
+    public Object refundOrder(Integer userId,Integer orderId){
+        /*xbb*/
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
         if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
-        if(statusCode >= oneOrder.getStatusCode()){
-            Integer status = orderDao.updateOrderStatusById(orderId, statusCode);
+        if(WowoOrder.STATUSCODE.REFUND.getValue() >= oneOrder.getStatusCode()){
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.REFUND.getValue());
+            List<WowoOrderItem> orderItems= oneOrder.getWowoOrderItems();
+            for(WowoOrderItem item : orderItems){
+                Integer itemId = item.getOrderId();
+                // 对item的操作
+            }
+
+            Integer status = orderDao.updateOrderByOrderId(oneOrder);
             if(status == 1) {
-                Integer userId = oneOrder.getUserId();
+                //对用户 钱进行更新
+                // 对价格进行更新
+
                 //return ResponseUtil.ok(updateNum);
                 return ResponseUtil.ok();
             }
@@ -207,6 +216,22 @@ public class OrderServiceImpl implements OrderService {
     public Object deleteOrder(Integer userId, Integer orderId){
         /*syb*/
         return true;
+    }
+
+    @Override
+    public Object shipOrder(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+            Integer updateNum = orderDao.updateOrderByOrderId(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+            }
+        } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
+    }
     }
 
 }

@@ -38,7 +38,6 @@ public class OrderMapperTest {
     void updateOrderById(){
         WowoOrder wowoOrder = new WowoOrder();
         wowoOrder.setAddress("厦大学生公寓");
-        wowoOrder.setBeDeleted(1);
         wowoOrder.setId(1);
         Integer updateNum = orderMapper.updateOrderByIdSelective(wowoOrder);
     }
