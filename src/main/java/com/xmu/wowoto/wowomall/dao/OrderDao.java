@@ -24,7 +24,6 @@ public class OrderDao {
      */
     public WowoOrder addOrder(WowoOrder wowoOrder){
         orderMapper.addOrder(wowoOrder);
-
     }
 
     /**
