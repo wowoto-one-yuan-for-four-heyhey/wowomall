@@ -211,7 +211,7 @@ public class OrderServiceImpl implements OrderService {
                 Integer itemId = item.getOrderId();
                 /**对item的操作 orderItem是否一并更新尚不明确*/
             }
-            Integer status = orderDao.updateOrderByOrderId(oneOrder);
+            Integer status = orderDao.updateOrder(oneOrder);
             if (status == 1) {
                 /**更新成功*/
                 return ResponseUtil.ok();
@@ -220,6 +220,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
         }
+        return  ResponseUtil.fail();
     }
 
 
