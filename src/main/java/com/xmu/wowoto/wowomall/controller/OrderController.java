@@ -59,7 +59,7 @@ public class OrderController {
 
      */
     @PostMapping("orders/{id}/ship")
-    @ApiOperation("更改订单状态为发货")
+    @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         return orderService.shipOrder(userId,Integer.parseInt(orderId));
@@ -74,7 +74,7 @@ public class OrderController {
 
      */
     @PostMapping("orders/{id}/refund")
-    @ApiOperation("更改订单状态为退款")
+    @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
 
         return orderService.refundOrder(userId,Integer.parseInt(orderId));
@@ -168,5 +168,20 @@ public class OrderController {
                               @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
         return orderService.deleteOrder(userId, Integer.parseInt(orderId));
     }
+
+    /**
+     * 确认收货
+     *
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * @return 订单操作结果
+     */
+    @PostMapping("orders/{id}/confirm")
+    @ApiOperation(value = "确认收货订单操作结果/confirm")
+    public Object confirm(Integer userId,
+                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        return orderService.confirm(userId, Integer.parseInt(orderId));
+    }
+
 
 }

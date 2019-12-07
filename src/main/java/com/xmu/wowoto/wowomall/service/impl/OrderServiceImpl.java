@@ -8,14 +8,8 @@ import com.xmu.wowoto.wowomall.service.CartItemService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
-import com.xmu.wowoto.wowomall.util.WxResponseCode;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -178,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
                 // 对item的操作
             }
 
-            Integer status = orderDao.updateOrderByOrderId(oneOrder);
+            Integer status = orderDao.updateOrder(oneOrder);
             if(status == 1) {
                 //对用户 钱进行更新
                 // 对价格进行更新
@@ -238,8 +232,7 @@ public class OrderServiceImpl implements OrderService {
              */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
-        /*syb*/
-        return true;
+        return false;
     }
 
     /**
@@ -251,17 +244,36 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object deleteOrder(Integer userId, Integer orderId){
-        /*syb*/
-        return true;
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        if(null != wowoOrder){
+            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+            for(WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
+                wowoOrderItem.setBeDeleted(true);
+                if(orderDao.updateOrderItem(wowoOrderItem) < 1){
+                    return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+                }
+            }
+            wowoOrder.setBeDeleted(true);
+            return ResponseUtil.ok(orderDao.updateOrder(wowoOrder));
+        }else {
+            return ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源");
+        }
     }
 
+    /**
+     * 订单发货
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
     @Override
     public Object shipOrder(Integer userId,Integer orderId){
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
         if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
         if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
-            Integer updateNum = orderDao.updateOrderByOrderId(oneOrder);
+            Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -271,4 +283,32 @@ public class OrderServiceImpl implements OrderService {
     }
     }
 
+    /**
+     * 订单确认
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object confirm(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
+        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
+            Integer updateNum = orderDao.updateOrder(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+            }
+        } else {  return ResponseUtil.fail(ORDER_INVALID,"订单状态更新不合法");
+        }
+    }
+
+
+
+
 }
+
+
