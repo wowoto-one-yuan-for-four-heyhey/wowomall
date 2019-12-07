@@ -44,9 +44,4 @@ public interface OrderMapper {
      * @return 修改数目
      */
     Integer updateOrderByIdSelective(WowoOrder wowoOrder);
-
-
-
-
-
 }

@@ -183,11 +183,6 @@ public class OrderServiceImpl implements OrderService {
        return  ResponseUtil.fail();
     }
 
-    @Override
-    public Integer updateOrderByIdSelective(WowoOrder wowoOrder) {
-        return null;
-    }
-
     /**
      * 取消订单
      *
