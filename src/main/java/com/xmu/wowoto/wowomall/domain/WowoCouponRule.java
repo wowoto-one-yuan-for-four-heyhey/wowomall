@@ -25,9 +25,9 @@ public class WowoCouponRule {
         goodsIds.clear();
 
         for (String id: realObj.getGoodsList1().split(","))
-            goodsIds.add(Integer.parseInt(id));
+        {   goodsIds.add(Integer.parseInt(id));}
         for (String id: realObj.getGoodsList2().split(","))
-            goodsIds.add(Integer.parseInt(id));
+        {    goodsIds.add(Integer.parseInt(id));}
 
         return goodsIds.contains(goodsId);
     }

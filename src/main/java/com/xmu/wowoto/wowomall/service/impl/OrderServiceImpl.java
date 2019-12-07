@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(oneOrder.getUserId() != userId)
+        if(!oneOrder.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
@@ -199,6 +199,7 @@ public class OrderServiceImpl implements OrderService {
      * statusCode PAYED
      * @return 是否成功
      */
+    @Override
     public Object payOrder(Integer userId, Integer orderId) {
         if (userId == null) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
