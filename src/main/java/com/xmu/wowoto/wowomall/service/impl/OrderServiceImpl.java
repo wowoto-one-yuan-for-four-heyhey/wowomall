@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         for (WowoCartItem wowoCartItem: wowoCartItems){
             if(goodsService.deductStock(wowoCartItem.getProductId(), wowoCartItem.getNumber())){
                 WowoOrderItem wowoOrderItem = new WowoOrderItem((wowoCartItem));
-                wowoCartItems.add(wowoCartItem);
+                wowoOrderItems.add(wowoOrderItem);
             }else {
                 return false;
             }
