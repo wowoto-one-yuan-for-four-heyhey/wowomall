@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.entity.Order;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -35,12 +36,17 @@ public interface OrderMapper {
      */
     WowoOrder getOrderByOrderId(Integer orderId);
 
+
+
     /**
      * 修改订单状态
-     * @param orderId 订单ID：
-     * @param statusCode
-     * @return 订单
+     * @param order 订单：
+     * @return 修改数目
      */
-    Integer updateOrderStatusById(Integer orderId,Integer statusCode);
+    Integer updateOrderById(Order order);
+
+
+
+
 
 }

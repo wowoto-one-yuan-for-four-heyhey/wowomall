@@ -8,6 +8,7 @@ import com.xmu.wowoto.wowomall.service.CartItemService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
+import com.xmu.wowoto.wowomall.util.WxResponseCode;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.models.auth.In;
@@ -167,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object refundOrder(Integer orderId,Integer statusCode){
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(-1,"数据库中不存在该资源"); }
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
         if(statusCode >= oneOrder.getStatusCode()){
             Integer status = orderDao.updateOrderStatusById(orderId, statusCode);
             if(status == 1) {
@@ -176,7 +177,7 @@ public class OrderServiceImpl implements OrderService {
                 return ResponseUtil.ok();
             }
             else{
-                return ResponseUtil.fail(-1,"数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
             }
         }
        return  ResponseUtil.fail();
