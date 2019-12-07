@@ -138,14 +138,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 获取用户特定订单详情
+     * 更改订单状态为退款(管理员操作)
+     *
+     * @param orderId 订单ID
+     * @param statusCode 订单的状态
+     * @return 订单列表
+     */
+
+    @Override
+    public Object refundOrder(Integer orderId,Integer statusCode){
+        Integer updateNum = orderDao.updateOrderStatusById(orderId,statusCode);
+        if(updateNum == 1){
+            return ResponseUtil.ok(updateNum);
+        }
+        return ResponseUtil.fail(-1,"数据库更新失败");
+    }
+
+    /**
+     * 更改订单状态为发货(管理员操作)
      *
      * @param orderId 订单ID
      * @param statusCode 订单的状态
      * @return 订单列表
      */
     @Override
-    public Object updateOrderStatusById(Integer orderId,Integer statusCode)
+    public Object shipOrder(Integer orderId,Integer statusCode)
     {
         Integer updateNum = orderDao.updateOrderStatusById(orderId,statusCode);
         if(updateNum == 1){

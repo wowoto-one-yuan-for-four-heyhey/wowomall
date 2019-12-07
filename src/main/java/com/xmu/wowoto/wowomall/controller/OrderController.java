@@ -62,7 +62,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+        return orderService.shipOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
     }
 
     /**
@@ -75,8 +75,8 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        // orderItem
-        return orderService.updateOrderStatusById(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
+
+        return orderService.refundOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
     }
 
     /**
