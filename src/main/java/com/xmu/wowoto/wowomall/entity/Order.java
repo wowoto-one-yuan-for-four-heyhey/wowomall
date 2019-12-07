@@ -94,7 +94,7 @@ public class Order {
     private String address;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDeleted;
+    private Integer beDeleted;
 
     @Override
     public String toString() {
@@ -323,11 +323,11 @@ public class Order {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDeleted() {
+    public Integer getBeDeleted() {
         return beDeleted;
     }
 
-    public void setBeDeleted(Boolean beDeleted) {
+    public void setBeDeleted(Integer beDeleted) {
         this.beDeleted = beDeleted;
     }
 }
