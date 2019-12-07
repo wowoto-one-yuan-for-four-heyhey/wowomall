@@ -13,7 +13,7 @@
     limit #{page},#{limit}
 </select>
 
-<select id="getOrderByOrderId" parameterType="java.util.List" resultType="WowoOrder">
+<select id="getOrderByOrderId" parameterType="Integer" resultType="WowoOrder">
         select *
         from wowomall_order
         where is_deleted=0 and id=#{orderId}

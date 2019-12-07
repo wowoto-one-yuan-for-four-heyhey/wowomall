@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_INVALID;
+import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_UNKNOWN;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -38,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
      * @param statusCode 订单信息：
      *                 1未付款，
      *                 2未发货，
-     *                 3未收获，
+     *                 3未收货，
      *                 4未评价，
      *                 5已完成订单，
      *                 6退货订单，
@@ -50,7 +53,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
     {
-       //if(userId==null)  return;
+        if(userId==null)
+        {
+            return ResponseUtil.unlogin();
+        }
         List<WowoOrder> wowoOrderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
         List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
         for(WowoOrder oneOrder:wowoOrderList)
@@ -111,9 +117,21 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Object getOrderDetail(Integer orderId)
+    public Object getOrderDetail(Integer userId,Integer orderId)
     {
+        if(userId==null)
+        {
+            return ResponseUtil.unlogin();
+        }
         WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);
+        if(oneOrder==null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN ,"订单不存在");
+        }
+        if(oneOrder.getUserId()!=userId)
+        {
+            return ResponseUtil.fail(ORDER_INVALID ,"该订单不属于当前用户");
+        }
         List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         Map<String, Object> orderVo = new HashMap<String, Object>();

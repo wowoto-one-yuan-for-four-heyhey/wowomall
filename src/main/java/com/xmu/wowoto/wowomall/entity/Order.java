@@ -27,7 +27,7 @@ public class Order {
     /**
      * 订单状态，1未付款，2未发货，3未收获，4未评价，5已完成订单，6退货订单，7换货订单
      */
-    private Integer statusCode;
+    private Short statusCode;
     /**
      * 收件人姓名
      */
@@ -52,6 +52,8 @@ public class Order {
      * 返点减免费用
      */
     private BigDecimal rebatePrice;
+
+
     /**
      * 配送费用
      */
@@ -162,6 +164,13 @@ public class Order {
     public void setBeSharedItemIds(Integer beSharedItemIds) {
         this.beSharedItemIds = beSharedItemIds;
     }
+    public Short getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Short statusCode) {
+        this.statusCode = statusCode;
+    }
 
     public String getOrderSn() {
         return orderSn;
@@ -169,14 +178,6 @@ public class Order {
 
     public void setOrderSn(String orderSn) {
         this.orderSn = orderSn;
-    }
-
-    public Integer getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
     }
 
     public String getConsignee() {

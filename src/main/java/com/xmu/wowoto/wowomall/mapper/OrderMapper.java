@@ -35,6 +35,12 @@ public interface OrderMapper {
      */
     WowoOrder getOrderByOrderId(Integer orderId);
 
+
+
+
+
+
+
     /**
      * 修改订单状态
      * @param orderId 订单ID：

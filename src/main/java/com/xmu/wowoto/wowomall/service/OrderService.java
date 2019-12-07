@@ -38,7 +38,7 @@ public interface OrderService {
      * @param orderId 订单ID
      * @return 订单详细
      */
-    public Object getOrderDetail(Integer orderId);
+    public Object getOrderDetail(Integer userId,Integer orderId);
 
     /**
      * 订单发货修改订单状态

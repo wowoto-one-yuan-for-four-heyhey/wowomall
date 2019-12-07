@@ -83,7 +83,7 @@ public class OrderController {
      * @return 订单列表
      */
     @GetMapping("orders")
-    @ApiOperation("查看用户的全部订单")
+    @ApiOperation("查看用户的全部订单(用户)")
     public Object getOrders(Integer userId,
                       @ApiParam(name="showType",value="订单状态信息",required=true)@RequestParam(defaultValue = "0")Integer statusCode,
                       @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
@@ -96,15 +96,29 @@ public class OrderController {
 
     /**
      * 获取用户特定订单详情
-     * @param orderId 订单ID
+     * @param id 订单ID
      * @return 订单详细
      */
     @GetMapping("orders/{id}")
-    @ApiOperation("查看特定订单的订单详情")
-    public Object getOrderDetail(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId)
+    @ApiOperation("查看特定订单的订单详情(用户)")
+    public Object getOrderDetail( Integer userId,
+                                  @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
     {
-        int id = Integer.parseInt(orderId);
-        return orderService.getOrderDetail(id);
+        Integer id2 = Integer.parseInt(id);
+        return orderService.getOrderDetail(userId,id2);
+    }
+
+    /**
+     * 提供给支付模块修改订单状态  ->支付成功
+     * @param id 订单ID
+     * statusCode PAYED
+     * @return 是否成功
+     */
+    @PutMapping("orders/{id}/payment")
+    @ApiOperation("订单成功支付(内部接口，供paymentService调用")
+    public Object payOrder(@ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
+    {
+        return orderService.updateOrderStatusById(Integer.parseInt(id), WowoOrder.STATUSCODE.PAYED.getValue());
     }
 
 

@@ -6,7 +6,8 @@ public class WowoOrderItem extends com.xmu.wowoto.wowomall.entity.OrderItem {
 
 
     WowoProduct wowoProduct;
-
+    public WowoOrderItem(){
+    }
     public WowoOrderItem(WowoCartItem wowoCartItem){
         this.setNumber(wowoCartItem.getNumber());
         WowoProduct wowoProduct = wowoCartItem.getWowoProduct();
