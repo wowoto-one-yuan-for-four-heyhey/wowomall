@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.xmu.wowoto.wowomall.util.WxResponseCode.*;
-
+/**
+ *
+ * @author wowoto
+ * @date  12/07/2019
+ *
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -125,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         {
             return ResponseUtil.fail(ORDER_UNKNOWN ,"订单不存在");
         }
-        if(oneOrder.getUserId() != userId)
+        if(!oneOrder.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID ,"该订单不属于当前用户");
         }
@@ -194,6 +199,7 @@ public class OrderServiceImpl implements OrderService {
      * statusCode PAYED
      * @return 是否成功
      */
+    @Override
     public Object payOrder(Integer userId, Integer orderId) {
         if (userId == null) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION, "没有userId不允许直接修改订单状态");
