@@ -43,11 +43,10 @@ public interface OrderService {
     /**
      * 订单发货修改订单状态
      *
-     * @param orderId 订单ID
-     * @param statusCode 状态码
-     * @return 订单详细
+     * @param wowoOrder 订单
+     * @return 修改列数
      */
-    public Object updateOrderStatusById(Integer orderId,Integer statusCode);
+    public Integer updateOrderByIdSelective(WowoOrder wowoOrder);
 
     /**
      * 取消订单
@@ -75,7 +74,6 @@ public interface OrderService {
      * @return 订单详细
      */
     public Object refundOrder(Integer orderId,Integer statusCode);
-
 
 
 }

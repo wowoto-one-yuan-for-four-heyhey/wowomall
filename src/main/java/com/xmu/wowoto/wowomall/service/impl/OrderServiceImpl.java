@@ -183,11 +183,6 @@ public class OrderServiceImpl implements OrderService {
        return  ResponseUtil.fail();
     }
 
-    @Override
-    public Object updateOrderStatusById(Integer orderId, Integer statusCode) {
-        return null;
-    }
-
     /**
      * 取消订单
      *

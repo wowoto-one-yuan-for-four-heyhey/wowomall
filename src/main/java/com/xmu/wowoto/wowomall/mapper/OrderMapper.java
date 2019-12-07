@@ -40,13 +40,8 @@ public interface OrderMapper {
 
     /**
      * 修改订单状态
-     * @param order 订单：
+     * @param wowoOrder 订单：
      * @return 修改数目
      */
-    Integer updateOrderById(Order order);
-
-
-
-
-
+    Integer updateOrderByIdSelective(WowoOrder wowoOrder);
 }

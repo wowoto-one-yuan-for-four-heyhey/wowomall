@@ -67,7 +67,7 @@ public class Order {
     /**
      * 发货快递公司
      */
-    private Integer shipChannel;
+    private String shipChannel;
     /**
      * 发货时间
      */
@@ -94,7 +94,7 @@ public class Order {
     private String address;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDeleted;
+    private Integer beDeleted;
 
     @Override
     public String toString() {
@@ -251,11 +251,11 @@ public class Order {
         this.shipSn = shipSn;
     }
 
-    public Integer getShipChannel() {
+    public String getShipChannel() {
         return shipChannel;
     }
 
-    public void setShipChannel(Integer shipChannel) {
+    public void setShipChannel(String  shipChannel) {
         this.shipChannel = shipChannel;
     }
 
@@ -323,11 +323,11 @@ public class Order {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDeleted() {
+    public Integer getBeDeleted() {
         return beDeleted;
     }
 
-    public void setBeDeleted(Boolean beDeleted) {
+    public void setBeDeleted(Integer beDeleted) {
         this.beDeleted = beDeleted;
     }
 }

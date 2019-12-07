@@ -65,24 +65,11 @@ public class OrderDao {
     }
 
     /**
-     * 根据订单id修改订单状态
-     * @param orderId 订单ID：
-     * @param statusCode
-     * @return 订单
+     * 修改订单状态
+     * @param wowoOrder 订单
+     * @return 修改数量
      */
-    public Integer updateOrderStatusById(Integer orderId,Integer statusCode)
-    {
-        return null;
-    }
-
-    /**
-     * 根据订单查询信息返回订单对象
-     * @param orderId 订单ID：
-     * @return 订单
-     */
-    public boolean deleteOrderByOrderId(Integer orderId)
-    {
-        /*syb*/
-        return true;
+    public Integer updateOrderByOrderId(WowoOrder wowoOrder){
+        return orderMapper.updateOrderByIdSelective(wowoOrder);
     }
 }

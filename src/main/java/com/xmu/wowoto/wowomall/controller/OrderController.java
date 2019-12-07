@@ -125,7 +125,7 @@ public class OrderController {
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
     public Object payOrder(@ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
     {
-        return orderService.updateOrderStatusById(Integer.parseInt(id), WowoOrder.STATUSCODE.PAYED.getValue());
+        return true;
     }
 
 
