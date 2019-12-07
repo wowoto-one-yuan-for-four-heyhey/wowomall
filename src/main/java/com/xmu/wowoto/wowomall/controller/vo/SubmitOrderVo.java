@@ -26,7 +26,7 @@ public class SubmitOrderVo {
     public String toString() {
         return "SubmitOrderVo{" +
                 "cartItemIds=" + cartItemIds +
-                ", address=" + address +
+                ", wowoAddress=" + address +
                 ", couponId=" + couponId +
                 ", message='" + message + '\'' +
                 '}';

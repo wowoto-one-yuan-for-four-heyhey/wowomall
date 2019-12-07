@@ -15,7 +15,7 @@ public class Log {
     /**
      * 进行该操作的管理员ID
      */
-    private Integer adminIdId;
+    private Integer adminId;
     /**
      * 操作者的IP地址
      */
@@ -23,7 +23,7 @@ public class Log {
     /**
      * 操作的类型
      */
-    private short type;
+    private Integer type;
     /**
      * 操作的动作
      */
@@ -31,20 +31,19 @@ public class Log {
     /**
      * 操作的状态(如 200)
      */
-    private short statusCode;
+    private Integer statusCode;
     /**
      * 操作对象的ID
      */
     private Integer actionId;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDelete;
 
-    @java.lang.Override
-    public java.lang.String toString() {
+    @Override
+    public String toString() {
         return "Log{" +
                 "id=" + id +
-                ", adminIdId=" + adminIdId +
+                ", adminId=" + adminId +
                 ", ip='" + ip + '\'' +
                 ", type=" + type +
                 ", action='" + action + '\'' +
@@ -52,7 +51,6 @@ public class Log {
                 ", actionId=" + actionId +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", beDelete=" + beDelete +
                 '}';
     }
 
@@ -77,12 +75,12 @@ public class Log {
         this.id = id;
     }
 
-    public Integer getAdminIdId() {
-        return adminIdId;
+    public Integer getAdminId() {
+        return adminId;
     }
 
-    public void setAdminIdId(Integer adminIdId) {
-        this.adminIdId = adminIdId;
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
     }
 
     public String getIp() {
@@ -93,11 +91,11 @@ public class Log {
         this.ip = ip;
     }
 
-    public short getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(short type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -109,11 +107,11 @@ public class Log {
         this.action = action;
     }
 
-    public short getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(short statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
@@ -141,11 +139,4 @@ public class Log {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDelete() {
-        return beDelete;
-    }
-
-    public void setBeDelete(Boolean beDelete) {
-        this.beDelete = beDelete;
-    }
 }

@@ -1,0 +1,17 @@
+server:
+  port: 30020
+
+
+spring:
+  datasource:
+    url: jdbc:mysql://148.70.28.112:3306/wowomall?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: wowoto
+    password: zqhlovekly
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:wowomall.mapper/*Mapper.xml
+  type-aliases-package: com.xmu.wowoto.wowomall.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

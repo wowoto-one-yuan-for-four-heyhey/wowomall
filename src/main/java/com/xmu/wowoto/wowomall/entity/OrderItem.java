@@ -19,11 +19,11 @@ public class OrderItem {
     /**
      *订单项类型，1普通订单，2预售订单，3团购订单，4分享订单
      */
-    private Short itemType;
+    private Integer itemType;
     /**
      *订单项状态，1未付款，2未发货，3未收获，4未评价，5已完成订单，6退货订单，7换货订单
      */
-    private Short statusCode;
+    private Integer statusCode;
     /**
      * 数量
      */
@@ -40,9 +40,21 @@ public class OrderItem {
      * 订单项对应货品ID
      */
     private Integer productId;
+    /**
+     * 订单项对应商品ID（冗余存储）
+     */
+    private Integer goodsId;
+    /**
+     * 订单项对应商品的描述（冗余存储）
+     */
+    private String nameWithSpecifications;
+    /**
+     * 订单项对应商品图片（冗余存储）
+     */
+    private String picUrl;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDelete;
+    private Boolean beDeleted;
 
 
     @Override
@@ -56,9 +68,12 @@ public class OrderItem {
                 ", price=" + price +
                 ", dealPrice=" + dealPrice +
                 ", productId=" + productId +
+                ", goodsId=" + goodsId +
+                ", nameWithSpecifications='" + nameWithSpecifications + '\'' +
+                ", picUrl='" + picUrl + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", beDelete=" + beDelete +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -91,20 +106,28 @@ public class OrderItem {
         this.orderId = orderId;
     }
 
-    public Short getItemType() {
+    public Integer getItemType() {
         return itemType;
     }
 
-    public void setItemType(Short itemType) {
+    public void setItemType(Integer itemType) {
         this.itemType = itemType;
     }
 
-    public Short getStatusCode() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(Short statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Boolean getBeDeleted() {
+        return beDeleted;
+    }
+
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
     }
 
     public Integer getNumber() {
@@ -139,6 +162,30 @@ public class OrderItem {
         this.productId = productId;
     }
 
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public String getNameWithSpecifications() {
+        return nameWithSpecifications;
+    }
+
+    public void setNameWithSpecifications(String nameWithSpecifications) {
+        this.nameWithSpecifications = nameWithSpecifications;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
     public LocalDateTime getGmtCreate() {
         return gmtCreate;
     }
@@ -155,11 +202,4 @@ public class OrderItem {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDelete() {
-        return beDelete;
-    }
-
-    public void setBeDelete(Boolean beDelete) {
-        this.beDelete = beDelete;
-    }
 }

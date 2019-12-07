@@ -9,12 +9,13 @@ import java.util.Objects;
  * @Date: Created in 14:50 2019/11/29
  * @Modified By:
  **/
+
 public class AftersalesService {
     private Integer id;
     /**
      *商品类型，1普通商品，2预售商品，3团购商品，4分享商品
      */
-    private Short goodsType;
+    private Integer goodsType;
     /**
      * 申请售后时间
      */
@@ -43,9 +44,13 @@ public class AftersalesService {
      * 订单明细ID
      */
     private Integer orderItemId;
+    /**
+     * 管理员处理状态,有三个状态：未审核：0 审核通过：1 审核拒绝：2
+     */
+    private Integer statusCode;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
-    private Boolean beDelete;
+    private Boolean beDeleted;
 
     @Override
     public String toString() {
@@ -59,9 +64,10 @@ public class AftersalesService {
                 ", beApplied=" + beApplied +
                 ", number=" + number +
                 ", orderItemId=" + orderItemId +
+                ", statusCode=" + statusCode +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModified=" + gmtModified +
-                ", beDelete=" + beDelete +
+                ", beDeleted=" + beDeleted +
                 '}';
     }
 
@@ -86,11 +92,11 @@ public class AftersalesService {
         this.id = id;
     }
 
-    public Short getGoodsType() {
+    public Integer getGoodsType() {
         return goodsType;
     }
 
-    public void setGoodsType(Short goodsType) {
+    public void setGoodsType(Integer goodsType) {
         this.goodsType = goodsType;
     }
 
@@ -166,11 +172,19 @@ public class AftersalesService {
         this.gmtModified = gmtModified;
     }
 
-    public Boolean getBeDelete() {
-        return beDelete;
+    public Boolean getBeDeleted() {
+        return beDeleted;
     }
 
-    public void setBeDelete(Boolean beDelete) {
-        this.beDelete = beDelete;
+    public void setBeDeleted(Boolean beDeleted) {
+        this.beDeleted = beDeleted;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 }
