@@ -62,7 +62,8 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        return orderService.shipOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+//        return orderService.shipOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+        return true;
     }
 
     /**
@@ -161,20 +162,6 @@ public class OrderController {
     @DeleteMapping("orders/{id}")
     @ApiOperation("取消一个订单")
     public Object cancelOrder(Integer userId,
-                              @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
-        return orderService.deleteOrder(userId, Integer.parseInt(orderId));
-    }
-
-    /**
-     * 删除一个订单(管理员操作)
-     *
-     * @param orderId   订单ID
-     * @return 更改列表
-
-     */
-    @DeleteMapping("orders/{id}")
-    @ApiOperation("删除一个订单")
-    public Object deleteOrder(Integer userId,
                               @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
         return orderService.deleteOrder(userId, Integer.parseInt(orderId));
     }

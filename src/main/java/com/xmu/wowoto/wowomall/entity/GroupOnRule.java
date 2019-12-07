@@ -10,7 +10,7 @@ import java.util.Objects;
  * @Modified By:
  **/
 
-public class GrouponRule {
+public class GroupOnRule {
     private Integer id;
     /**
      *团购开始时间
@@ -55,7 +55,7 @@ public class GrouponRule {
     public boolean equals(Object o) {
         if (this == o) {return true;}
         if (o == null || getClass() != o.getClass()) {return false;}
-        GrouponRule that = (GrouponRule) o;
+        GroupOnRule that = (GroupOnRule) o;
         return Objects.equals(id, that.id);
     }
 

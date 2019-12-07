@@ -1,19 +1,20 @@
-package com.xmu.wowoto.wowomall.service.impl;
+package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.WowomallApplication;
-import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = WowomallApplication.class)
-public class OrderServiceImplTest {
+public class OrderMapperTest {
 
     @Autowired
-    private OrderService orderService;
+    OrderMapper orderMapper;
 
     @Test
-    void getOrderDetail(){
-        orderService.getOrderDetail(2, 2);
+    void getOrderByOrderId(){
+        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(1);
+
     }
 }

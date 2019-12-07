@@ -72,7 +72,7 @@ public class OrderDao {
      */
     public Integer updateOrderStatusById(Integer orderId,Integer statusCode)
     {
-        return orderMapper.updateOrderStatusById(orderId, statusCode);
+        return null;
     }
 
     /**

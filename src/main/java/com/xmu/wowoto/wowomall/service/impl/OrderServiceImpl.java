@@ -130,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
         {
             return ResponseUtil.fail(ORDER_UNKNOWN ,"订单不存在");
         }
-        if(oneOrder.getUserId()!=userId)
+        if(oneOrder.getUserId() != userId)
         {
             return ResponseUtil.fail(ORDER_INVALID ,"该订单不属于当前用户");
         }
@@ -183,21 +183,9 @@ public class OrderServiceImpl implements OrderService {
        return  ResponseUtil.fail();
     }
 
-    /**
-     * 更改订单状态为发货(管理员操作)
-     *
-     * @param orderId 订单ID
-     * @param statusCode 订单的状态
-     * @return 订单列表
-     */
     @Override
-    public Object shipOrder(Integer orderId,Integer statusCode)
-    {
-        Integer updateNum = orderDao.updateOrderStatusById(orderId,statusCode);
-        if(updateNum == 1){
-            return ResponseUtil.ok(updateNum);
-        }
-        return ResponseUtil.fail(-1,"数据库更新失败");
+    public Object updateOrderStatusById(Integer orderId, Integer statusCode) {
+        return null;
     }
 
     /**
@@ -225,9 +213,5 @@ public class OrderServiceImpl implements OrderService {
         /*syb*/
         return true;
     }
-
-
-
-
 
 }
