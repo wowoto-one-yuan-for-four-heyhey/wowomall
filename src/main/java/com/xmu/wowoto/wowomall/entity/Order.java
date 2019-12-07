@@ -255,7 +255,7 @@ public class Order {
         return shipChannel;
     }
 
-    public void setShipChannel(String shipChannel) {
+    public void setShipChannel(String  shipChannel) {
         this.shipChannel = shipChannel;
     }
 

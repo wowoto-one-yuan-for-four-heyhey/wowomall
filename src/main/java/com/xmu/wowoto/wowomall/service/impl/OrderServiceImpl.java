@@ -184,7 +184,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object updateOrderStatusById(Integer orderId, Integer statusCode) {
+    public Integer updateOrderByIdSelective(WowoOrder wowoOrder) {
         return null;
     }
 

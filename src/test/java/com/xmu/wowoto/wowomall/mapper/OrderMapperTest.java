@@ -15,14 +15,29 @@ public class OrderMapperTest {
 
     @Test
     void getOrderByOrderId(){
-        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(1);
+        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(0);
+        assert wowoOrder.getId() == 0;
+        assert wowoOrder.getUserId() == 0;
+        assert wowoOrder.getBeSharedItemIds().equals("0");
+        assert wowoOrder.getOrderSn().equals("别改");
+    }
+
+    @Test
+    void updateOrderByOrderId(){
+        WowoOrder wowoOrder = new WowoOrder();
+        wowoOrder.setId(1);
+        wowoOrder.setUserId(100);
+        orderMapper.updateOrderByIdSelective(wowoOrder);
+
+        wowoOrder = orderMapper.getOrderByOrderId(1);
+        assert wowoOrder.getUserId() == 100;
 
     }
 
     @Test
     void updateOrderById(){
         WowoOrder wowoOrder = new WowoOrder();
-        wowoOrder.setAddress("'厦大学生公寓'");
+        wowoOrder.setAddress("厦大学生公寓");
         wowoOrder.setBeDeleted(1);
         wowoOrder.setId(1);
         Integer updateNum = orderMapper.updateOrderByIdSelective(wowoOrder);
