@@ -4,6 +4,11 @@ import org.apache.ibatis.type.Alias;
 
 import java.util.List;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Alias("WowoOrder")
 public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
 

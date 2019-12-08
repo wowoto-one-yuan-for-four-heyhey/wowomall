@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 public class WowoCouponRule {
     private static final Logger logger = LoggerFactory.getLogger(CouponRule.class);
 
@@ -23,10 +28,10 @@ public class WowoCouponRule {
     public boolean isUsedOnGoods(Integer goodsId) {
         Set<Integer> goodsIds = new TreeSet<>();
         goodsIds.clear();
-
-        for (String id: realObj.getGoodsList1().split(","))
+        String sep = ",";
+        for (String id: realObj.getGoodsList1().split(sep))
         {   goodsIds.add(Integer.parseInt(id));}
-        for (String id: realObj.getGoodsList2().split(","))
+        for (String id: realObj.getGoodsList2().split(sep))
         {    goodsIds.add(Integer.parseInt(id));}
 
         return goodsIds.contains(goodsId);
