@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,16 +119,15 @@ public class OrderController {
 
     /**
      * 获取用户特定订单详情
-     * @param id 订单ID
+     * @param orderId 订单ID
      * @return 订单详细
      */
     @GetMapping("orders/{id}")
     @ApiOperation("查看特定订单的订单详情(用户)")
-    public Object getOrderDetail( Integer userId,
-                                  @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
+    public Object userDetail( Integer userId, @NotNull
+                                  @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")Integer orderId)
     {
-        Integer id2 = Integer.parseInt(id);
-        return orderService.getOrderDetail(userId,id2);
+        return orderService.getOrderDetail(userId,orderId);
     }
 
     /**

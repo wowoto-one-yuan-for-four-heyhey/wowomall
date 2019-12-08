@@ -80,7 +80,7 @@ public class OrderDao {
      */
     public WowoOrder getOrderByOrderId(Integer orderId)
     {
-        WowoOrder oneOrder =orderMapper.getOrderByOrderId(orderId);
+        WowoOrder oneOrder = orderMapper.getOrderByOrderId(orderId);
         List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(orderId);
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         return oneOrder;
