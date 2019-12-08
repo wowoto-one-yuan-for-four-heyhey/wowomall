@@ -4,6 +4,49 @@
     <select id="getOrderItemsByOrderId" parameterType="Integer" resultType="WowoOrderItem">
         select *
         from order_item
-        where order_id=#{orderId} and is_deleted=0
+        where order_id = #{orderId} and is_deleted = 0
+    </select>
+
+    <select id="updateOrderItemSelective" parameterType="WowoOrderItem" resultType="Integer">
+        update order_item
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId},
+            </if>
+            <if test="itemType != null">
+                item_type = #{itemType},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="dealPrice != null">
+                deal_price = #{dealPrice},
+            </if>
+            <if test="productId != null">
+                product_id= #{productId},
+            </if>
+            <if test="goodId != null">
+                goods_id = #{goodId},
+            </if>
+            <if test="nameWithSpecifications != null">
+                name_with_specifications = #{nameWithSpecifications},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = now(),
+            </if>
+            <if test="beDeleted != null">
+                be_deleted = #{beDeleted},
+            </if>
+        </set>
+        where id = #{id}
     </select>
 </mapper>

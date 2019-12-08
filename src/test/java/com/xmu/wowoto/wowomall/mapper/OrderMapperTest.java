@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest(classes = WowomallApplication.class)
 public class OrderMapperTest {
 
@@ -27,7 +29,7 @@ public class OrderMapperTest {
         WowoOrder wowoOrder = new WowoOrder();
         wowoOrder.setId(1);
         wowoOrder.setUserId(100);
-        orderMapper.updateOrderByIdSelective(wowoOrder);
+        orderMapper.updateOrderSelective(wowoOrder);
 
         wowoOrder = orderMapper.getOrderByOrderId(1);
         assert wowoOrder.getUserId() == 100;
@@ -38,8 +40,19 @@ public class OrderMapperTest {
     void updateOrderById(){
         WowoOrder wowoOrder = new WowoOrder();
         wowoOrder.setAddress("厦大学生公寓");
-        wowoOrder.setBeDeleted(1);
+        wowoOrder.setBeDeleted(true);
         wowoOrder.setId(1);
-        Integer updateNum = orderMapper.updateOrderByIdSelective(wowoOrder);
+        Integer updateNum = orderMapper.updateOrderSelective(wowoOrder);
+    }
+
+    @Test
+    void getOrdersByStatusCode(){
+        List<WowoOrder> WowoOrderList=orderMapper.getOrdersByStatusCode(1,0,1,10,"gmtCreate","desc");
+        for(WowoOrder oneOrder:WowoOrderList)
+        {
+            /**
+             *等待数据
+             */
+        }
     }
 }

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Repository
 @Mapper
 public interface OrderMapper {
@@ -24,6 +29,7 @@ public interface OrderMapper {
      *                 7换货订单
      * @param page     分页页数
      * @param limit     分页大小
+     * @param userId
      * @return 订单列表
      */
     List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
@@ -39,9 +45,9 @@ public interface OrderMapper {
 
 
     /**
-     * 修改订单状态
-     * @param wowoOrder 订单：
+     * 修改订单
+     * @param wowoOrder 订单
      * @return 修改数目
      */
-    Integer updateOrderByIdSelective(WowoOrder wowoOrder);
+    Integer updateOrderSelective(WowoOrder wowoOrder);
 }

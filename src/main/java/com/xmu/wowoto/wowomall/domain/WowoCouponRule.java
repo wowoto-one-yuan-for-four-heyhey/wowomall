@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 public class WowoCouponRule {
     private static final Logger logger = LoggerFactory.getLogger(CouponRule.class);
 
@@ -25,9 +30,9 @@ public class WowoCouponRule {
         goodsIds.clear();
 
         for (String id: realObj.getGoodsList1().split(","))
-            goodsIds.add(Integer.parseInt(id));
+        {   goodsIds.add(Integer.parseInt(id));}
         for (String id: realObj.getGoodsList2().split(","))
-            goodsIds.add(Integer.parseInt(id));
+        {    goodsIds.add(Integer.parseInt(id));}
 
         return goodsIds.contains(goodsId);
     }

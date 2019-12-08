@@ -4,26 +4,19 @@ import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
-import com.xmu.wowoto.wowomall.service.CartItemService;
+import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
-import com.xmu.wowoto.wowomall.util.WxResponseCode;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_INVALID;
-import static com.xmu.wowoto.wowomall.util.WxResponseCode.ORDER_UNKNOWN;
+import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private GoodsService goodsService;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartService cartService;
 
     @Autowired
     private OrderDao orderDao;
@@ -67,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
             wowoOrderVo.put("id",oneOrder.getId());
             wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
             wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
-            List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+            List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
        //     System.out.println(wowoOrderItemList);
             List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
             for(WowoOrderItem oneItem:wowoOrderItemList)
@@ -76,6 +69,8 @@ public class OrderServiceImpl implements OrderService {
                 wowoOrderItemVo.put("id",oneItem.getId());
                 wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
                 wowoOrderItemVo.put("productId",oneItem.getProductId());
+                wowoOrderItemVo.put("nameWithSpecifications",oneItem.getNameWithSpecifications());
+                wowoOrderItemVo.put("picUrl",oneItem.getPicUrl());
                 wowoOrderItemVoList.add(wowoOrderItemVo);
             }
             wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
@@ -86,11 +81,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
+        WowoOrder newOrder = null;
         if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
-            cartItemService.clearCartItem(wowoCartItems);
+            cartService.clearCartItem(wowoCartItems);
             wowoOrder.cacuDealPrice();
+
+            newOrder = orderDao.addOrder(wowoOrder);
         }
-        return wowoOrder;
+
+
+        return newOrder;
     }
 
     /**
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         for (WowoCartItem wowoCartItem: wowoCartItems){
             if(goodsService.deductStock(wowoCartItem.getProductId(), wowoCartItem.getNumber())){
                 WowoOrderItem wowoOrderItem = new WowoOrderItem((wowoCartItem));
-                wowoCartItems.add(wowoCartItem);
+                wowoOrderItems.add(wowoOrderItem);
             }else {
                 return false;
             }
@@ -128,13 +128,13 @@ public class OrderServiceImpl implements OrderService {
         WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);
         if(oneOrder==null)
         {
-            return ResponseUtil.fail(ORDER_UNKNOWN ,"订单不存在");
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(oneOrder.getUserId() != userId)
+        if(!oneOrder.getUserId().equals(userId))
         {
-            return ResponseUtil.fail(ORDER_INVALID ,"该订单不属于当前用户");
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+        List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         Map<String, Object> orderVo = new HashMap<String, Object>();
         orderVo.put("id", oneOrder.getId());
@@ -161,39 +161,85 @@ public class OrderServiceImpl implements OrderService {
      * 更改订单状态为退款(管理员操作)
      *
      * @param orderId 订单ID
-     * @param statusCode 订单的状态
+     * @param userId 用户ID
      * @return 订单列表
      */
-
     @Override
-    public Object refundOrder(Integer orderId,Integer statusCode){
+    public Object refundOrder(Integer userId,Integer orderId){
+        /*xbb*/
         WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_UNKNOWN,"数据库中不存在该资源"); }
-        if(statusCode >= oneOrder.getStatusCode()){
-            Integer status = orderDao.updateOrderStatusById(orderId, statusCode);
+        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
+        if(WowoOrder.STATUSCODE.REFUND.getValue() >= oneOrder.getStatusCode()){
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.REFUND.getValue());
+            List<WowoOrderItem> orderItems= oneOrder.getWowoOrderItems();
+            for(WowoOrderItem item : orderItems){
+                Integer itemId = item.getOrderId();
+                // 对item的操作
+            }
+
+            Integer status = orderDao.updateOrder(oneOrder);
             if(status == 1) {
-                Integer userId = oneOrder.getUserId();
+                //对用户 钱进行更新
+                // 对价格进行更新
+
                 //return ResponseUtil.ok(updateNum);
                 return ResponseUtil.ok();
             }
             else{
-                return ResponseUtil.fail(ORDER_INVALID,"数据库更新失败");
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
             }
         }
        return  ResponseUtil.fail();
     }
 
     /**
-     * 取消订单
-     *
-     * @param userId   用户ID
-     * @param orderId  订单ID
-     * @return 操作结果
+     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * statusCode PAYED
+     * @return 是否成功
      */
     @Override
-    public Object cancelOrder(Integer userId, Integer orderId){
-        /*syb*/
+    public Object payOrder(Integer userId, Integer orderId) {
+        if (userId == null) {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
+        }
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if (oneOrder == null) {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(), ORDER_UNKNOWN.getMessage());
+        }
+        if (oneOrder.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
+        }
+        if (WowoOrder.STATUSCODE.PAYED.getValue() >= oneOrder.getStatusCode()) {
+            List<WowoOrderItem> orderItems = oneOrder.getWowoOrderItems();
+            for (WowoOrderItem item : orderItems) {
+                Integer itemId = item.getOrderId();
+                /**对item的操作 orderItem是否一并更新尚不明确*/
+            }
+            Integer status = orderDao.updateOrder(oneOrder);
+            if (status == 1) {
+                /**更新成功*/
+                return ResponseUtil.ok();
+            } else {
+                return ResponseUtil.fail(ORDER_INVALID.getCode(), ORDER_INVALID.getMessage());
+            }
+
+        }
         return true;
+    }
+
+
+            /**
+             * 取消订单
+             *
+             * @param userId   用户ID
+             * @param orderId  订单ID
+             * @return 操作结果
+             */
+    @Override
+    public Object cancelOrder(Integer userId, Integer orderId){
+        return false;
     }
 
     /**
@@ -205,8 +251,77 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object deleteOrder(Integer userId, Integer orderId){
-        /*syb*/
-        return true;
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        if(null != wowoOrder){
+            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+            for(WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
+                wowoOrderItem.setBeDeleted(true);
+                if(orderDao.updateOrderItem(wowoOrderItem) < 1){
+                    return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+                }
+            }
+            wowoOrder.setBeDeleted(true);
+            return ResponseUtil.ok(orderDao.updateOrder(wowoOrder));
+        }else {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
     }
 
+    /**
+     * 订单发货
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object shipOrder(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
+        if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+            Integer updateNum = orderDao.updateOrder(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+            }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        }
+    }
+
+    /**
+     * 订单确认
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object confirm(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
+        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
+            Integer updateNum = orderDao.updateOrder(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+            }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        }
+    }
+
+
+
+
 }
+
+

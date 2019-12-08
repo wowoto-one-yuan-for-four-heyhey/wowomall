@@ -3,8 +3,10 @@ package com.xmu.wowoto.wowomall.controller;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.WowoAddress;
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
+import com.xmu.wowoto.wowomall.domain.WowoCoupon;
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
-import com.xmu.wowoto.wowomall.service.CartItemService;
+import com.xmu.wowoto.wowomall.service.CartService;
+import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -30,7 +32,10 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
-    private CartItemService cartItemService;
+    private CartService cartService;
+
+    @Autowired
+    private CouponService couponService;
 
     @PostMapping("orders")
     public Object submit(@RequestBody SubmitOrderVo submitOrderVo){
@@ -40,9 +45,14 @@ public class OrderController {
         WowoOrder wowoOrder = new WowoOrder();
         wowoOrder.setWowoAddress((WowoAddress) submitOrderVo.getAddress());
 
+        if(null != submitOrderVo.getCouponId()){
+            WowoCoupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());
+            wowoOrder.setWowoCoupon(wowoCoupon);
+        }
+
         List<WowoCartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
-            WowoCartItem wowoCartItem = cartItemService.findCartItemById(cartItemId);
+            WowoCartItem wowoCartItem = cartService.findCartItemById(cartItemId);
             wowoCartItems.add(wowoCartItem);
         }
 
@@ -59,11 +69,11 @@ public class OrderController {
 
      */
     @PostMapping("orders/{id}/ship")
-    @ApiOperation("更改订单状态为发货")
-    public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    @ApiOperation("更改订单状态为发货(管理员操作)")
+    public Object shipOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-//        return orderService.shipOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
-        return true;
+        return orderService.shipOrder(userId,Integer.parseInt(orderId));
+
     }
 
     /**
@@ -74,10 +84,10 @@ public class OrderController {
 
      */
     @PostMapping("orders/{id}/refund")
-    @ApiOperation("更改订单状态为退款")
-    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    @ApiOperation("更改订单状态为退款(管理员操作)")
+    public Object refundOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
 
-        return orderService.refundOrder(Integer.parseInt(orderId), WowoOrder.STATUSCODE.REFUND.getValue());
+        return orderService.refundOrder(userId,Integer.parseInt(orderId));
     }
 
     /**
@@ -116,14 +126,17 @@ public class OrderController {
     }
 
     /**
-     * 提供给支付模块修改订单状态  ->支付成功
+     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * @param userId 用户ID
      * @param id 订单ID
      * statusCode PAYED
      * @return 是否成功
      */
     @PutMapping("orders/{id}/payment")
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
-    public Object payOrder(@ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
+    public Object payOrder(Integer userId,
+                           @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id
+                           )
     {
         return true;
     }
@@ -144,7 +157,7 @@ public class OrderController {
     public Object getUnComment(Integer userId,
                                @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
                                @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "pay_time") String sort,
+                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
                                @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
 
@@ -165,5 +178,20 @@ public class OrderController {
                               @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
         return orderService.deleteOrder(userId, Integer.parseInt(orderId));
     }
+
+    /**
+     * 确认收货
+     *
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * @return 订单操作结果
+     */
+    @PostMapping("orders/{id}/confirm")
+    @ApiOperation(value = "确认收货订单操作结果/confirm")
+    public Object confirm(Integer userId,
+                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        return orderService.confirm(userId, Integer.parseInt(orderId));
+    }
+
 
 }

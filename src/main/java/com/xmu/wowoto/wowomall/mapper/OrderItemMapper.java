@@ -17,4 +17,11 @@ public interface OrderItemMapper {
      * @return 订单物品列表
      */
     List<WowoOrderItem> getOrderItemsByOrderId(int orderId);
+
+    /**
+     * 修改订单商品
+     * @param wowoOrderItem 订单
+     * @return 修改数目
+     */
+    Integer updateOrderItemSelective(WowoOrderItem wowoOrderItem);
 }

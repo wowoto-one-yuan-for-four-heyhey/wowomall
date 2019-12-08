@@ -4,14 +4,10 @@ import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
-import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class OrderDao {
@@ -20,6 +16,16 @@ public class OrderDao {
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    /**
+     * 新增订单，包括订单明细
+     * @param wowoOrder 订单
+     * @return 新订单，带id的
+     */
+    public WowoOrder addOrder(WowoOrder wowoOrder){
+        return orderMapper.addOrder(wowoOrder);
+    }
+
     /**
      * 获取用户订单列表
      *
@@ -61,7 +67,10 @@ public class OrderDao {
      */
     public WowoOrder getOrderByOrderId(Integer orderId)
     {
-        return orderMapper.getOrderByOrderId(orderId);
+        WowoOrder oneOrder =orderMapper.getOrderByOrderId(orderId);
+        List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(orderId);
+        oneOrder.setWowoOrderItems(wowoOrderItemList);
+        return oneOrder;
     }
 
     /**
@@ -69,7 +78,16 @@ public class OrderDao {
      * @param wowoOrder 订单
      * @return 修改数量
      */
-    public Integer updateOrderByOrderId(WowoOrder wowoOrder){
-        return orderMapper.updateOrderByIdSelective(wowoOrder);
+    public Integer updateOrder(WowoOrder wowoOrder){
+        return orderMapper.updateOrderSelective(wowoOrder);
+    }
+
+    /**
+     * 修改订单商品状态
+     * @param wowoOrderItem 订单
+     * @return 修改数量
+     */
+    public Integer updateOrderItem(WowoOrderItem wowoOrderItem){
+        return orderItemMapper.updateOrderItemSelective(wowoOrderItem);
     }
 }
