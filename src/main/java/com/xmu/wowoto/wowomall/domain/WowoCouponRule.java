@@ -73,7 +73,6 @@ public class WowoCouponRule {
      * 获得优惠的费用
      * @param order 订单
      * @param couponSn 优惠卷号
-     * @return
      */
     public void cacuCouponPrice(WowoOrder order, String couponSn){
 
