@@ -9,6 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Repository
 public class OrderDao {
 
@@ -44,6 +51,8 @@ public class OrderDao {
      *                 7换货订单
      * @param page     分页页数
      * @param limit     分页大小
+     * @param sort      排序
+     * @param order     正序或逆序
      * @return 订单列表
      */
     public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
@@ -71,7 +80,7 @@ public class OrderDao {
      */
     public WowoOrder getOrderByOrderId(Integer orderId)
     {
-        WowoOrder oneOrder =orderMapper.getOrderByOrderId(orderId);
+        WowoOrder oneOrder = orderMapper.getOrderByOrderId(orderId);
         List<WowoOrderItem> wowoOrderItemList = orderItemMapper.getOrderItemsByOrderId(orderId);
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         return oneOrder;
@@ -94,4 +103,7 @@ public class OrderDao {
     public Integer updateOrderItem(WowoOrderItem wowoOrderItem){
         return orderItemMapper.updateOrderItemSelective(wowoOrderItem);
     }
+
+
+
 }

@@ -24,9 +24,17 @@ public class OrderDaoTest {
         wowoOrder.setStatusCode(0);
         wowoOrder.setMobile("13988888888");
         wowoOrder.setMessage("Test");
+        wowoOrder.setWowoOrderItems(new ArrayList<>());
 
         WowoOrderItem item1 = new WowoOrderItem();
+        item1.setProductId(1);
+        item1.setNumber(2);
+        WowoOrderItem item2 = new WowoOrderItem();
+        item2.setProductId(3);
+        item2.setNumber(4);
 
+        wowoOrder.getWowoOrderItems().add(item1);
+        wowoOrder.getWowoOrderItems().add(item2);
 
         orderDao.addOrder(wowoOrder);
     }

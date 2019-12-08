@@ -4,11 +4,11 @@
 
     <insert id="addOrderItems" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
         insert into order_item(
-            order_id, item_type, status, number, price, deal_price, product_id, goods_id, name_with_specifications, gmt_create, gmt_modified, be_deleted
+            order_id, item_type, status, number, price, deal_price, product_id, goods_id, name_with_specifications, gmt_create, gmt_modified, is_deleted
         )
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.orderId}, #{item.itemType}, #{item.status}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), #{item.gmtModified}, #{item.beDeleted})
+            (#{item.orderId}, #{item.itemType}, #{item.statusCode}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), #{item.gmtModified}, 0)
         </foreach>
     </insert>
 
@@ -27,8 +27,8 @@
             <if test="itemType != null">
                 item_type = #{itemType},
             </if>
-            <if test="status != null">
-                status = #{status},
+            <if test="statusCode != null">
+                statusCode = #{status},
             </if>
             <if test="number != null">
                 number = #{number},
@@ -55,7 +55,7 @@
                 gmt_modified = now(),
             </if>
             <if test="beDeleted != null">
-                be_deleted = #{beDeleted},
+                is_deleted = #{beDeleted},
             </if>
         </set>
         where id = #{id}

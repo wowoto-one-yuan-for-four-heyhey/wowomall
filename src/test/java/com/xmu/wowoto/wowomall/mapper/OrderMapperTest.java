@@ -17,11 +17,8 @@ public class OrderMapperTest {
 
     @Test
     void getOrderByOrderId(){
-        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(0);
-        assert wowoOrder.getId() == 0;
-        assert wowoOrder.getUserId() == 0;
-        assert wowoOrder.getBeSharedItemIds().equals("0");
-        assert wowoOrder.getOrderSn().equals("别改");
+        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(6);
+        System.out.println(wowoOrder);
     }
 
     @Test

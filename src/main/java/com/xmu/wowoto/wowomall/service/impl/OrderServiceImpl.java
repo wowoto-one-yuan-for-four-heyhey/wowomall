@@ -11,6 +11,8 @@ import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,11 @@ import java.util.Map;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -46,17 +53,13 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
-        if(userId==null)
-        {
-            return ResponseUtil.unlogin();
-        }
-        List<WowoOrder> wowoOrderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
+        List<WowoOrder> wowoOrderList = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        List<Map<String, Object>> wowoOrderVoList = new ArrayList<>(wowoOrderList.size());
         for(WowoOrder oneOrder:wowoOrderList)
         {
-            Map<String, Object> wowoOrderVo=new HashMap<>();
+            Map<String, Object> wowoOrderVo = new HashMap<>();
             wowoOrderVo.put("id",oneOrder.getId());
             wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
             wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
@@ -65,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
             List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
             for(WowoOrderItem oneItem:wowoOrderItemList)
             {
-                Map<String, Object> wowoOrderItemVo=new HashMap<>();
+                Map<String, Object> wowoOrderItemVo = new HashMap<>();
                 wowoOrderItemVo.put("id",oneItem.getId());
                 wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
                 wowoOrderItemVo.put("productId",oneItem.getProductId());
@@ -153,7 +156,6 @@ public class OrderServiceImpl implements OrderService {
         orderVo.put("shipTime", oneOrder.getShipTime());
         orderVo.put("payTime", oneOrder.getPayTime());
         orderVo.put("orderItemList",wowoOrderItemList);
-        System.out.println(orderVo);
         return ResponseUtil.ok(orderVo);
     }
 
@@ -217,6 +219,7 @@ public class OrderServiceImpl implements OrderService {
                 Integer itemId = item.getOrderId();
                 /**对item的操作 orderItem是否一并更新尚不明确*/
             }
+            oneOrder.setPayTime(LocalDateTime.now());
             Integer status = orderDao.updateOrder(oneOrder);
             if (status == 1) {
                 /**更新成功*/
@@ -239,7 +242,12 @@ public class OrderServiceImpl implements OrderService {
              */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
-        return false;
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        if(null != wowoOrder){
+            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+
+        }
+        return true;
     }
 
     /**
@@ -282,6 +290,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+            oneOrder.setShipTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
@@ -308,6 +317,36 @@ public class OrderServiceImpl implements OrderService {
         }
         if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
+            oneOrder.setConfirmTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+            }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        }
+    }
+
+
+
+    /**
+     * 评价订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object comment(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
+        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_COMMENTED.getValue()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+            oneOrder.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);

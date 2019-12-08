@@ -1,9 +1,7 @@
 package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.domain.WowoOrder;
-import com.xmu.wowoto.wowomall.entity.Order;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,10 +17,10 @@ public interface OrderMapper {
 
     /**
      * 新增一个订单
-     * @param order 订单对象
+     * @param wowoOrder 订单对象
      * @return 行数
      */
-    Integer addOrder(Order order);
+    Integer addOrder(WowoOrder wowoOrder);
 
     /**
      * 根据订单查询信息返回订单对象
@@ -37,10 +35,12 @@ public interface OrderMapper {
      *                 7换货订单
      * @param page     分页页数
      * @param limit     分页大小
-     * @param userId
+     * @param sort      排序(正序)
+     * @param order     order
      * @return 订单列表
      */
-    List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode,
+                                          Integer page, Integer limit, String sort, String order);
 
     /**
      * 根据订单查询信息返回订单对象
@@ -56,15 +56,4 @@ public interface OrderMapper {
      * @return 修改数目
      */
     Integer updateOrderSelective(WowoOrder wowoOrder);
-
-    /**
-     * 新增订单，包括订单明细
-     * @param wowoOrder 订单
-     * @return 新订单，带id的
-     */
-    WowoOrder addOrder(WowoOrder wowoOrder);
-
-
-
-
 }
