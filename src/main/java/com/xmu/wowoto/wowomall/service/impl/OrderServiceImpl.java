@@ -331,6 +331,35 @@ public class OrderServiceImpl implements OrderService {
 
 
 
+    /**
+     * 评价订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
+    @Override
+    public Object comment(Integer userId,Integer orderId){
+        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        if(oneOrder == null){
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+        }
+        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_COMMENTED.getValue()) {
+            oneOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+            oneOrder.setConfirmTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(oneOrder);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+            }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        }
+    }
+
+
+
 
 }
 

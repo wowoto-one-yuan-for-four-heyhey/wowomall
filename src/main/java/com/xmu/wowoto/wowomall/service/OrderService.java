@@ -104,4 +104,14 @@ public interface OrderService {
     public Object confirm(Integer userId,Integer orderId);
 
 
+    /**
+     * 评价
+     *
+     * @param orderId 订单ID
+     * @param userId 用户ID
+     * @return 订单操作结果
+     */
+    public Object comment(Integer userId,Integer orderId);
+
+
 }
