@@ -7,7 +7,7 @@
         user_id, be_shared_item_ids, order_sn, status, mobile, message, goods_price, freight_price, coupon_price, integral_price, rebate_price, ship_sn, ship_channel, ship_time, confirm_time, end_time, pay_time, parent_id, address, gmt_create, gmt_modified, be_deleted
     )
     values (
-        #{userId},#{beSharedItemIds}, #{orderSn}, #{statusCode}, #{mobile}, #{message}, #{goodsPrice}, #{freightPrice}, #{couponPrice}, #{integralPrice}, #{rebatePrice}, #{shipSn}, #{shipChannel}, #{shipTime}, #{confirmTime}, #{endTime}, #{payTime}, #{parentId}, #{address}, now(), #{gmtModified}, #{beDeleted}
+        #{userId}, #{beSharedItemIds}, #{orderSn}, #{statusCode}, #{mobile}, #{message}, #{goodsPrice}, #{freightPrice}, #{couponPrice}, #{integralPrice}, #{rebatePrice}, #{shipSn}, #{shipChannel}, #{shipTime}, #{confirmTime}, #{endTime}, #{payTime}, #{parentId}, #{address}, now(), #{gmtModified}, #{beDeleted}
     )
 </insert>
 
@@ -19,7 +19,7 @@
         and status_code = #{statusCode}
     </if>
     order by #{sort} #{order}
-    limit #{page},#{limit}
+    limit #{page}, #{limit}
 </select>
 
 <select id="getOrderByOrderId" parameterType="Integer" resultType="WowoOrder">
