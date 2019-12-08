@@ -9,6 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 
 
+/**
+ *
+ * @author wowoto
+ * @date 12/07/2019
+ */
 public abstract class AbstractCouponStrategy {
     private Logger logger = LoggerFactory.getLogger(AbstractCouponStrategy.class);
 

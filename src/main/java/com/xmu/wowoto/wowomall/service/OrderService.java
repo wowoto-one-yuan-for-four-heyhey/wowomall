@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Service
 public interface OrderService {
 
@@ -29,6 +34,8 @@ public interface OrderService {
      * @param statusCode 订单信息
      * @param page     分页页数
      * @param limit     分页大小
+     * @param sort      排序
+     * @param order     正序/逆序
      * @return 订单列表
      */
     public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
@@ -36,6 +43,7 @@ public interface OrderService {
     /**
      * 获取用户特定订单详情
      * @param orderId 订单ID
+     * @param userId  用户ID
      * @return 订单详细
      */
     public Object getOrderDetail(Integer userId,Integer orderId);
