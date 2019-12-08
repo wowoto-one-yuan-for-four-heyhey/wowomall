@@ -12,6 +12,7 @@ import java.util.List;
 @Alias("WowoOrder")
 public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
 
+
     public enum STATUSCODE{
         NOT_PAYED(1),
         PAYED(2),

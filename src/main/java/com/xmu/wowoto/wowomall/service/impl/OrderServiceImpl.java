@@ -11,6 +11,8 @@ import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,6 +219,7 @@ public class OrderServiceImpl implements OrderService {
                 Integer itemId = item.getOrderId();
                 /**对item的操作 orderItem是否一并更新尚不明确*/
             }
+            oneOrder.setPayTime(LocalDateTime.now());
             Integer status = orderDao.updateOrder(oneOrder);
             if (status == 1) {
                 /**更新成功*/
@@ -282,6 +285,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
+            oneOrder.setShipTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
@@ -308,6 +312,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
             oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
+            oneOrder.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(oneOrder);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);

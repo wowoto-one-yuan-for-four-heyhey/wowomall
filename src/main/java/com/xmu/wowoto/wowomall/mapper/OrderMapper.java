@@ -37,10 +37,12 @@ public interface OrderMapper {
      *                 7换货订单
      * @param page     分页页数
      * @param limit     分页大小
-     * @param userId
+     * @param sort      排序(正序)
+     * @param order     order
      * @return 订单列表
      */
-    List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode,
+                                          Integer page, Integer limit, String sort, String order);
 
     /**
      * 根据订单查询信息返回订单对象
