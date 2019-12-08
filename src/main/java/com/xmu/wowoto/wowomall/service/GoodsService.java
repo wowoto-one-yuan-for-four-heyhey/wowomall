@@ -2,6 +2,11 @@ package com.xmu.wowoto.wowomall.service;
 
 import org.springframework.stereotype.Service;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Service
 public interface GoodsService {
     /**
