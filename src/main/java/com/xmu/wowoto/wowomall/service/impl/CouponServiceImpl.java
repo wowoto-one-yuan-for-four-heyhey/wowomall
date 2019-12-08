@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class CouponServiceImpl implements CouponService {
 
     @Override
-    public WowoCoupon findCouponById(String couponId) {
+    public WowoCoupon findCouponById(Integer couponId) {
         return new WowoCoupon();
     }
 }

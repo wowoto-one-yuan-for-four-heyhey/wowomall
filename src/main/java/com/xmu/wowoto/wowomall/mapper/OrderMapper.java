@@ -11,6 +11,14 @@ import java.util.List;
 @Repository
 @Mapper
 public interface OrderMapper {
+
+    /**
+     * 新增一个订单
+     * @param order 订单对象
+     * @return 行数
+     */
+    Integer addOrder(Order order);
+
     /**
      * 根据订单查询信息返回订单对象
      * @param userId   用户ID
@@ -36,8 +44,6 @@ public interface OrderMapper {
      * @return 订单
      */
     WowoOrder getOrderByOrderId(Integer orderId);
-
-
 
     /**
      * 修改订单

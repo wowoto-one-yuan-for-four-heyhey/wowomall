@@ -24,6 +24,10 @@ public class OrderDao {
      */
     public WowoOrder addOrder(WowoOrder wowoOrder){
         orderMapper.addOrder(wowoOrder);
+        wowoOrder.setItemsOrderId();
+        orderItemMapper.addOrderItems(wowoOrder.getWowoOrderItems());
+
+        return wowoOrder;
     }
 
     /**

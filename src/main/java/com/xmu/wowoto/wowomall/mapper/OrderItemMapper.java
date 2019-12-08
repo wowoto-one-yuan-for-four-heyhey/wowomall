@@ -12,6 +12,13 @@ import java.util.List;
 public interface OrderItemMapper {
 
     /**
+     * 新增一系列订单商品
+     * @param wowoOrderItems 订单对象
+     * @return 行数
+     */
+    Integer addOrderItems(List<WowoOrderItem> wowoOrderItems);
+
+    /**
      * 根据订单Id信息返回订单物品列表
      * @param orderId   订单ID
      * @return 订单物品列表

@@ -47,6 +47,12 @@ public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
         }
     }
 
+    public void setItemsOrderId(){
+        for (WowoOrderItem wowoOrderItem: this.getWowoOrderItems()){
+            wowoOrderItem.setOrderId(this.getId());
+        }
+    }
+
     public WowoUser getWowoUser() {
         return wowoUser;
     }
