@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 @Repository
 @Mapper
 public interface OrderMapper {

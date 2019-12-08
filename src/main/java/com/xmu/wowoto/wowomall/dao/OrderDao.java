@@ -23,7 +23,7 @@ public class OrderDao {
      * @return 新订单，带id的
      */
     public WowoOrder addOrder(WowoOrder wowoOrder){
-        orderMapper.addOrder(wowoOrder);
+        return orderMapper.addOrder(wowoOrder);
     }
 
     /**

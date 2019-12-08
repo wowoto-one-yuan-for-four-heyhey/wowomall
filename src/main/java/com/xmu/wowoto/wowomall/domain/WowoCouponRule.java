@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ *
+ * @author wowoto
+ * @date 12/08/2019
+ */
 public class WowoCouponRule {
     private static final Logger logger = LoggerFactory.getLogger(CouponRule.class);
 
