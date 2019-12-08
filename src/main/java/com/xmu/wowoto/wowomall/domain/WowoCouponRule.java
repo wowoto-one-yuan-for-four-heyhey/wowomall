@@ -82,6 +82,5 @@ public class WowoCouponRule {
             List<WowoOrderItem> newItems = this.getStrategy().cacuDiscount(validItems, couponSn);
             order.getWowoOrderItems().addAll(newItems);
         }
-        logger.debug("cacuCouponPrice返回");
     }
 }

@@ -8,7 +8,7 @@
         )
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.orderId}, #{item.itemType}, #{item.statusCode}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), #{item.gmtModified}, #{item.beDeleted})
+            (#{item.orderId}, #{item.itemType}, #{item.statusCode}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), #{item.gmtModified}, 0)
         </foreach>
     </insert>
 

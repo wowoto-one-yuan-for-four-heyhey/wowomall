@@ -53,17 +53,13 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit,String sort,String order)
+    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
-        if(userId==null)
-        {
-            return ResponseUtil.unlogin();
-        }
-        List<WowoOrder> wowoOrderList=orderDao.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        List<Map<String, Object>> wowoOrderVoList=new ArrayList<>(wowoOrderList .size());
+        List<WowoOrder> wowoOrderList = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        List<Map<String, Object>> wowoOrderVoList = new ArrayList<>(wowoOrderList.size());
         for(WowoOrder oneOrder:wowoOrderList)
         {
-            Map<String, Object> wowoOrderVo=new HashMap<>();
+            Map<String, Object> wowoOrderVo = new HashMap<>();
             wowoOrderVo.put("id",oneOrder.getId());
             wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
             wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
@@ -72,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
             List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
             for(WowoOrderItem oneItem:wowoOrderItemList)
             {
-                Map<String, Object> wowoOrderItemVo=new HashMap<>();
+                Map<String, Object> wowoOrderItemVo = new HashMap<>();
                 wowoOrderItemVo.put("id",oneItem.getId());
                 wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
                 wowoOrderItemVo.put("productId",oneItem.getProductId());
@@ -246,7 +242,12 @@ public class OrderServiceImpl implements OrderService {
              */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
-        return false;
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        if(null != wowoOrder){
+            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
+
+        }
+        return true;
     }
 
     /**
