@@ -28,10 +28,10 @@ public class WowoCouponRule {
     public boolean isUsedOnGoods(Integer goodsId) {
         Set<Integer> goodsIds = new TreeSet<>();
         goodsIds.clear();
-
-        for (String id: realObj.getGoodsList1().split(","))
+        String sep = ",";
+        for (String id: realObj.getGoodsList1().split(sep))
         {   goodsIds.add(Integer.parseInt(id));}
-        for (String id: realObj.getGoodsList2().split(","))
+        for (String id: realObj.getGoodsList2().split(sep))
         {    goodsIds.add(Integer.parseInt(id));}
 
         return goodsIds.contains(goodsId);
