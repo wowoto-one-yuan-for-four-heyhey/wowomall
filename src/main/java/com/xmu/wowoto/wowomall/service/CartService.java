@@ -19,4 +19,13 @@ public interface CartService {
      * @param wowoCartItems 待清空的项目
      */
     void clearCartItem(List<WowoCartItem> wowoCartItems);
+
+    /**
+     *  添加 商品到购物车 /add
+     *  @param wowoCartItems 待添加的购物车项目
+     */
+    void addCartItem(WowoCartItem wowoCartItems);
+
+
+
 }

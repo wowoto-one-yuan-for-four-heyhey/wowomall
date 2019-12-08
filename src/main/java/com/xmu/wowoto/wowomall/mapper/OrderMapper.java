@@ -50,4 +50,15 @@ public interface OrderMapper {
      * @return 修改数目
      */
     Integer updateOrderSelective(WowoOrder wowoOrder);
+
+    /**
+     * 新增订单，包括订单明细
+     * @param wowoOrder 订单
+     * @return 新订单，带id的
+     */
+    WowoOrder addOrder(WowoOrder wowoOrder);
+
+
+
+
 }

@@ -17,4 +17,8 @@ public class CartServiceImpl implements CartService {
     public void clearCartItem(List<WowoCartItem> wowoCartItems) {
 
     }
+
+    @Override
+    public void addCartItem(WowoCartItem wowoCartItems){
+    }
 }
