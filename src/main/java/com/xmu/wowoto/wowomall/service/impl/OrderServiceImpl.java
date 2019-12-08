@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
             wowoOrderVo.put("id",oneOrder.getId());
             wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
             wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
-            List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+            List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
        //     System.out.println(wowoOrderItemList);
             List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
             for(WowoOrderItem oneItem:wowoOrderItemList)
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        List<WowoOrderItem> wowoOrderItemList = orderDao.getOrderItemsByOrderId(oneOrder.getId());
+        List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
         oneOrder.setWowoOrderItems(wowoOrderItemList);
         Map<String, Object> orderVo = new HashMap<String, Object>();
         orderVo.put("id", oneOrder.getId());
