@@ -1,7 +1,13 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xmu.wowoto.wowomall.entity.OrderItem;
+import org.apache.ibatis.type.Alias;
+
 import java.time.LocalDateTime;
 
+@Alias("WowoOrderItem")
+@JsonSerialize(as = OrderItem.class)
 public class WowoOrderItem extends com.xmu.wowoto.wowomall.entity.OrderItem {
 
     WowoProduct wowoProduct;

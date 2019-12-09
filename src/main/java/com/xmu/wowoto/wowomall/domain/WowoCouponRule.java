@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xmu.wowoto.wowomall.entity.CouponRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import java.util.TreeSet;
  * @author wowoto
  * @date 12/08/2019
  */
+@JsonSerialize(as = CouponRule.class)
 public class WowoCouponRule {
     private static final Logger logger = LoggerFactory.getLogger(CouponRule.class);
 

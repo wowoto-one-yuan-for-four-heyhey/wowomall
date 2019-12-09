@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xmu.wowoto.wowomall.entity.Coupon;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
  * @author wowoto
  * @date 12/08/2019
  */
+@JsonSerialize(as = Coupon.class)
 public class WowoCoupon extends Coupon {
 
     private WowoCouponRule wowoCouponRule;

@@ -1,7 +1,9 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xmu.wowoto.wowomall.entity.Product;
 
+@JsonSerialize(as = Product.class)
 public class WowoProduct extends Product {
 
     WowoGoods wowoGoods;

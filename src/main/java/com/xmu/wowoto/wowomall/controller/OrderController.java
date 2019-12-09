@@ -62,7 +62,7 @@ public class OrderController {
                             @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
                             @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
-        if(null != userId) {
+        if(null == userId) {
             return ResponseUtil.unlogin();
         }
         return orderService.getOrders(userId,statusCode,page,limit,sort,order);
@@ -80,9 +80,9 @@ public class OrderController {
 
         logger.debug("submit: " + submitOrderVo);
 
-        if(null != userId)
+        if(null == userId)
         {    return ResponseUtil.unlogin();}
-        if(null != submitOrderVo) {
+        if(null == submitOrderVo) {
             return ResponseUtil.badArgument();
         }
         WowoOrder wowoOrder = new WowoOrder();
@@ -115,7 +115,7 @@ public class OrderController {
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder(Integer userId,
                               @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
-        if(null != userId) {
+        if(null == userId) {
             return ResponseUtil.unlogin();
         }
         return orderService.cancelOrder(userId, Integer.parseInt(orderId));

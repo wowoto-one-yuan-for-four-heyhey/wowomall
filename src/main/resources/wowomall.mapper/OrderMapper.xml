@@ -3,7 +3,7 @@
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
 <insert id="addOrder" parameterType="WowoOrder" useGeneratedKeys="true" keyProperty="id">
-    insert into wowomall_order(
+    insert into `order`(
         user_id, be_shared_item_ids, order_sn, status, mobile, message, goods_price, freight_price, coupon_price, integral_price, rebate_price, ship_sn, ship_channel, ship_time, confirm_time, end_time, pay_time, parent_id, address, gmt_create, gmt_modified, be_deleted
     )
     values (
@@ -13,7 +13,7 @@
 
 <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
     select *
-    from wowomall_order
+    from `order`
     where user_id = #{userId} and is_deleted = 0
     <if test="statusCode!=0">
         and status_code = #{statusCode}
@@ -23,13 +23,13 @@
 </select>
 
 <select id="getOrderByOrderId" parameterType="Integer" resultType="WowoOrder">
-    select id
-    from wowomall_order
+    select *
+    from `order`
     where be_deleted = 0 and id = #{orderId}
 </select>
 
 <update id="updateOrderSelective" parameterType="WowoOrder">
-    update wowomall_order
+    update `order`
     <set>
         <if test="userId != null">
             user_id = #{userId},

@@ -1,5 +1,7 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xmu.wowoto.wowomall.entity.Order;
 import org.apache.ibatis.type.Alias;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
  * @date 12/08/2019
  */
 @Alias("WowoOrder")
+@JsonSerialize(as = Order.class)
 public class WowoOrder extends com.xmu.wowoto.wowomall.entity.Order {
 
 

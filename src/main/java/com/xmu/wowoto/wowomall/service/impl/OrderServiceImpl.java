@@ -156,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
         orderVo.put("shipTime", oneOrder.getShipTime());
         orderVo.put("payTime", oneOrder.getPayTime());
         orderVo.put("orderItemList",wowoOrderItemList);
-        return ResponseUtil.ok(orderVo);
+        return ResponseUtil.ok(oneOrder);
     }
 
     /**
