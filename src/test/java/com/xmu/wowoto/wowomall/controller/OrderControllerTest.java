@@ -21,23 +21,7 @@ public class OrderControllerTest {
 
     @Autowired
     private OrderController orderController;
-    @Autowired
-    private MockMvc mockMvc;
 
-    @Test
-    void getOrders(){
-        Object wowoOrderList=orderController.getOrders(2,0,1,10,"gmtCreate","desc");
-
-        String responseString = this.mockMvc.perform(post("/orders").contentType("application/json;charset=UTF-8").content(jsonString))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andReturn().getResponse().getContentAsString();
-
-
-        String errMsg = JacksonUtil.parseObject(responseString,"errmsg", String.class);
-        Integer errNo = JacksonUtil.parseObject(responseString,"errno", Integer.class);
-        Order order = JacksonUtil.parseObject(responseString,"data", Order.class);
-    }
 
 
 }
