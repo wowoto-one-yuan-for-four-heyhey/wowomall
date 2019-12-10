@@ -12,7 +12,30 @@
 </insert>
 
 <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
-    select *
+    select id,
+            user_id,
+            be_shared_item_ids,
+            order_sn,
+            status as status_code,
+            consignee,
+            mobile,
+            message,
+            godds_price,
+            freight_price,
+            coupon_price,
+            rebate_price,
+            integral_price,
+            ship_sn,
+            ship_channel,
+            ship_time,
+            confirm_time,
+            end_time,
+            pay_time,
+            parent_id,
+            address,
+            gmt_create,
+            gmt_modified,
+            be_deleted
     from `order`
     where user_id = #{userId} and is_deleted = 0
     <if test="statusCode!=0">
@@ -23,7 +46,30 @@
 </select>
 
 <select id="getOrderByOrderId" parameterType="Integer" resultType="WowoOrder">
-    select *
+    select id,
+           user_id,
+           be_shared_item_ids,
+           order_sn,
+           status as status_code,
+           consignee,
+           mobile,
+           message,
+           godds_price,
+           freight_price,
+           coupon_price,
+           rebate_price,
+           integral_price,
+           ship_sn,
+           ship_channel,
+           ship_time,
+           confirm_time,
+           end_time,
+           pay_time,
+           parent_id,
+           address,
+           gmt_create,
+           gmt_modified,
+           be_deleted
     from `order`
     where be_deleted = 0 and id = #{orderId}
 </select>

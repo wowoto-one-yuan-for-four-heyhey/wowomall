@@ -163,11 +163,11 @@ public class OrderController {
     }
 
     /**
-     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
+     * 用户点击支付,在本服务里检验权限，后续调用payment"
      * @param userId 用户ID
      * @param id 订单ID
      * statusCode PAYED
-     * @return 是否成功
+     * @return 是否成功发起支付
      */
     @PutMapping("orders/{id}/payment")
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
