@@ -8,6 +8,7 @@ import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.service.RemoteCart;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +43,9 @@ public class OrderController {
 
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private RemoteCart remoteCart;
 
     /**
      * 获取用户订单列表
@@ -228,4 +232,10 @@ public class OrderController {
 
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
+
+    @RequestMapping(value = "/test")
+    public Object test(Integer userID) {
+        return remoteCart.cartIndex(userID);
+    }
+
 }

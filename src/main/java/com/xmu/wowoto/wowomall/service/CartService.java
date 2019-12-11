@@ -1,7 +1,9 @@
 package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.WowoCartItem;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
  * @date 12/08/2019
  */
 @Service
+
 public interface CartService {
     /**
      * 用ID获得CartItem对象
@@ -31,6 +34,8 @@ public interface CartService {
      *  @param wowoCartItems 待添加的购物车项目
      */
     void addCartItem(WowoCartItem wowoCartItems);
+
+
 
 
 
