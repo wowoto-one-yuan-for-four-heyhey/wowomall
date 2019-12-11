@@ -12,6 +12,5 @@ public interface RemoteCart {
      * @return
      */
     @RequestMapping(value = "/carts", method = RequestMethod.GET)
-    @ResponseBody
     Object cartIndex(@RequestParam(value = "userId") Integer userId);
 }
