@@ -20,7 +20,7 @@ spring:
         min-idle: 2
     timeout: 5000
   application:
-    name: wowoto-eureka-client-orderService
+    name: wowoto-order
 
 mybatis:
   mapper-locations: classpath:wowomall.mapper/*Mapper.xml
@@ -33,4 +33,4 @@ mybatis:
 eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
-      defaultZone: http://10.30.27.96:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/

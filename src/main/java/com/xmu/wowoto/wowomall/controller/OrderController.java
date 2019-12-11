@@ -233,9 +233,9 @@ public class OrderController {
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
 
-    @RequestMapping(value = "/test")
-    public Object test(Integer userID) {
-        return remoteCart.cartIndex(userID);
+    @GetMapping(value = "/test")
+    public Object test(Integer userId) {
+        return remoteCart.cartIndex(userId);
     }
 
 }

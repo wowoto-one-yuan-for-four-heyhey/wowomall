@@ -1,16 +1,17 @@
 package com.xmu.wowoto.wowomall.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient
+@FeignClient("wowoto-cart")
 public interface RemoteCart {
 
     /**
      * dsf a
-     * @param UserId
+     * @param userId
      * @return
      */
-    @GetMapping("carts")
-    Object cartIndex(Integer UserId);
+    @RequestMapping(value = "/carts", method = RequestMethod.GET)
+    @ResponseBody
+    Object cartIndex(@RequestParam(value = "userId") Integer userId);
 }

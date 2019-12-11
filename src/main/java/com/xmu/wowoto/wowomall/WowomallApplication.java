@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients
 @SpringBootApplication
+@EnableFeignClients
 @MapperScan("com.xmu.wowoto.wowomall.mapper")
 @EnableEurekaClient
 public class WowomallApplication {
