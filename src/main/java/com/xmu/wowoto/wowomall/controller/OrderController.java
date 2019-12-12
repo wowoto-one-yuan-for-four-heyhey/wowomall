@@ -4,7 +4,7 @@ import com.xmu.wowoto.wowomall.controller.vo.GetOrdersVo;
 import com.xmu.wowoto.wowomall.controller.vo.OrderItemVo;
 import com.xmu.wowoto.wowomall.controller.vo.ProductVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
-import com.xmu.wowoto.wowomall.domain.*;
+import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -67,7 +67,8 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<WowoOrder> wowoOrders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
+
+        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
         List<GetOrdersVo> getOrdersVos = new ArrayList<>(wowoOrders.size());
         for (int i = 0; i < wowoOrders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
@@ -170,14 +171,42 @@ public class OrderController {
      * @param orderId   订单ID
      * @return 取消订单操作结果
      */
-    @PostMapping("orders/{id}/cancelResult")
+    @PostMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object cancelOrder(Integer userId,
-                              @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId) {
+    public Object cancelOrder(Integer userId, @PathVariable("id")String orderId, @RequestBody Order order) {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
         return orderService.cancelOrder(userId, Integer.parseInt(orderId));
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param orderId   订单ID
+     * @return 删除订单操作结果
+     */
+    @DeleteMapping("orders/{id}")
+    @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
+    public Object deleteOrder(Integer userId, @PathVariable("id")String orderId) {
+        if(null == userId) {
+            return ResponseUtil.unlogin();
+        }
+        return orderService.deleteOrder(userId, Integer.parseInt(orderId));
+    }
+
+    /**
+     * 确认收货
+     *
+     * @param userId 用户ID
+     * @param orderId 订单ID
+     * @return 订单操作结果
+     */
+    @PostMapping("orders/{id}/confirm")
+    @ApiOperation(value = "确认收货订单操作结果/confirm")
+    public Object confirm(Integer userId,
+                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        return orderService.confirm(userId, Integer.parseInt(orderId));
     }
 
     /**
@@ -191,7 +220,6 @@ public class OrderController {
     public Object shipOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         return orderService.shipOrder(userId,Integer.parseInt(orderId));
-
     }
 
     /**
@@ -223,8 +251,6 @@ public class OrderController {
         return true;
     }
 
-
-
     /**
      * 待评价订单商品信息/goods (用户操作)
      * @param userId 用户ID
@@ -245,20 +271,6 @@ public class OrderController {
 
         //@RequestBody
         return orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
-    }
-
-    /**
-     * 确认收货
-     *
-     * @param userId 用户ID
-     * @param orderId 订单ID
-     * @return 订单操作结果
-     */
-    @PostMapping("orders/{id}/confirm")
-    @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirm(Integer userId,
-                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        return orderService.confirm(userId, Integer.parseInt(orderId));
     }
 
     /**
