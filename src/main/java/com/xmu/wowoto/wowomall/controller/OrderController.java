@@ -180,6 +180,16 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.cancelOrder(userId, Integer.parseInt(orderId));
     }
 
@@ -196,13 +206,22 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.deleteOrder(userId, Integer.parseInt(orderId));
     }
 
     /**
      * 确认收货
      *
-     * @param userId 用户ID
      * @param orderId 订单ID
      * @return 订单操作结果
      */
@@ -211,6 +230,16 @@ public class OrderController {
     public Object confirm(
                           @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.confirm(userId, Integer.parseInt(orderId));
     }
 
@@ -225,6 +254,16 @@ public class OrderController {
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.shipOrder(userId,Integer.parseInt(orderId));
     }
 
@@ -239,6 +278,16 @@ public class OrderController {
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.refundOrder(userId,Integer.parseInt(orderId));
     }
 
@@ -291,6 +340,16 @@ public class OrderController {
                           @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId ){
 
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
 
