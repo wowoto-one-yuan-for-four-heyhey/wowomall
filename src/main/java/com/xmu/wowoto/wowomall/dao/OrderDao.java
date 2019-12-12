@@ -1,5 +1,9 @@
 package com.xmu.wowoto.wowomall.dao;
 
+import com.xmu.wowoto.wowomall.domain.OrderItem;
+import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
+import com.xmu.wowoto.wowomall.domain.po.OrderPo;
+import com.xmu.wowoto.wowomall.domain.po.ProductPo;
 import com.xmu.wowoto.wowomall.entity.Product;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
@@ -31,11 +35,10 @@ public class OrderDao {
      * @param wowoOrder 订单
      * @return 新订单，带id的
      */
-    public WowoOrder addOrder(WowoOrder wowoOrder){
+    public OrderPo addOrder(OrderPo wowoOrder){
         orderMapper.addOrder(wowoOrder);
         wowoOrder.setItemsOrderId();
-        orderItemMapper.addOrderItems(wowoOrder.getWowoOrderItems());
-
+        orderItemMapper.addOrderItems(wowoOrder.getOrderItems());
         return wowoOrder;
     }
 
@@ -57,17 +60,23 @@ public class OrderDao {
      * @param order     正序或逆序
      * @return 订单列表
      */
-    public List<WowoOrder> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<OrderPo> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
         page = page - 1;
-        List<WowoOrder> wowoOrders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        for (WowoOrder wowoOrder: wowoOrders) {
-            List<WowoOrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(wowoOrder.getId());
-            for (WowoOrderItem wowoOrderItem: wowoOrderItems){
-                WowoProduct wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-                wowoOrderItem.setWowoProduct(wowoProduct);
+        List<OrderPo> wowoOrders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        for (OrderPo wowoOrder: wowoOrders) {
+            List<OrderItemPo> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(wowoOrder.getId());
+            for (OrderItemPo wowoOrderItem: wowoOrderItems) {
+                ProductPo wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
+                wowoOrderItem.setPrice(wowoProduct.getPrice());
+                wowoOrderItem.setProduct(wowoProduct);
+                //?
+                wowoOrderItem.setProductId(wowoProduct.getId());
+                wowoOrderItem.setGoodsId(wowoProduct.getGoodsId());
+                wowoOrderItem.setPicUrl(wowoProduct.getPicUrl());
             }
-            wowoOrder.setWowoOrderItems(wowoOrderItems);
+            wowoOrder.setOrderItems(wowoOrderItems);
+
         }
         return wowoOrders;
     }
@@ -77,15 +86,15 @@ public class OrderDao {
      * @param orderId 订单ID：
      * @return 订单
      */
-    public WowoOrder getOrderByOrderId(Integer orderId)
+    public OrderPo getOrderByOrderId(Integer orderId)
     {
-        WowoOrder wowoOrder = orderMapper.getOrderByOrderId(orderId);
-        List<WowoOrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
-        for (WowoOrderItem wowoOrderItem: wowoOrderItems){
-            WowoProduct wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-            wowoOrderItem.setWowoProduct(wowoProduct);
+        OrderPo wowoOrder = orderMapper.getOrderByOrderId(orderId);
+        List<OrderItemPo> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
+        for (OrderItemPo wowoOrderItem: wowoOrderItems){
+            ProductPo wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
+            wowoOrderItem.setProduct(wowoProduct);
         }
-        wowoOrder.setWowoOrderItems(wowoOrderItems);
+        wowoOrder.setOrderItems(wowoOrderItems);
         return wowoOrder;
     }
 
@@ -94,7 +103,7 @@ public class OrderDao {
      * @param wowoOrder 订单
      * @return 修改数量
      */
-    public Integer updateOrder(WowoOrder wowoOrder){
+    public Integer updateOrder(OrderPo wowoOrder){
         return orderMapper.updateOrderSelective(wowoOrder);
     }
 
@@ -103,7 +112,7 @@ public class OrderDao {
      * @param wowoOrderItem 订单
      * @return 修改数量
      */
-    public Integer updateOrderItem(WowoOrderItem wowoOrderItem){
+    public Integer updateOrderItem(OrderItemPo wowoOrderItem){
         return orderItemMapper.updateOrderItemSelective(wowoOrderItem);
     }
 

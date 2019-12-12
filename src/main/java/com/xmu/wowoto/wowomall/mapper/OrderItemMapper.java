@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.mapper;
 
+import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,19 +15,19 @@ public interface OrderItemMapper {
      * @param wowoOrderItems 订单对象
      * @return 行数
      */
-    Integer addOrderItems(List<WowoOrderItem> wowoOrderItems);
+    Integer addOrderItems(List<OrderItemPo> wowoOrderItems);
 
     /**
      * 根据订单Id信息返回订单物品列表
      * @param orderId   订单ID
      * @return 订单物品列表
      */
-    List<WowoOrderItem> getOrderItemsByOrderId(Integer orderId);
+    List<OrderItemPo> getOrderItemsByOrderId(Integer orderId);
 
     /**
      * 修改订单商品
      * @param wowoOrderItem 订单
      * @return 修改数目
      */
-    Integer updateOrderItemSelective(WowoOrderItem wowoOrderItem);
+    Integer updateOrderItemSelective(OrderItemPo wowoOrderItem);
 }

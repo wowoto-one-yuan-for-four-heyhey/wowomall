@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,18 +48,19 @@ public abstract class AbstractCouponStrategy {
      * @param couponSn 优惠卷序号
      * @return 更新的订单列表，包含可能因为误差拆开的明细
      */
-    public List<WowoOrderItem> cacuDiscount(List<WowoOrderItem> validItems, String couponSn){
+    public List<OrderItemPo> cacuDiscount(List<OrderItemPo> validItems, String couponSn){
         //优惠商品的总价和数量
         BigDecimal totalPrice = BigDecimal.ZERO;
         Integer totalQuantity = 0;
 
         //优惠的货品
-        List<WowoOrderItem> discountItems = new ArrayList<>(validItems.size());
+        List<OrderItemPo> discountItems = new ArrayList<>(validItems.size());
 
-        Iterator<WowoOrderItem> itemIterator = validItems.iterator();
+        Iterator<OrderItemPo> itemIterator = validItems.iterator();
 
         while (itemIterator.hasNext()){
-            WowoOrderItem item = itemIterator.next();
+            OrderItemPo item = itemIterator.next();
+
             totalPrice = totalPrice.add(item.getPrice().multiply(BigDecimal.valueOf(item.getNumber())));
             totalQuantity += item.getNumber();
             discountItems.add(item);
@@ -68,10 +70,10 @@ public abstract class AbstractCouponStrategy {
         boolean enough = this.isEnough(totalPrice, totalQuantity);
 
         //计算优惠后的价格
-        List<WowoOrderItem> newItems = new ArrayList<>();
+        List<OrderItemPo> newItems = new ArrayList<>();
         BigDecimal dealTotalPrice = BigDecimal.ZERO;
         if (enough) {
-            for (WowoOrderItem item: discountItems){
+            for (OrderItemPo item: discountItems){
                 //按照比例分配，可能会出现精度误差，在后面补偿到第一个货品上
                 BigDecimal dealPrice = this.getDealPrice(item.getPrice(), totalPrice);
                 item.setDealPrice(dealPrice);
@@ -84,7 +86,7 @@ public abstract class AbstractCouponStrategy {
                 //寻找数量为1的明细，将误差补偿在此明细上，否则拆开一个现有明细
 
                 Boolean gotIt = false;
-                for (WowoOrderItem item : validItems){
+                for (OrderItemPo item : validItems){
                     if (item.getNumber() == 1){
                         BigDecimal dealPrice = item.getDealPrice();
                         item.setDealPrice(dealPrice.add(error));
@@ -95,18 +97,15 @@ public abstract class AbstractCouponStrategy {
 
                 if (!gotIt){
                     //无数量为1的明细，拆第一个
-                    WowoOrderItem item = validItems.get(0);
+                    OrderItemPo item = validItems.get(0);
                     Integer quantity = item.getNumber();
                     item.setNumber(quantity - 1);
-                    try {
-                        WowoOrderItem newItem = (WowoOrderItem) item.clone();
-                        newItem.setNumber(1);
-                        BigDecimal dealPrice = newItem.getDealPrice();
-                        newItem.setDealPrice(dealPrice.add(error));
-                        newItems.add(newItem);
-                    } catch (CloneNotSupportedException e) {
-                        logger.error(e.getMessage(), e);
-                    }
+                    OrderItemPo newItem =  item;
+                    newItem.setNumber(1);
+                    BigDecimal dealPrice = newItem.getDealPrice();
+                    newItem.setDealPrice(dealPrice.add(error));
+                    newItems.add(newItem);
+
                 }
             }
         }
