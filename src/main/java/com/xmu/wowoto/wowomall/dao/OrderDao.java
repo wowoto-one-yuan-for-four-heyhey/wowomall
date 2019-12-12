@@ -2,10 +2,7 @@ package com.xmu.wowoto.wowomall.dao;
 
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
-import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
-import com.xmu.wowoto.wowomall.domain.po.OrderPo;
-import com.xmu.wowoto.wowomall.domain.po.ProductPo;
-import com.xmu.wowoto.wowomall.entity.Product;
+import com.xmu.wowoto.wowomall.domain.Product;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import com.xmu.wowoto.wowomall.service.GoodsService;
@@ -39,7 +36,7 @@ public class OrderDao {
     public Order addOrder(Order wowoOrder){
         orderMapper.addOrder(wowoOrder);
         wowoOrder.setItemsOrderId();
-        orderItemMapper.addOrderItems(wowoOrder.getWowoOrderItems());
+        orderItemMapper.addOrderItems(wowoOrder.getOrderItemList());
 
         return wowoOrder;
     }
@@ -74,7 +71,7 @@ public class OrderDao {
 
             }
 
-            wowoOrder.setOrderItems(wowoOrderItems);
+            wowoOrder.setOrderItemList(wowoOrderItems);
         }
         return wowoOrders;
     }
@@ -90,9 +87,9 @@ public class OrderDao {
         List<OrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
         for (OrderItem wowoOrderItem: wowoOrderItems){
             Product wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-            wowoOrderItem.setWowoProduct(wowoProduct);
+            wowoOrderItem.setProduct(wowoProduct);
         }
-        wowoOrder.setWowoOrderItems(wowoOrderItems);
+        wowoOrder.setOrderItemList(wowoOrderItems);
         return wowoOrder;
     }
 
