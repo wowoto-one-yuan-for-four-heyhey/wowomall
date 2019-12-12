@@ -53,20 +53,19 @@ public class OrderController {
     /**
      * 获取用户订单列表
      *
-     * @param statusCode 订单信息
      * @param page     分页页数
      * @param limit     分页大小
      * @return 订单列表
      */
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
-    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer statusCode,
+    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer showType,
                                        @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
                                        @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
                                        @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
                                        @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -100,7 +99,7 @@ public class OrderController {
     @ApiOperation("查看特定订单的订单详情(用户)")
     public Object userDetail(@NotNull @PathVariable("id")Integer orderId)
     {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(userId == null) {
             ResponseUtil.unlogin();
         }
@@ -140,7 +139,7 @@ public class OrderController {
     @PostMapping("orders")
     public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
 
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         logger.debug("submit: " + submitOrderVo);
         if(null == userId)
         {   return ResponseUtil.unlogin();}
@@ -175,7 +174,7 @@ public class OrderController {
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId, @RequestBody Order order) {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -189,7 +188,8 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        return orderService.cancelOrder(userId, Integer.parseInt(orderId));
+        orderService.cancelOrder(userId, Integer.parseInt(orderId));
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -201,7 +201,7 @@ public class OrderController {
     @DeleteMapping("orders/{id}")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object deleteOrder(@PathVariable("id")String orderId) {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -215,7 +215,8 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        return orderService.deleteOrder(userId, Integer.parseInt(orderId));
+        orderService.deleteOrder(userId, Integer.parseInt(orderId));
+        return ResponseUtil.ok();
     }
 
     /**
@@ -228,7 +229,7 @@ public class OrderController {
     @ApiOperation(value = "确认收货订单操作结果/confirm")
     public Object confirm(
                           @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
         if(wowoOrder == null)
@@ -239,7 +240,8 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        return orderService.confirm(userId, Integer.parseInt(orderId));
+        orderService.confirm(userId, Integer.parseInt(orderId));
+        return ResponseUtil.ok(wowoOrder);
     }
 
     /**
@@ -252,7 +254,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
         if(wowoOrder == null)
@@ -263,7 +265,8 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        return orderService.shipOrder(userId,Integer.parseInt(orderId));
+        orderService.shipOrder(userId,Integer.parseInt(orderId));
+        return ResponseUtil.ok(wowoOrder);
     }
 
     /**
@@ -276,7 +279,7 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
         if(wowoOrder == null)
@@ -287,7 +290,8 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
-        return orderService.refundOrder(userId,Integer.parseInt(orderId));
+        orderService.refundOrder(userId,Integer.parseInt(orderId));
+        return ResponseUtil.ok(wowoOrder);
     }
 
     /**
@@ -301,7 +305,7 @@ public class OrderController {
     public Object payOrder(
                            @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
     {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         return true;
     }
 
@@ -322,9 +326,10 @@ public class OrderController {
                                @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
 
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         //@RequestBody
-        return orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+        List<GetOrdersVo> ordersVos = orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+        return ResponseUtil.ok(ordersVos);
     }
 
     /**
@@ -357,5 +362,14 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         return cartService.cartIndex(userId);
     }
+
+    /*
+    /admin/orders
+    RequestParam(userId)，RequestParam (page), RequestParam  (limit), RequestParam(OrderSn),
+     RequestParam(List<Short> orderStatusArray)
+return List<GetOrdersVo>
+
+    */
+
 
 }
