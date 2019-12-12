@@ -69,7 +69,6 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-
         List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
         List<GetOrdersVo> getOrdersVos = new ArrayList<>(wowoOrders.size());
         for (int i = 0; i < wowoOrders.size(); i++){
@@ -142,9 +141,8 @@ public class OrderController {
 
         Integer userId = Integer.valueOf(request.getHeader("id"));
         logger.debug("submit: " + submitOrderVo);
-
         if(null == userId)
-        {    return ResponseUtil.unlogin();}
+        {   return ResponseUtil.unlogin();}
         if(null == submitOrderVo) {
             return ResponseUtil.badArgument();
         }
@@ -173,7 +171,7 @@ public class OrderController {
      * @param orderId   订单ID
      * @return 取消订单操作结果
      */
-    @PostMapping("orders/{id}/cancel")
+    @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId, @RequestBody Order order) {
         Integer userId = Integer.valueOf(request.getHeader("id"));

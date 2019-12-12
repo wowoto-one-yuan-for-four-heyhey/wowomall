@@ -32,7 +32,7 @@ public interface CartService {
      * 清空购物车里的指定项目
      * @param wowoCartItems 待清空的项目
      */
-    @PostMapping(value = "")
+    @DeleteMapping(value = "cartItems")
     void clearCartItem(List<CartItem> wowoCartItems);
 
     /**
