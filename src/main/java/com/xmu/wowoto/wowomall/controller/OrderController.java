@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +47,11 @@ public class OrderController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private HttpServletRequest request;
     /**
      * 获取用户订单列表
      *
-     * @param userId   用户ID
      * @param statusCode 订单信息
      * @param page     分页页数
      * @param limit     分页大小
@@ -57,13 +59,13 @@ public class OrderController {
      */
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
-    public Object getOrders(Integer userId,
-                                       @ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer statusCode,
+    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer statusCode,
                                        @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
                                        @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
                                        @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
                                        @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -96,12 +98,13 @@ public class OrderController {
      */
     @GetMapping("orders/{id}")
     @ApiOperation("查看特定订单的订单详情(用户)")
-    public Object userDetail( Integer userId, @NotNull @PathVariable("id")Integer orderId)
+    public Object userDetail(@NotNull @PathVariable("id")Integer orderId)
     {
-        if(userId == null)
+        Integer userId = Integer.valueOf(request.getHeader("id"));
+        if(userId == null) {
             ResponseUtil.unlogin();
-
-        WowoOrder wowoOrder = orderService.getOrder(orderId);
+        }
+        Order wowoOrder = orderService.getOrder(orderId);
 
         if(wowoOrder == null)
         {
@@ -131,13 +134,13 @@ public class OrderController {
     /**
      * 提交订单
      *
-     * @param userId 用户ID
      * @param submitOrderVo   订单信息，{ cartId：xxx, addressId: xxx, couponId: xxx, message: xxx, grouponRulesId: xxx,  grouponLinkId: xxx}
      * @return 提交订单操作结果
      */
     @PostMapping("orders")
-    public Object submit(Integer userId, @RequestBody SubmitOrderVo submitOrderVo){
+    public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
 
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         logger.debug("submit: " + submitOrderVo);
 
         if(null == userId)
@@ -167,13 +170,13 @@ public class OrderController {
     /**
      * 取消订单
      *
-     * @param userId   用户ID
      * @param orderId   订单ID
      * @return 取消订单操作结果
      */
     @PostMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object cancelOrder(Integer userId, @PathVariable("id")String orderId, @RequestBody Order order) {
+    public Object cancelOrder( @PathVariable("id")String orderId, @RequestBody Order order) {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -188,7 +191,8 @@ public class OrderController {
      */
     @DeleteMapping("orders/{id}")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object deleteOrder(Integer userId, @PathVariable("id")String orderId) {
+    public Object deleteOrder(@PathVariable("id")String orderId) {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -204,8 +208,9 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirm(Integer userId,
+    public Object confirm(
                           @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return orderService.confirm(userId, Integer.parseInt(orderId));
     }
 
@@ -217,8 +222,9 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/ship")
     @ApiOperation("更改订单状态为发货(管理员操作)")
-    public Object shipOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return orderService.shipOrder(userId,Integer.parseInt(orderId));
     }
 
@@ -231,29 +237,28 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
-    public Object refundOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return orderService.refundOrder(userId,Integer.parseInt(orderId));
     }
 
     /**
      * 用户点击支付,在本服务里检验权限，后续调用payment"
-     * @param userId 用户ID
      * @param id 订单ID
      * statusCode PAYED
      * @return 是否成功发起支付
      */
     @PutMapping("orders/{id}/payment")
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
-    public Object payOrder(Integer userId,
+    public Object payOrder(
                            @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
     {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return true;
     }
 
     /**
      * 待评价订单商品信息/goods (用户操作)
-     * @param userId 用户ID
      * @param limit 每页条数
      * @param page 页码
      * @param sort 以什么为序
@@ -262,13 +267,14 @@ public class OrderController {
      */
     @GetMapping("orders/unevaluated")
     @ApiOperation("查看未评价订单的订单详情")
-    public Object getUnComment(Integer userId,
+    public Object getUnComment(
                                @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
                                @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
                                @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
                                @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
 
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         //@RequestBody
         return orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
     }
@@ -276,20 +282,21 @@ public class OrderController {
     /**
      * 确认收货
      *
-     * @param userId 用户ID
      * @param orderId 订单ID
      * @return 订单操作结果
      */
     @PostMapping("/orders/{id}/commentResult")
     @ApiOperation(value = "评价订单商品操作结果/comment", notes = "评价订单商品操作结果")
-    public Object comment(Integer userId,
+    public Object comment(
                           @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId ){
 
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
 
     @GetMapping(value = "/test")
-    public Object test(Integer userId) {
+    public Object test() {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         return cartService.cartIndex(userId);
     }
 
