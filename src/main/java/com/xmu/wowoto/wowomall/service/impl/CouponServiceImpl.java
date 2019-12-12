@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
+import com.xmu.wowoto.wowomall.domain.Coupon;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class CouponServiceImpl implements CouponService {
 
     @Override
-    public WowoCoupon findCouponById(Integer couponId) {
-        return new WowoCoupon();
+    public Coupon findCouponById(Integer couponId) {
+        return new Coupon();
     }
 }

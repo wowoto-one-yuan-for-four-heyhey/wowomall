@@ -1,11 +1,11 @@
 package com.xmu.wowoto.wowomall.service;
 
 
-import com.xmu.wowoto.wowomall.entity.Payment;
+import com.xmu.wowoto.wowomall.domain.Payment;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  *

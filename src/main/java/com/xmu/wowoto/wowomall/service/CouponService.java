@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.service;
 
+import com.xmu.wowoto.wowomall.domain.Coupon;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +16,5 @@ public interface CouponService {
      *
      * @param couponId   优惠券ID
      */
-    public WowoCoupon findCouponById(Integer couponId);
+    public Coupon findCouponById(Integer couponId);
 }
