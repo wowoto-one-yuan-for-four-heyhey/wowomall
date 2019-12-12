@@ -17,10 +17,10 @@ public interface OrderMapper {
 
     /**
      * 新增一个订单
-     * @param wowoOrder 订单对象
+     * @param order 订单对象
      * @return 行数
      */
-    Integer addOrder(Order wowoOrder);
+    Integer addOrder(Order order);
 
     /**
      * 根据订单查询信息返回订单对象
@@ -40,7 +40,7 @@ public interface OrderMapper {
      * @return 订单列表
      */
     List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode,
-                                          Integer page, Integer limit, String sort, String order);
+                                      Integer page, Integer limit, String sort, String order);
 
     /**
      * 根据订单查询信息返回订单对象
@@ -52,8 +52,8 @@ public interface OrderMapper {
 
     /**
      * 修改订单
-     * @param wowoOrder 订单
+     * @param order 订单
      * @return 修改数目
      */
-    Integer updateOrderSelective(Order wowoOrder);
+    Integer updateOrderSelective(Order order);
 }

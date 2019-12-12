@@ -12,10 +12,10 @@ public interface OrderItemMapper {
 
     /**
      * 新增一系列订单商品
-     * @param wowoOrderItems 订单对象
+     * @param orderItems 订单对象
      * @return 行数
      */
-    Integer addOrderItems(List<OrderItem> wowoOrderItems);
+    Integer addOrderItems(List<OrderItem> orderItems);
 
     /**
      * 根据订单Id信息返回订单物品列表
@@ -26,8 +26,8 @@ public interface OrderItemMapper {
 
     /**
      * 修改订单商品
-     * @param wowoOrderItem 订单
+     * @param orderItem 订单
      * @return 修改数目
      */
-    Integer updateOrderItemSelective(OrderItem wowoOrderItem);
+    Integer updateOrderItemSelective(OrderItem orderItem);
 }

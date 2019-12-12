@@ -30,15 +30,15 @@ public class OrderDao {
 
     /**
      * 新增订单，包括订单明细
-     * @param wowoOrder 订单
+     * @param order 订单
      * @return 新订单，带id的
      */
-    public Order addOrder(Order wowoOrder){
-        orderMapper.addOrder(wowoOrder);
-        wowoOrder.setItemsOrderId();
-        orderItemMapper.addOrderItems(wowoOrder.getOrderItemList());
+    public Order addOrder(Order order){
+        orderMapper.addOrder(order);
+        order.setItemsOrderId();
+        orderItemMapper.addOrderItems(order.getOrderItemList());
 
-        return wowoOrder;
+        return order;
     }
 
     /**
@@ -56,24 +56,24 @@ public class OrderDao {
      * @param page     分页页数
      * @param limit     分页大小
      * @param sort      排序
-     * @param order     正序或逆序
+     * @param orderWay     正序或逆序
      * @return 订单列表
      */
-    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String orderWay)
     {
         page = page - 1;
-        List<Order> wowoOrders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        for (Order wowoOrder: wowoOrders) {
-            List<OrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(wowoOrder.getId());
-            for (OrderItem wowoOrderItem: wowoOrderItems){
-                Product wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-                wowoOrderItem.setProduct(wowoProduct);
+        List<Order> orders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,orderWay);
+        for (Order order: orders) {
+            List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
+            for (OrderItem orderItem: orderItems){
+                Product product = goodsService.getProductById(orderItem.getId());
+                orderItem.setProduct(product);
 
             }
 
-            wowoOrder.setOrderItemList(wowoOrderItems);
+            order.setOrderItemList(orderItems);
         }
-        return wowoOrders;
+        return orders;
     }
 
     /**
@@ -83,32 +83,32 @@ public class OrderDao {
      */
     public Order getOrderByOrderId(Integer orderId)
     {
-        Order wowoOrder = orderMapper.getOrderByOrderId(orderId);
-        List<OrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
-        for (OrderItem wowoOrderItem: wowoOrderItems){
-            Product wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-            wowoOrderItem.setProduct(wowoProduct);
+        Order order = orderMapper.getOrderByOrderId(orderId);
+        List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
+        for (OrderItem orderItem: orderItems){
+            Product product = goodsService.getProductById(orderItem.getId());
+            orderItem.setProduct(product);
         }
-        wowoOrder.setOrderItemList(wowoOrderItems);
-        return wowoOrder;
+        order.setOrderItemList(orderItems);
+        return order;
     }
 
     /**
      * 修改订单状态
-     * @param wowoOrder 订单
+     * @param order 订单
      * @return 修改数量
      */
-    public Integer updateOrder(Order wowoOrder){
-        return orderMapper.updateOrderSelective(wowoOrder);
+    public Integer updateOrder(Order order){
+        return orderMapper.updateOrderSelective(order);
     }
 
     /**
      * 修改订单商品状态
-     * @param wowoOrderItem 订单
+     * @param orderItem 订单
      * @return 修改数量
      */
-    public Integer updateOrderItem(OrderItem wowoOrderItem){
-        return orderItemMapper.updateOrderItemSelective(wowoOrderItem);
+    public Integer updateOrderItem(OrderItem orderItem){
+        return orderItemMapper.updateOrderItemSelective(orderItem);
     }
 
 
