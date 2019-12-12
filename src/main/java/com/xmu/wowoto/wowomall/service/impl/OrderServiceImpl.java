@@ -87,6 +87,7 @@ public class OrderServiceImpl implements OrderService {
         WowoOrder newOrder = null;
         if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
             cartService.clearCartItem(wowoCartItems);
+            wowoOrder.cacuGoodsPrice();
             wowoOrder.cacuDealPrice();
 
             newOrder = orderDao.addOrder(wowoOrder);
