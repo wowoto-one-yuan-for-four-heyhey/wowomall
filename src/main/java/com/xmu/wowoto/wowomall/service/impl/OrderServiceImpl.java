@@ -84,15 +84,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        WowoOrder newOrder = null;
+        WowoOrder newOrder ;
         if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
             cartService.clearCartItem(wowoCartItems);
             wowoOrder.cacuGoodsPrice();
             wowoOrder.cacuDealPrice();
 
-            newOrder = orderDao.addOrder(wowoOrder);
         }
+        /**
+         * 扣减库存
+         */
 
+        //添加订单
+        newOrder = orderDao.addOrder(wowoOrder);
+
+        //添加一条未支付的payment
 
         return newOrder;
     }
