@@ -1,9 +1,6 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.dao.OrderDao;
-import com.xmu.wowoto.wowomall.domain.WowoCartItem;
-import com.xmu.wowoto.wowomall.domain.WowoOrder;
-import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -11,12 +8,9 @@ import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
 
@@ -53,52 +47,37 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Object getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<WowoOrder> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
-        List<WowoOrder> wowoOrderList = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
-        List<Map<String, Object>> wowoOrderVoList = new ArrayList<>(wowoOrderList.size());
-        for(WowoOrder oneOrder:wowoOrderList)
-        {
-            Map<String, Object> wowoOrderVo = new HashMap<>();
-            wowoOrderVo.put("id",oneOrder.getId());
-            wowoOrderVo.put("orderSn",oneOrder.getOrderSn());
-            wowoOrderVo.put("goodsPrice",oneOrder.getGoodsPrice());
-            List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
-       //     System.out.println(wowoOrderItemList);
-            List wowoOrderItemVoList=new ArrayList<>(wowoOrderItemList .size());
-            for(WowoOrderItem oneItem:wowoOrderItemList)
-            {
-                Map<String, Object> wowoOrderItemVo = new HashMap<>();
-                wowoOrderItemVo.put("id",oneItem.getId());
-                wowoOrderItemVo.put("dealPrice",oneItem.getDealPrice());
-                wowoOrderItemVo.put("productId",oneItem.getProductId());
-                wowoOrderItemVo.put("nameWithSpecifications",oneItem.getNameWithSpecifications());
-                wowoOrderItemVo.put("picUrl",oneItem.getPicUrl());
-                wowoOrderItemVoList.add(wowoOrderItemVo);
-            }
-            wowoOrderVo.put("orderItemList",wowoOrderItemVoList);
-            wowoOrderVoList.add(wowoOrderVo);
-        }
-        return ResponseUtil.ok(wowoOrderVoList);
+        List<WowoOrder> wowoOrders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        return wowoOrders;
     }
 
     @Override
     public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        WowoOrder newOrder ;
+        WowoOrder newOrder = null;
         if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
             cartService.clearCartItem(wowoCartItems);
+
+            /**
+             * 扣减库存
+             */
+            boolean enough = true;
+            for (WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
+
+            }
+
             wowoOrder.cacuGoodsPrice();
             wowoOrder.cacuDealPrice();
 
+            //添加订单
+            newOrder = orderDao.addOrder(wowoOrder);
+
+            //添加一条未支付的payment
         }
-        /**
-         * 扣减库存
-         */
 
-        //添加订单
-        newOrder = orderDao.addOrder(wowoOrder);
 
-        //添加一条未支付的payment
+
 
         return newOrder;
     }
@@ -129,41 +108,13 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Object getOrderDetail(Integer userId,Integer orderId)
+    public WowoOrder getOrder(Integer orderId)
     {
-        if(userId==null)
-        {
-            return ResponseUtil.unlogin();
-        }
-        WowoOrder oneOrder=orderDao.getOrderByOrderId(orderId);
-        if(oneOrder==null)
-        {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!oneOrder.getUserId().equals(userId))
-        {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
-        List<WowoOrderItem> wowoOrderItemList = oneOrder.getWowoOrderItems();
-        oneOrder.setWowoOrderItems(wowoOrderItemList);
-        Map<String, Object> orderVo = new HashMap<String, Object>();
-        orderVo.put("id", oneOrder.getId());
-        orderVo.put("statusCode", oneOrder.getStatusCode());
-        orderVo.put("orderSn", oneOrder.getOrderSn());
-        orderVo.put("message", oneOrder.getMessage());
-        orderVo.put("consignee", oneOrder.getConsignee());
-        orderVo.put("mobile", oneOrder.getMobile());
-        orderVo.put("address", oneOrder.getAddress());
-        orderVo.put("goodsPrice", oneOrder.getGoodsPrice());
-        orderVo.put("couponPrice", oneOrder.getCouponPrice());
-        orderVo.put("freightPrice", oneOrder.getFreightPrice());
-        orderVo.put("integralPrice", oneOrder.getIntegralPrice());
-        orderVo.put("shipSn", oneOrder.getShipSn());
-        orderVo.put("shipChannel", oneOrder.getShipChannel());
-        orderVo.put("shipTime", oneOrder.getShipTime());
-        orderVo.put("payTime", oneOrder.getPayTime());
-        orderVo.put("orderItemList",wowoOrderItemList);
-        return ResponseUtil.ok(oneOrder);
+        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+
+        List<WowoOrderItem> wowoOrderItems = wowoOrder.getWowoOrderItems();
+        wowoOrder.setWowoOrderItems(wowoOrderItems);
+        return wowoOrder;
     }
 
     /**

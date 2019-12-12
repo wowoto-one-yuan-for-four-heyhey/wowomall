@@ -1,7 +1,6 @@
 package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.WowomallApplication;
-import com.xmu.wowoto.wowomall.domain.WowoOrder;
 import com.xmu.wowoto.wowomall.entity.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

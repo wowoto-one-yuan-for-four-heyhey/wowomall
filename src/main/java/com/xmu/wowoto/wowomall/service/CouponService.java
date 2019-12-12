@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.service;
 
-import com.xmu.wowoto.wowomall.domain.WowoCoupon;
 import org.springframework.stereotype.Service;
 
 /**

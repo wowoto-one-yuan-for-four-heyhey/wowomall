@@ -1,10 +1,10 @@
 package com.xmu.wowoto.wowomall.controller;
 
+import com.xmu.wowoto.wowomall.controller.vo.GetOrdersVo;
+import com.xmu.wowoto.wowomall.controller.vo.OrderItemVo;
+import com.xmu.wowoto.wowomall.controller.vo.ProductVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
-import com.xmu.wowoto.wowomall.domain.WowoAddress;
-import com.xmu.wowoto.wowomall.domain.WowoCartItem;
-import com.xmu.wowoto.wowomall.domain.WowoCoupon;
-import com.xmu.wowoto.wowomall.domain.WowoOrder;
+import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
+import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_UNKNOWN;
 
 
 /**
@@ -55,16 +58,73 @@ public class OrderController {
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
     public Object getOrders(Integer userId,
-                            @ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer statusCode,
-                            @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
-                            @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
-                            @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
-                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+                                       @ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer statusCode,
+                                       @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
+                                       @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
+                                       @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
+                                       @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        return orderService.getOrders(userId,statusCode,page,limit,sort,order);
+        List<WowoOrder> wowoOrders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
+        List<GetOrdersVo> getOrdersVos = new ArrayList<>(wowoOrders.size());
+        for (int i = 0; i < wowoOrders.size(); i++){
+            GetOrdersVo getOrdersVo = getOrdersVos.get(i);
+            WowoOrder wowoOrder = wowoOrders.get(i);
+            getOrdersVo.setOrder(wowoOrder);
+            getOrdersVo.setAddress(wowoOrder.getWowoAddress());
+            List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getWowoOrderItems().size());
+            for (int j = 0; j < orderItemVos.size(); j++){
+                WowoOrderItem wowoOrderItem = wowoOrder.getWowoOrderItems().get(j);
+                OrderItemVo orderItemVo = orderItemVos.get(j);
+                orderItemVo.setOrderItem(wowoOrderItem);
+                ProductVo productVo = new ProductVo();
+                productVo.setProduct(wowoOrderItem.getWowoProduct());
+                orderItemVo.setProductVo(productVo);
+            }
+            getOrdersVo.setOrderItemVo(orderItemVos);
+        }
+        return ResponseUtil.ok(getOrdersVos);
+    }
+
+    /**
+     * 获取用户特定订单详情
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    @GetMapping("orders/{id}")
+    @ApiOperation("查看特定订单的订单详情(用户)")
+    public Object userDetail( Integer userId, @NotNull @PathVariable("id")Integer orderId)
+    {
+        if(userId == null)
+            ResponseUtil.unlogin();
+
+        WowoOrder wowoOrder = orderService.getOrder(orderId);
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+        if(!wowoOrder.getUserId().equals(userId))
+        {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
+        }
+
+        GetOrdersVo getOrdersVo = new GetOrdersVo();
+        getOrdersVo.setOrder(wowoOrder);
+        getOrdersVo.setAddress(wowoOrder.getWowoAddress());
+        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getWowoOrderItems().size());
+        for (int i = 0; i < orderItemVos.size(); i++){
+            OrderItemVo orderItemVo = orderItemVos.get(i);
+            WowoOrderItem wowoOrderItem = wowoOrder.getWowoOrderItems().get(i);
+            orderItemVo.setOrderItem(wowoOrderItem);
+            ProductVo productVo = new ProductVo();
+            productVo.setProduct(wowoOrderItem.getWowoProduct());
+            orderItemVo.setProductVo(productVo);
+        }
+        getOrdersVo.setOrderItemVo(orderItemVos);
+        return ResponseUtil.ok(getOrdersVo);
     }
 
     /**
@@ -146,19 +206,6 @@ public class OrderController {
     public Object refundOrder(Integer userId,@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
 
         return orderService.refundOrder(userId,Integer.parseInt(orderId));
-    }
-
-    /**
-     * 获取用户特定订单详情
-     * @param orderId 订单ID
-     * @return 订单详细
-     */
-    @GetMapping("orders/{id}")
-    @ApiOperation("查看特定订单的订单详情(用户)")
-    public Object userDetail( Integer userId, @NotNull
-                                  @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")Integer orderId)
-    {
-        return orderService.getOrderDetail(userId,orderId);
     }
 
     /**

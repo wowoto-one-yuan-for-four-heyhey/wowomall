@@ -1,7 +1,5 @@
 package com.xmu.wowoto.wowomall.mapper;
 
-import com.xmu.wowoto.wowomall.domain.WowoOrder;
-import com.xmu.wowoto.wowomall.domain.WowoOrderItem;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
 
