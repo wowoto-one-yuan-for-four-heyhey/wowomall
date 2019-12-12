@@ -17,4 +17,13 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class OrderItem extends OrderItemPo {
     private Product product;
+
+    public OrderItem(CartItem cartItem){
+        this.setNumber(cartItem.getNumber());
+        Product product = cartItem.getProduct();
+        this.setProduct(product);
+        this.setProductId(product.getId());
+        this.setPrice(product.getPrice());
+        this.setDealPrice(this.getPrice());
+    }
 }
