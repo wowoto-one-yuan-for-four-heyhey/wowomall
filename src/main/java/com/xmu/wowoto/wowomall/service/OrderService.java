@@ -1,5 +1,7 @@
 package com.xmu.wowoto.wowomall.service;
 
+import com.xmu.wowoto.wowomall.domain.CartItem;
+import com.xmu.wowoto.wowomall.domain.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public interface OrderService {
      * @param wowoCartItems 购物车中加入订单的货品
      * @return 新产生的订单
      */
-    public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems);
+    public Order submit(Order wowoOrder, List<CartItem> wowoCartItems);
 
     /**
      * 获取用户订单列表
@@ -31,14 +33,14 @@ public interface OrderService {
      * @param order     正序/逆序
      * @return 订单列表
      */
-    public List<WowoOrder> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
 
     /**
      * 获取用户特定订单详情
      * @param orderId 订单ID
      * @return 订单详细
      */
-    public WowoOrder getOrder(Integer orderId);
+    public Order getOrder(Integer orderId);
 
     /**
      * 订单发货修改订单状态
@@ -104,6 +106,4 @@ public interface OrderService {
      * @return 订单操作结果
      */
     public Object comment(Integer userId,Integer orderId);
-
-
 }

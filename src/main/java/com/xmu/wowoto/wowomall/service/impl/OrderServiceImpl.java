@@ -1,6 +1,9 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.dao.OrderDao;
+import com.xmu.wowoto.wowomall.domain.CartItem;
+import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -47,31 +50,31 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public List<WowoOrder> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
-        List<WowoOrder> wowoOrders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
-        return wowoOrders;
+        List<Order> orders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        return orders;
     }
 
     @Override
-    public WowoOrder submit(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        WowoOrder newOrder = null;
-        if(this.createOrderItemFromCartItem(wowoOrder, wowoCartItems)){
-            cartService.clearCartItem(wowoCartItems);
+    public Order submit(Order order, List<CartItem> cartItems) {
+        Order newOrder = null;
+        if(this.createOrderItemFromCartItem(order, cartItems)){
+            cartService.clearCartItem(cartItems);
 
             /**
              * 扣减库存
              */
             boolean enough = true;
-            for (WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
+            for (OrderItem orderItem: order.getOrderItemList()){
 
             }
 
-            wowoOrder.cacuGoodsPrice();
-            wowoOrder.cacuDealPrice();
+            order.cacuGoodsPrice();
+            order.cacuDealPrice();
 
             //添加订单
-            newOrder = orderDao.addOrder(wowoOrder);
+            newOrder = orderDao.addOrder(order);
 
             //添加一条未支付的payment
         }
@@ -84,20 +87,20 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 用CartItem构造OrderItem
-     * @param wowoOrder 订单对象
-     * @param wowoCartItems 购物车对象列表
+     * @param order 订单对象
+     * @param cartItems 购物车对象列表
      */
-    private Boolean createOrderItemFromCartItem(WowoOrder wowoOrder, List<WowoCartItem> wowoCartItems) {
-        List<WowoOrderItem> wowoOrderItems = new ArrayList<>(wowoCartItems.size());
-        for (WowoCartItem wowoCartItem: wowoCartItems){
-            if(goodsService.deductStock(wowoCartItem.getProductId(), wowoCartItem.getNumber())){
-                WowoOrderItem wowoOrderItem = new WowoOrderItem((wowoCartItem));
-                wowoOrderItems.add(wowoOrderItem);
+    private Boolean createOrderItemFromCartItem(Order order, List<CartItem> cartItems) {
+        List<OrderItem> orderItems = new ArrayList<>(cartItems.size());
+        for (CartItem cartItem: cartItems){
+            if(goodsService.deductStock(cartItem.getProductId(), cartItem.getNumber())){
+                OrderItem orderItem = new OrderItem(cartItem);
+                orderItems.add(orderItem);
             }else {
                 return false;
             }
         }
-        wowoOrder.setWowoOrderItems(wowoOrderItems);
+        order.setOrderItemList(orderItems);
         return true;
     }
 
@@ -108,13 +111,10 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public WowoOrder getOrder(Integer orderId)
+    public Order getOrder(Integer orderId)
     {
-        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
-
-        List<WowoOrderItem> wowoOrderItems = wowoOrder.getWowoOrderItems();
-        wowoOrder.setWowoOrderItems(wowoOrderItems);
-        return wowoOrder;
+        Order order = orderDao.getOrderByOrderId(orderId);
+        return order;
     }
 
     /**
@@ -127,17 +127,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Object refundOrder(Integer userId,Integer orderId){
         /*xbb*/
-        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
-        if(WowoOrder.STATUSCODE.REFUND.getValue() >= oneOrder.getStatusCode()){
-            oneOrder.setStatusCode(WowoOrder.STATUSCODE.REFUND.getValue());
-            List<WowoOrderItem> orderItems= oneOrder.getWowoOrderItems();
-            for(WowoOrderItem item : orderItems){
+        Order order = orderDao.getOrderByOrderId(orderId);
+        if(order == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
+        if(Order.StatusCode.REFUND.getValue() >= order.getStatusCode()){
+            order.setStatusCode(Order.StatusCode.REFUND.getValue());
+            List<OrderItem> orderItems= order.getOrderItemList();
+            for(OrderItem item : orderItems){
                 Integer itemId = item.getOrderId();
                 // 对item的操作
             }
 
-            Integer status = orderDao.updateOrder(oneOrder);
+            Integer status = orderDao.updateOrder(order);
             if(status == 1) {
                 //对用户 钱进行更新
                 // 对价格进行更新
@@ -164,16 +164,16 @@ public class OrderServiceImpl implements OrderService {
         if (userId == null) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
         }
-        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
+        Order oneOrder = orderDao.getOrderByOrderId(orderId);
         if (oneOrder == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(), ORDER_UNKNOWN.getMessage());
         }
         if (oneOrder.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
         }
-        if (WowoOrder.STATUSCODE.PAYED.getValue() >= oneOrder.getStatusCode()) {
-            List<WowoOrderItem> orderItems = oneOrder.getWowoOrderItems();
-            for (WowoOrderItem item : orderItems) {
+        if (Order.StatusCode.PAYED.getValue() >= oneOrder.getStatusCode()) {
+            List<OrderItem> orderItems = oneOrder.getOrderItemList();
+            for (OrderItem item : orderItems) {
                 Integer itemId = item.getOrderId();
                 /**对item的操作 orderItem是否一并更新尚不明确*/
             }
@@ -200,10 +200,9 @@ public class OrderServiceImpl implements OrderService {
              */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
-        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
+        Order wowoOrder = orderDao.getOrderByOrderId(orderId);
         if(null != wowoOrder){
-            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
-
+            wowoOrder.setStatusCode(Order.StatusCode.FINISHED.getValue());
         }
         return true;
     }
@@ -217,17 +216,17 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object deleteOrder(Integer userId, Integer orderId){
-        WowoOrder wowoOrder = orderDao.getOrderByOrderId(orderId);
-        if(null != wowoOrder){
-            wowoOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
-            for(WowoOrderItem wowoOrderItem: wowoOrder.getWowoOrderItems()){
-                wowoOrderItem.setBeDeleted(true);
-                if(orderDao.updateOrderItem(wowoOrderItem) < 1){
+        Order order = orderDao.getOrderByOrderId(orderId);
+        if(null != order){
+            order.setStatusCode(Order.StatusCode.FINISHED.getValue());
+            for(OrderItem orderItem: order.getOrderItemList()){
+                orderItem.setBeDeleted(true);
+                if(orderDao.updateOrderItem(orderItem) < 1){
                     return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
                 }
             }
-            wowoOrder.setBeDeleted(true);
-            return ResponseUtil.ok(orderDao.updateOrder(wowoOrder));
+            order.setBeDeleted(true);
+            return ResponseUtil.ok(orderDao.updateOrder(order));
         }else {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
@@ -242,14 +241,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object shipOrder(Integer userId,Integer orderId){
-        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){
+        Order order = orderDao.getOrderByOrderId(orderId);
+        if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(WowoOrder.STATUSCODE.NOT_TAKEN.getValue() >= oneOrder.getStatusCode()) {
-            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_TAKEN.getValue());
-            oneOrder.setShipTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(oneOrder);
+        if(Order.StatusCode.NOT_TAKEN.getValue() >= order.getStatusCode()) {
+            order.setStatusCode(Order.StatusCode.NOT_TAKEN.getValue());
+            order.setShipTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -269,14 +268,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object confirm(Integer userId,Integer orderId){
-        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){
+        Order order = orderDao.getOrderByOrderId(orderId);
+        if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_TAKEN.getValue()) {
-            oneOrder.setStatusCode(WowoOrder.STATUSCODE.NOT_COMMENTED.getValue());
-            oneOrder.setConfirmTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(oneOrder);
+        if(order.getStatusCode() == Order.StatusCode.NOT_TAKEN.getValue()) {
+            order.setStatusCode(Order.StatusCode.NOT_COMMENTED.getValue());
+            order.setConfirmTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -298,14 +297,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Object comment(Integer userId,Integer orderId){
-        WowoOrder oneOrder = orderDao.getOrderByOrderId(orderId);
-        if(oneOrder == null){
+        Order order = orderDao.getOrderByOrderId(orderId);
+        if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(oneOrder.getStatusCode() == WowoOrder.STATUSCODE.NOT_COMMENTED.getValue()) {
-            oneOrder.setStatusCode(WowoOrder.STATUSCODE.FINISHED.getValue());
-            oneOrder.setConfirmTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(oneOrder);
+        if(order.getStatusCode() == Order.StatusCode.NOT_COMMENTED.getValue()) {
+            order.setStatusCode(Order.StatusCode.FINISHED.getValue());
+            order.setConfirmTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
@@ -315,9 +314,6 @@ public class OrderServiceImpl implements OrderService {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
     }
-
-
-
 
 }
 
