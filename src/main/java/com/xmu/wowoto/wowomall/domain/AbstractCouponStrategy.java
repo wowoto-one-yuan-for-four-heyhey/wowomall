@@ -70,10 +70,10 @@ public abstract class AbstractCouponStrategy {
         boolean enough = this.isEnough(totalPrice, totalQuantity);
 
         //计算优惠后的价格
-        List<OrderItemPo> newItems = new ArrayList<>();
+        List<WowoOrderItem> newItems = new ArrayList<>();
         BigDecimal dealTotalPrice = BigDecimal.ZERO;
         if (enough) {
-            for (OrderItemPo item: discountItems){
+            for (WowoOrderItem item: discountItems){
                 //按照比例分配，可能会出现精度误差，在后面补偿到第一个货品上
                 BigDecimal dealPrice = this.getDealPrice(item.getPrice(), totalPrice);
                 item.setDealPrice(dealPrice);
@@ -86,7 +86,7 @@ public abstract class AbstractCouponStrategy {
                 //寻找数量为1的明细，将误差补偿在此明细上，否则拆开一个现有明细
 
                 Boolean gotIt = false;
-                for (OrderItemPo item : validItems){
+                for (WowoOrderItem item : validItems){
                     if (item.getNumber() == 1){
                         BigDecimal dealPrice = item.getDealPrice();
                         item.setDealPrice(dealPrice.add(error));
@@ -97,15 +97,18 @@ public abstract class AbstractCouponStrategy {
 
                 if (!gotIt){
                     //无数量为1的明细，拆第一个
-                    OrderItemPo item = validItems.get(0);
+                    WowoOrderItem item = validItems.get(0);
                     Integer quantity = item.getNumber();
                     item.setNumber(quantity - 1);
-                    OrderItemPo newItem =  item;
-                    newItem.setNumber(1);
-                    BigDecimal dealPrice = newItem.getDealPrice();
-                    newItem.setDealPrice(dealPrice.add(error));
-                    newItems.add(newItem);
-
+                    try {
+                        WowoOrderItem newItem = (WowoOrderItem) item.clone();
+                        newItem.setNumber(1);
+                        BigDecimal dealPrice = newItem.getDealPrice();
+                        newItem.setDealPrice(dealPrice.add(error));
+                        newItems.add(newItem);
+                    } catch (CloneNotSupportedException e) {
+                        logger.error(e.getMessage(), e);
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.dao;
 
+import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
 import com.xmu.wowoto.wowomall.domain.po.OrderPo;
@@ -35,10 +36,11 @@ public class OrderDao {
      * @param wowoOrder 订单
      * @return 新订单，带id的
      */
-    public OrderPo addOrder(OrderPo wowoOrder){
+    public Order addOrder(Order wowoOrder){
         orderMapper.addOrder(wowoOrder);
         wowoOrder.setItemsOrderId();
-        orderItemMapper.addOrderItems(wowoOrder.getOrderItems());
+        orderItemMapper.addOrderItems(wowoOrder.getWowoOrderItems());
+
         return wowoOrder;
     }
 
@@ -60,23 +62,19 @@ public class OrderDao {
      * @param order     正序或逆序
      * @return 订单列表
      */
-    public List<OrderPo> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
     {
         page = page - 1;
-        List<OrderPo> wowoOrders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
-        for (OrderPo wowoOrder: wowoOrders) {
-            List<OrderItemPo> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(wowoOrder.getId());
-            for (OrderItemPo wowoOrderItem: wowoOrderItems) {
-                ProductPo wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-                wowoOrderItem.setPrice(wowoProduct.getPrice());
+        List<Order> wowoOrders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,order);
+        for (Order wowoOrder: wowoOrders) {
+            List<OrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(wowoOrder.getId());
+            for (OrderItem wowoOrderItem: wowoOrderItems){
+                Product wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
                 wowoOrderItem.setProduct(wowoProduct);
-                //?
-                wowoOrderItem.setProductId(wowoProduct.getId());
-                wowoOrderItem.setGoodsId(wowoProduct.getGoodsId());
-                wowoOrderItem.setPicUrl(wowoProduct.getPicUrl());
-            }
-            wowoOrder.setOrderItems(wowoOrderItems);
 
+            }
+
+            wowoOrder.setOrderItems(wowoOrderItems);
         }
         return wowoOrders;
     }
@@ -86,15 +84,15 @@ public class OrderDao {
      * @param orderId 订单ID：
      * @return 订单
      */
-    public OrderPo getOrderByOrderId(Integer orderId)
+    public Order getOrderByOrderId(Integer orderId)
     {
-        OrderPo wowoOrder = orderMapper.getOrderByOrderId(orderId);
-        List<OrderItemPo> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
-        for (OrderItemPo wowoOrderItem: wowoOrderItems){
-            ProductPo wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
-            wowoOrderItem.setProduct(wowoProduct);
+        Order wowoOrder = orderMapper.getOrderByOrderId(orderId);
+        List<OrderItem> wowoOrderItems = orderItemMapper.getOrderItemsByOrderId(orderId);
+        for (OrderItem wowoOrderItem: wowoOrderItems){
+            Product wowoProduct = goodsService.getProductById(wowoOrderItem.getId());
+            wowoOrderItem.setWowoProduct(wowoProduct);
         }
-        wowoOrder.setOrderItems(wowoOrderItems);
+        wowoOrder.setWowoOrderItems(wowoOrderItems);
         return wowoOrder;
     }
 
@@ -103,7 +101,7 @@ public class OrderDao {
      * @param wowoOrder 订单
      * @return 修改数量
      */
-    public Integer updateOrder(OrderPo wowoOrder){
+    public Integer updateOrder(Order wowoOrder){
         return orderMapper.updateOrderSelective(wowoOrder);
     }
 
@@ -112,7 +110,7 @@ public class OrderDao {
      * @param wowoOrderItem 订单
      * @return 修改数量
      */
-    public Integer updateOrderItem(OrderItemPo wowoOrderItem){
+    public Integer updateOrderItem(OrderItem wowoOrderItem){
         return orderItemMapper.updateOrderItemSelective(wowoOrderItem);
     }
 

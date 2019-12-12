@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.mapper;
 
-import com.xmu.wowoto.wowomall.domain.po.OrderPo;
+import com.xmu.wowoto.wowomall.domain.Order;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +20,7 @@ public interface OrderMapper {
      * @param wowoOrder 订单对象
      * @return 行数
      */
-    Integer addOrder(OrderPo wowoOrder);
+    Integer addOrder(Order wowoOrder);
 
     /**
      * 根据订单查询信息返回订单对象
@@ -39,7 +39,7 @@ public interface OrderMapper {
      * @param order     order
      * @return 订单列表
      */
-    List<OrderPo> getOrdersByStatusCode(Integer userId, Integer statusCode,
+    List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode,
                                           Integer page, Integer limit, String sort, String order);
 
     /**
@@ -48,12 +48,12 @@ public interface OrderMapper {
 
      * @return 订单
      */
-    OrderPo getOrderByOrderId(Integer orderId);
+    Order getOrderByOrderId(Integer orderId);
 
     /**
      * 修改订单
      * @param wowoOrder 订单
      * @return 修改数目
      */
-    Integer updateOrderSelective(OrderPo wowoOrder);
+    Integer updateOrderSelective(Order wowoOrder);
 }
