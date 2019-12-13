@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
@@ -155,40 +156,30 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
-     * @param userId 用户ID
-     * @param orderId 订单ID
-     * statusCode PAYED
+     * @param oneOrder
      * @return 是否成功
      */
     @Override
-    public Object payOrder(Integer userId, Integer orderId) {
-        if (userId == null) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
-        }
-        Order oneOrder = orderDao.getOrderByOrderId(orderId);
-        if (oneOrder == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(), ORDER_UNKNOWN.getMessage());
-        }
-        if (oneOrder.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(), ORDER_INVALID_OPERATION.getMessage());
-        }
-        if (Order.StatusCode.PAYED.getValue() >= oneOrder.getStatusCode()) {
+    public HashMap<String,Integer> payOrder(Order oneOrder) {
+
+        HashMap<String,Integer> result=new HashMap<>();
+        if (Order.StatusCode.PAYED.getValue() > oneOrder.getStatusCode()) {
             List<OrderItem> orderItems = oneOrder.getOrderItemList();
             for (OrderItem item : orderItems) {
-                Integer itemId = item.getOrderId();
-                /**对item的操作 orderItem是否一并更新尚不明确*/
+                item.setStatusCode(Order.StatusCode.PAYED.getValue());
+                Integer re= orderDao.updateOrderItem(item);
+                if(re!=1) {
+                    result.put("orderItem",re);
+                }
             }
             oneOrder.setPayTime(LocalDateTime.now());
+            oneOrder.setStatusCode(Order.StatusCode.PAYED.getValue());
             Integer status = orderDao.updateOrder(oneOrder);
-            if (status == 1) {
-                /**更新成功*/
-                return ResponseUtil.ok();
-            } else {
-                return ResponseUtil.fail(ORDER_INVALID.getCode(), ORDER_INVALID.getMessage());
-            }
-
+            result.put("order",status);
+            return result;
         }
-        return true;
+        result.put("order",-1);
+        return result;
     }
 
 

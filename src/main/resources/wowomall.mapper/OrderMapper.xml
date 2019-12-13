@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderMapper">
 
-<insert id="addOrder" parameterType="WowoOrder" useGeneratedKeys="true" keyProperty="id">
+<insert id="addOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
     insert into `order`(
         user_id, be_shared_item_ids, order_sn, status, mobile, message, goods_price, freight_price, coupon_price, integral_price, rebate_price, ship_sn, ship_channel, ship_time, confirm_time, end_time, pay_time, parent_id, address, gmt_create, gmt_modified, be_deleted
     )
@@ -38,7 +38,7 @@
             be_deleted
     from `order`
     where user_id = #{userId} and be_deleted = 0
-    <if test="statusCode!=0">
+    <if test="statusCode!=-1">
         and status_code = #{statusCode}
     </if>
     order by #{sort} #{order}

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
@@ -59,17 +60,17 @@ public class OrderController {
      */
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
-    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer showType,
-                            @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
-                            @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
-                            @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
-                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String orderWay)
+    public Object getOrders(@RequestParam(defaultValue = "-1")Integer showType,
+                            @RequestParam(defaultValue = "1")Integer page,
+                            @RequestParam(defaultValue = "10")Integer limit,
+                            @RequestParam(defaultValue = "add_time") String sort,
+                            @RequestParam(defaultValue = "desc") String orderWay)
     {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,orderWay);
+        List<Order> orders = orderService.getOrders(userId,showType,page,limit,sort,orderWay);
         List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
         for (int i = 0; i < orders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
@@ -100,17 +101,17 @@ public class OrderController {
      */
     @GetMapping("admin/orders")
     @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
-    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer showType,
-                            @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
-                            @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
-                            @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
-                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String orderWay)
+    public Object getOrders(@RequestParam(defaultValue = "-1")Integer showType,
+                            @RequestParam(defaultValue = "1")Integer page,
+                            @RequestParam(defaultValue = "10")Integer limit,
+                            @RequestParam(defaultValue = "add_time") String sort,
+                            @RequestParam(defaultValue = "desc") String orderWay)
     {
         Integer adminId = Integer.valueOf(request.getHeader("adminId"));
         if(null == adminId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(adminId,statusCode,page,limit,sort,orderWay);
+        List<Order> orders = orderService.getOrders(adminId,showType,page,limit,sort,orderWay);
         List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
         for (int i = 0; i < orders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
@@ -152,7 +153,7 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!order.getUserId().equals(userId))
+        if(!wowoOrder.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
@@ -369,20 +370,6 @@ public class OrderController {
         return ResponseUtil.ok(order);
     }
 
-    /**
-     * 用户点击支付,在本服务里检验权限，后续调用payment"
-     * @param id 订单ID
-     * statusCode PAYED
-     * @return 是否成功发起支付
-     */
-    @PutMapping("orders/{id}/payment")
-    @ApiOperation("订单成功支付(内部接口，供paymentService调用")
-    public Object payOrder(
-            @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
-    {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
-        return true;
-    }
 
     /**
      * 待评价订单商品信息/goods (用户操作)
@@ -444,6 +431,11 @@ return List<GetOrdersVo>
 
     */
 
+    /**
+     *提供接口给AfterSale查看orderItem是什么类型
+     * @param orderItemId
+     * @return
+     */
     @GetMapping("orderItem/{orderItemId}/goodsType")
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
         OrderItem oneItem=orderService.getOrderItem(orderItemId);
@@ -453,6 +445,36 @@ return List<GetOrdersVo>
         Integer goodsType= oneItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
+
+    /**
+     * 提供接口给payment回调，修改该订单为付款完成
+     * @param id 订单ID
+     * @return 是否成功发起支付
+     */
+    @PutMapping("orders/{id}")
+    public Object payOrder(@PathVariable("id")Integer id)
+    {
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        if(userId==null){
+            return ResponseUtil.unlogin();
+        }
+        Order oneOrder=orderService.getOrder(id);
+        if(oneOrder==null){
+            return ResponseUtil.fail();
+        }
+        HashMap<String,Integer> result=orderService.payOrder(oneOrder);
+        if(result.containsKey("orderItem")){
+            return ResponseUtil.fail();
+        }
+        Integer payStatus=result.get("order");
+        if(payStatus>-1){
+            return ResponseUtil.ok(result);
+        }
+        else{
+            return ResponseUtil.fail();
+        }
+    }
+
 
 
 

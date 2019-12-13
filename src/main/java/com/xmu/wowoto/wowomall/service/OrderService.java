@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -81,12 +82,11 @@ public interface OrderService {
 
     /**
      * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
-     * @param userId 用户ID
-     * @param orderId 订单ID
+     * @param order
      * statusCode PAYED
      * @return 是否成功
      */
-    public Object payOrder(Integer userId, Integer orderId);
+    public HashMap<String,Integer> payOrder(Order order);
 
 
     /**

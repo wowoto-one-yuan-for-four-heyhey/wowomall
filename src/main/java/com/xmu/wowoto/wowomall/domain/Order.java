@@ -25,13 +25,15 @@ public class Order extends OrderPo {
     private Integer couponId;
 
     public enum StatusCode{
-        NOT_PAYED(1),
-        PAYED(2),
-        NOT_TAKEN(3),
-        NOT_COMMENTED(4),
-        FINISHED(5),
-        REFUND(6),
-        EXCHANGE(7);
+        NOT_PAYED(0),
+        NOT_PAYED_CANCELED(1),
+        NOT_PAYED_SYSTEM_CANCELED(2),
+        PAYED(3),
+        PAYED_CANCELED(4),
+        SHIPPED(5),
+        SHIPPED_CONNFIEM(6),
+        SHIPPED_SYSTEM_CONNFIEM(7),
+        COMMENTED(8);
 
         private final int value;
 
@@ -59,7 +61,7 @@ public class Order extends OrderPo {
 
         //调用此函数前已调用过cacuCouponPrice
         //首先计算使用优惠券后的商品价格总和
-        Coupon wowoCoupon=this.getWowoCoupon();
+        Coupon coupon=this.getCoupon();
         if(wowoCoupon!=null){
             this.cacuCouponPrice();
         }
