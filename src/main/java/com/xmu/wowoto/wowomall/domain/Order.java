@@ -51,6 +51,7 @@ public class Order extends OrderPo {
         this.setGoodsPrice(total);
     }
 
+
     /**
      * 计算订单的成交价格
      */
