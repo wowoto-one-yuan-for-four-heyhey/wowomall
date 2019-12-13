@@ -328,6 +328,13 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getOrderItemById(orderItemId);
     }
 
+
+    @Override
+    public Integer getGrouponNum(Integer goodId){
+        Integer num = orderDao.getGrouponNumById(goodId);
+        return num;
+
+    }
 }
 
 

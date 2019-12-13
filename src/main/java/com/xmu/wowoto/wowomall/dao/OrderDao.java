@@ -116,5 +116,8 @@ public class OrderDao {
         return orderItemMapper.getOrderItemById(orderItemId);
     }
 
+    public Integer getGrouponNumById(Integer goodId){
+        return orderMapper.getGrouponNumById(goodId,statusCode);
+    }
 
 }

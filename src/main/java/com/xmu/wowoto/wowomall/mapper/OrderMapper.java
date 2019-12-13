@@ -56,4 +56,6 @@ public interface OrderMapper {
      * @return 修改数目
      */
     Integer updateOrderSelective(Order order);
+
+    Integer getGrouponNumById(Integer goodId,Integer statusCode);
 }

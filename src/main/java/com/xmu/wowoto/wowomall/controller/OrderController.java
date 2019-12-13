@@ -454,6 +454,16 @@ return List<GetOrdersVo>
         return ResponseUtil.ok(goodsType);
     }
 
+    /*查询grouponrule的参团人数*/
+    @GetMapping("orders/grouponOrders")
+    public Object getGrouponNum(@ApiParam(name="grouponRule",value="团购规则",required=true)@PathVariable("grouponRule")
+                                            GrouponRule grouponRule ){
+
+        Integer goodId = grouponRule.getGoodsId();
+        Integer num = orderService.getGrouponNum(goodId);
+        return ResponseUtil.ok(num);
+    }
+
 
 
 }
