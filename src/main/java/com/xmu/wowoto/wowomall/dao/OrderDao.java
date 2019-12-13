@@ -118,9 +118,8 @@ public class OrderDao {
     }
 
     public Integer getGrouponNumById(Integer goodId){
-        LocalDateTime startTime = LocalDateTime.now().minusDays(8);
-        LocalDateTime endTime = LocalDateTime.now().minusDays(7);
-        return orderMapper.getGrouponNumById(goodId,statusCode,startTime,endTime);
+        LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
+        return orderMapper.getGrouponNumById(goodId,statusCode,nowTime);
     }
 
 }
