@@ -1,7 +1,7 @@
 package com.xmu.wowoto.wowomall.controller.vo;
 
-import com.xmu.wowoto.wowomall.entity.OrderItem;
 
+import com.xmu.wowoto.wowomall.domain.OrderItem;
 
 public class OrderItemVo {
     /**

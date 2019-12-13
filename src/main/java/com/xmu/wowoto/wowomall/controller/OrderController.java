@@ -185,7 +185,7 @@ public class OrderController {
             return ResponseUtil.badArgument();
         }
         Order wowoOrder = new Order();
-        wowoOrder.setAddress((Address)submitOrderVo.getAddress());
+        wowoOrder.setAddress(submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
             Coupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());

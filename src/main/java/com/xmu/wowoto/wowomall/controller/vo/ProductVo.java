@@ -1,6 +1,8 @@
 package com.xmu.wowoto.wowomall.controller.vo;
 
-import com.xmu.wowoto.wowomall.entity.Product;
+
+
+import com.xmu.wowoto.wowomall.domain.Product;
 
 import java.util.List;
 
