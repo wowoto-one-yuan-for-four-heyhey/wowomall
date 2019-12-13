@@ -4,8 +4,7 @@ import com.xmu.wowoto.wowomall.controller.vo.GetOrdersVo;
 import com.xmu.wowoto.wowomall.controller.vo.OrderItemVo;
 import com.xmu.wowoto.wowomall.controller.vo.ProductVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
-import com.xmu.wowoto.wowomall.domain.Order;
-import com.xmu.wowoto.wowomall.domain.OrderItem;
+import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -70,20 +69,20 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
+        List<Order> wowoOrders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
         List<GetOrdersVo> getOrdersVos = new ArrayList<>(wowoOrders.size());
         for (int i = 0; i < wowoOrders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
-            WowoOrder wowoOrder = wowoOrders.get(i);
+            Order wowoOrder = wowoOrders.get(i);
             getOrdersVo.setOrder(wowoOrder);
-            getOrdersVo.setAddress(wowoOrder.getWowoAddress());
-            List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getWowoOrderItems().size());
+            getOrdersVo.setAddress(wowoOrder.getAddress());
+            List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
             for (int j = 0; j < orderItemVos.size(); j++){
-                WowoOrderItem wowoOrderItem = wowoOrder.getWowoOrderItems().get(j);
+                OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(j);
                 OrderItemVo orderItemVo = orderItemVos.get(j);
                 orderItemVo.setOrderItem(wowoOrderItem);
                 ProductVo productVo = new ProductVo();
-                productVo.setProduct(wowoOrderItem.getWowoProduct());
+                productVo.setProduct(wowoOrderItem.getProduct());
                 orderItemVo.setProductVo(productVo);
             }
             getOrdersVo.setOrderItemVo(orderItemVos);
@@ -117,14 +116,51 @@ public class OrderController {
 
         GetOrdersVo getOrdersVo = new GetOrdersVo();
         getOrdersVo.setOrder(wowoOrder);
-        getOrdersVo.setAddress(wowoOrder.getWowoAddress());
-        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getWowoOrderItems().size());
+        getOrdersVo.setAddress(wowoOrder.getAddress());
+        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
         for (int i = 0; i < orderItemVos.size(); i++){
             OrderItemVo orderItemVo = orderItemVos.get(i);
-            WowoOrderItem wowoOrderItem = wowoOrder.getWowoOrderItems().get(i);
+            OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(i);
             orderItemVo.setOrderItem(wowoOrderItem);
             ProductVo productVo = new ProductVo();
-            productVo.setProduct(wowoOrderItem.getWowoProduct());
+            productVo.setProduct(wowoOrderItem.getProduct());
+            orderItemVo.setProductVo(productVo);
+        }
+        getOrdersVo.setOrderItemVo(orderItemVos);
+        return ResponseUtil.ok(getOrdersVo);
+    }
+
+
+    /**
+     * 获取管理员特定订单详情
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    @GetMapping("admin/orders/{id}")
+    @ApiOperation("查看特定订单的订单详情(管理员)")
+    public Object userDetail(@NotNull @PathVariable("id")Integer orderId)
+    {
+        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
+        if(adminId == null) {
+            ResponseUtil.unlogin();
+        }
+        Order wowoOrder = orderService.getOrder(orderId);
+
+        if(wowoOrder == null)
+        {
+            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
+        }
+
+        GetOrdersVo getOrdersVo = new GetOrdersVo();
+        getOrdersVo.setOrder(wowoOrder);
+        getOrdersVo.setAddress(wowoOrder.getAddress());
+        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
+        for (int i = 0; i < orderItemVos.size(); i++){
+            OrderItemVo orderItemVo = orderItemVos.get(i);
+            OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(i);
+            orderItemVo.setOrderItem(wowoOrderItem);
+            ProductVo productVo = new ProductVo();
+            productVo.setProduct(wowoOrderItem.getProduct());
             orderItemVo.setProductVo(productVo);
         }
         getOrdersVo.setOrderItemVo(orderItemVos);
@@ -147,17 +183,17 @@ public class OrderController {
         if(null == submitOrderVo) {
             return ResponseUtil.badArgument();
         }
-        WowoOrder wowoOrder = new WowoOrder();
-        wowoOrder.setWowoAddress((WowoAddress) submitOrderVo.getAddress());
+        Order wowoOrder = new Order();
+        wowoOrder.setAddress((Address)submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
-            WowoCoupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());
-            wowoOrder.setWowoCoupon(wowoCoupon);
+            Coupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());
+            wowoOrder.setCouponId(wowoCoupon.getId());
         }
 
-        List<WowoCartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
+        List<CartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
-            WowoCartItem wowoCartItem = cartService.findCartItemById(cartItemId);
+            CartItem wowoCartItem = cartService.findCartItemById(cartItemId);
             wowoCartItems.add(wowoCartItem);
         }
 
@@ -323,7 +359,7 @@ public class OrderController {
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         //@RequestBody
-        List<GetOrdersVo> ordersVos = orderService.getOrders(userId,WowoOrder.STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+        List<GetOrdersVo> ordersVos = orderService.getOrders(userId,STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
         return ResponseUtil.ok(ordersVos);
     }
 
