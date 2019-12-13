@@ -22,6 +22,7 @@ public class WxResponseCode {
     public static final Integer ORDER_CHECKOUT_FAIL = 722;
     public static final Integer ORDER_CANCEL_FAIL = 723;
     public static final Integer ORDER_PAY_FAIL = 724;
+
     // 订单当前状态下不支持用户的操作，例如商品未发货状态用户执行确认收货是不可能的。
     public static final Integer ORDER_INVALID_OPERATION = 725;
     public static final Integer ORDER_COMMENTED = 726;

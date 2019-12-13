@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.controller.vo.OrderItemVo;
 import com.xmu.wowoto.wowomall.controller.vo.ProductVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.CouponService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -232,12 +233,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
-        {
+        if(wowoOrder == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
-        {
+        if(!wowoOrder.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.confirm(userId, Integer.parseInt(orderId));
@@ -257,12 +256,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
-        {
+        if(wowoOrder == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
-        {
+        if(!wowoOrder.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.shipOrder(userId,Integer.parseInt(orderId));
@@ -282,12 +279,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
-        {
+        if(wowoOrder == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
-        {
+        if(!wowoOrder.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.refundOrder(userId,Integer.parseInt(orderId));
@@ -346,12 +341,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
-        {
+        if(wowoOrder == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
-        {
+        if(!wowoOrder.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         return orderService.comment(userId, Integer.parseInt(orderId));
@@ -370,6 +363,17 @@ public class OrderController {
 return List<GetOrdersVo>
 
     */
+
+    @GetMapping("orderItem/{orderItemId}/goodsType")
+     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
+         OrderItem oneItem=orderService.getOrderItem(orderItemId);
+         if(oneItem==null){
+             return ResponseUtil.fail();
+         }
+         Integer goodsType= oneItem.getItemType();
+         return ResponseUtil.ok(goodsType);
+    }
+
 
 
 }

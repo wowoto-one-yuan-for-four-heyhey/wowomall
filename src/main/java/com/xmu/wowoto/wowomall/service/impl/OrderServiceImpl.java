@@ -316,6 +316,18 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+
+    /**
+     * 得到一项orderItem
+     * @param orderItemId
+     * @return
+     */
+    @Override
+    public OrderItem getOrderItem(Integer orderItemId)
+    {
+        return orderDao.getOrderItemById(orderItemId);
+    }
+
 }
 
 

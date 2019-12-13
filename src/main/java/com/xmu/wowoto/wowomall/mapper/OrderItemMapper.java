@@ -30,4 +30,11 @@ public interface OrderItemMapper {
      * @return 修改数目
      */
     Integer updateOrderItemSelective(OrderItem orderItem);
+
+    /**
+     * 根据id返回一项订单详情
+     * @param OrderItemId
+     * @return
+     */
+    OrderItem getOrderItemById(Integer OrderItemId);
 }

@@ -61,7 +61,7 @@ public class OrderDao {
      */
     public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String orderWay)
     {
-        page = page - 1;
+        page=(page-1)*limit;
         List<Order> orders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,orderWay);
         for (Order order: orders) {
             List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
@@ -112,6 +112,9 @@ public class OrderDao {
         return orderItemMapper.updateOrderItemSelective(orderItem);
     }
 
+    public OrderItem getOrderItemById(Integer orderItemId){
+        return orderItemMapper.getOrderItemById(orderItemId);
+    }
 
 
 }

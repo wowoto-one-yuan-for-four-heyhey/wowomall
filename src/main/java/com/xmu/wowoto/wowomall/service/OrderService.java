@@ -2,6 +2,7 @@ package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.domain.Order;
+import com.xmu.wowoto.wowomall.domain.OrderItem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -106,4 +107,11 @@ public interface OrderService {
      * @return 订单操作结果
      */
     public Object comment(Integer userId,Integer orderId);
+
+    /**
+     * 得到一项orderItem
+     * @param orderItemId
+     * @return
+     */
+    public OrderItem getOrderItem(Integer orderItemId);
 }

@@ -37,7 +37,7 @@
             gmt_modified,
             be_deleted
     from `order`
-    where user_id = #{userId} and is_deleted = 0
+    where user_id = #{userId} and be_deleted = 0
     <if test="statusCode!=0">
         and status_code = #{statusCode}
     </if>
@@ -54,7 +54,7 @@
            consignee,
            mobile,
            message,
-           godds_price,
+           goods_price,
            freight_price,
            coupon_price,
            rebate_price,
