@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.Order;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -57,5 +58,5 @@ public interface OrderMapper {
      */
     Integer updateOrderSelective(Order order);
 
-    Integer getGrouponNumById(Integer goodId,Integer statusCode);
+    Integer getGrouponNumById(Integer goodId, Integer statusCode, LocalDateTime nowTime);
 }
