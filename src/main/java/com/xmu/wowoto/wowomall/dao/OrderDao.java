@@ -9,6 +9,7 @@ import com.xmu.wowoto.wowomall.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -119,5 +120,9 @@ public class OrderDao {
         return orderItemMapper.getOrderItemById(orderItemId);
     }
 
+    public Integer getGrouponNumById(Integer goodId){
+        LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
+        return orderMapper.getGrouponNumById(goodId,statusCode,nowTime);
+    }
 
 }

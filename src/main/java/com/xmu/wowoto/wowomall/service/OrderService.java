@@ -114,4 +114,7 @@ public interface OrderService {
      * @return
      */
     public OrderItem getOrderItem(Integer orderItemId);
+
+
+    public Integer getGrouponNum(Integer goodId);
 }

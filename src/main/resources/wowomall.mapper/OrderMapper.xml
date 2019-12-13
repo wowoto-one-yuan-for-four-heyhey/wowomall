@@ -11,7 +11,7 @@
     )
 </insert>
 
-<select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="WowoOrder">
+<select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="Order">
     select id,
             user_id,
             be_shared_item_ids,
@@ -45,7 +45,14 @@
     limit #{page}, #{limit}
 </select>
 
-<select id="getOrderByOrderId" parameterType="Integer" resultType="WowoOrder">
+<select id="getGrouponNumById" parameterType="java.util.List" resultType="java.util.List">
+        select count(distinct `order`.id),
+        from `order`,`order_item`
+        where DATEDIFF(day,pay_time,#{nowTime})=7 and `order`.id ==  `order_item`.order_id and `order`.be_deleted = 0
+            and status_code = #{statusCode} and `order_item`.goods_id = #{goodId}
+</select>
+
+<select id="getOrderByOrderId" parameterType="Integer" resultType="Order">
     select id,
            user_id,
            be_shared_item_ids,
@@ -74,7 +81,7 @@
     where be_deleted = 0 and id = #{orderId}
 </select>
 
-<update id="updateOrderSelective" parameterType="WowoOrder">
+<update id="updateOrderSelective" parameterType="Order">
     update `order`
     <set>
         <if test="userId != null">

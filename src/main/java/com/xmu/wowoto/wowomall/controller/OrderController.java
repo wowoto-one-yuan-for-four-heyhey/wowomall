@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
@@ -475,6 +474,16 @@ return List<GetOrdersVo>
         }
     }
 
+
+    /*查询grouponrule的参团人数*/
+    @GetMapping("orders/grouponOrders")
+    public Object getGrouponNum(@ApiParam(name="grouponRule",value="团购规则",required=true)@PathVariable("grouponRule")
+                                            GrouponRule grouponRule ){
+
+        Integer goodId = grouponRule.getGoodsId();
+        Integer num = orderService.getGrouponNum(goodId);
+        return ResponseUtil.ok(num);
+    }
 
 
 
