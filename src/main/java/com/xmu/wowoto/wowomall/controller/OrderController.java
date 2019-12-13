@@ -90,6 +90,49 @@ public class OrderController {
         return ResponseUtil.ok(getOrdersVos);
     }
 
+
+    /**
+     * 获取用户订单列表
+     *
+     * @param page     分页页数
+     * @param limit     分页大小
+     * @return 订单列表
+     */
+    @GetMapping("admin/orders")
+    @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
+    public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer showType,
+                            @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
+                            @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
+                            @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
+                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String orderWay)
+    {
+        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
+        if(null == adminId) {
+            return ResponseUtil.unlogin();
+        }
+        List<Order> orders = orderService.getOrders(adminId,statusCode,page,limit,sort,orderWay);
+        List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
+        for (int i = 0; i < orders.size(); i++){
+            GetOrdersVo getOrdersVo = getOrdersVos.get(i);
+            Order order = orders.get(i);
+            getOrdersVo.setOrder(order);
+            getOrdersVo.setAddress(order.getAddress());
+            List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
+            for (int j = 0; j < orderItemVos.size(); j++){
+                OrderItem orderItem = order.getOrderItemList().get(j);
+                OrderItemVo orderItemVo = orderItemVos.get(j);
+                orderItemVo.setOrderItem(orderItem);
+                ProductVo productVo = new ProductVo();
+                productVo.setProduct(orderItem.getProduct());
+                orderItemVo.setProductVo(productVo);
+            }
+            getOrdersVo.setOrderItemVo(orderItemVos);
+        }
+        return ResponseUtil.ok(getOrdersVos);
+    }
+
+
+
     /**
      * 获取用户特定订单详情
      * @param orderId 订单ID
