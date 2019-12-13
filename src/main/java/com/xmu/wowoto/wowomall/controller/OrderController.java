@@ -69,8 +69,8 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
-        List<GetOrdersVo> getOrdersVos = new ArrayList<>(Orders.size());
+        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,orderWay);
+        List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
         for (int i = 0; i < orders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
             Order order = orders.get(i);
