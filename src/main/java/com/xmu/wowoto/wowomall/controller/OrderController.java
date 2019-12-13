@@ -60,29 +60,29 @@ public class OrderController {
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
     public Object getOrders(@ApiParam(name="showType",value="订单状态信息",required=true) @RequestParam(defaultValue = "0")Integer showType,
-                                       @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
-                                       @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
-                                       @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
-                                       @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+                            @ApiParam(name="page",value="页码",required=true) @RequestParam(defaultValue = "1")Integer page,
+                            @ApiParam(name="limit",value="每页条数",required=true) @RequestParam(defaultValue = "10")Integer limit,
+                            @ApiParam(name="sort",value="以什么为序",required=true) @RequestParam(defaultValue = "add_time") String sort,
+                            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String orderWay)
     {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> wowoOrders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
-        List<GetOrdersVo> getOrdersVos = new ArrayList<>(wowoOrders.size());
-        for (int i = 0; i < wowoOrders.size(); i++){
+        List<Order> orders = orderService.getOrders(userId,statusCode,page,limit,sort,order);
+        List<GetOrdersVo> getOrdersVos = new ArrayList<>(Orders.size());
+        for (int i = 0; i < orders.size(); i++){
             GetOrdersVo getOrdersVo = getOrdersVos.get(i);
-            Order wowoOrder = wowoOrders.get(i);
-            getOrdersVo.setOrder(wowoOrder);
-            getOrdersVo.setAddress(wowoOrder.getAddress());
-            List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
+            Order order = orders.get(i);
+            getOrdersVo.setOrder(order);
+            getOrdersVo.setAddress(order.getAddress());
+            List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
             for (int j = 0; j < orderItemVos.size(); j++){
-                OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(j);
+                OrderItem orderItem = order.getOrderItemList().get(j);
                 OrderItemVo orderItemVo = orderItemVos.get(j);
-                orderItemVo.setOrderItem(wowoOrderItem);
+                orderItemVo.setOrderItem(orderItem);
                 ProductVo productVo = new ProductVo();
-                productVo.setProduct(wowoOrderItem.getProduct());
+                productVo.setProduct(orderItem.getProduct());
                 orderItemVo.setProductVo(productVo);
             }
             getOrdersVo.setOrderItemVo(orderItemVos);
@@ -103,28 +103,28 @@ public class OrderController {
         if(userId == null) {
             ResponseUtil.unlogin();
         }
-        Order wowoOrder = orderService.getOrder(orderId);
+        Order order = orderService.getOrder(orderId);
 
-        if(wowoOrder == null)
+        if(order == null)
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
+        if(!order.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
 
 
         GetOrdersVo getOrdersVo = new GetOrdersVo();
-        getOrdersVo.setOrder(wowoOrder);
-        getOrdersVo.setAddress(wowoOrder.getAddress());
-        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
+        getOrdersVo.setOrder(order);
+        getOrdersVo.setAddress(order.getAddress());
+        List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
         for (int i = 0; i < orderItemVos.size(); i++){
             OrderItemVo orderItemVo = orderItemVos.get(i);
-            OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(i);
-            orderItemVo.setOrderItem(wowoOrderItem);
+            OrderItem orderItem = order.getOrderItemList().get(i);
+            orderItemVo.setOrderItem(orderItem);
             ProductVo productVo = new ProductVo();
-            productVo.setProduct(wowoOrderItem.getProduct());
+            productVo.setProduct(orderItem.getProduct());
             orderItemVo.setProductVo(productVo);
         }
         getOrdersVo.setOrderItemVo(orderItemVos);
@@ -145,23 +145,23 @@ public class OrderController {
         if(adminId == null) {
             ResponseUtil.unlogin();
         }
-        Order wowoOrder = orderService.getOrder(orderId);
+        Order order = orderService.getOrder(orderId);
 
-        if(wowoOrder == null)
+        if(order == null)
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
 
         GetOrdersVo getOrdersVo = new GetOrdersVo();
-        getOrdersVo.setOrder(wowoOrder);
-        getOrdersVo.setAddress(wowoOrder.getAddress());
-        List<OrderItemVo> orderItemVos = new ArrayList<>(wowoOrder.getOrderItemList().size());
+        getOrdersVo.setOrder(order);
+        getOrdersVo.setAddress(order.getAddress());
+        List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
         for (int i = 0; i < orderItemVos.size(); i++){
             OrderItemVo orderItemVo = orderItemVos.get(i);
-            OrderItem wowoOrderItem = wowoOrder.getOrderItemList().get(i);
-            orderItemVo.setOrderItem(wowoOrderItem);
+            OrderItem orderItem = order.getOrderItemList().get(i);
+            orderItemVo.setOrderItem(orderItem);
             ProductVo productVo = new ProductVo();
-            productVo.setProduct(wowoOrderItem.getProduct());
+            productVo.setProduct(orderItem.getProduct());
             orderItemVo.setProductVo(productVo);
         }
         getOrdersVo.setOrderItemVo(orderItemVos);
@@ -184,23 +184,23 @@ public class OrderController {
         if(null == submitOrderVo) {
             return ResponseUtil.badArgument();
         }
-        Order wowoOrder = new Order();
-        wowoOrder.setAddress(submitOrderVo.getAddress());
+        Order order = new Order();
+        order.setAddress(submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
-            Coupon wowoCoupon = couponService.findCouponById(submitOrderVo.getCouponId());
-            wowoOrder.setCouponId(wowoCoupon.getId());
+            Coupon coupon = couponService.findCouponById(submitOrderVo.getCouponId());
+            order.setCouponId(coupon.getId());
         }
 
-        List<CartItem> wowoCartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
+        List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
-            CartItem wowoCartItem = cartService.findCartItemById(cartItemId);
-            wowoCartItems.add(wowoCartItem);
+            CartItem cartItem = cartService.findCartItemById(cartItemId);
+            cartItems.add(cartItem);
         }
 
-        wowoOrder = orderService.submit(wowoOrder, wowoCartItems);
+        order = orderService.submit(order, cartItems);
 
-        return ResponseUtil.ok(wowoOrder);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -211,18 +211,18 @@ public class OrderController {
      */
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object cancelOrder( @PathVariable("id")String orderId, @RequestBody Order order) {
+    public Object cancelOrder( @PathVariable("id")String orderId) {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
+        if(order == null)
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
+        if(!order.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
@@ -243,13 +243,13 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null)
+        if(order == null)
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
+        if(!order.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
@@ -266,18 +266,18 @@ public class OrderController {
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
     public Object confirm(
-                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+            @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null) {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId)) {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.confirm(userId, Integer.parseInt(orderId));
-        return ResponseUtil.ok(wowoOrder);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -291,16 +291,16 @@ public class OrderController {
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null) {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId)) {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.shipOrder(userId,Integer.parseInt(orderId));
-        return ResponseUtil.ok(wowoOrder);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -314,16 +314,16 @@ public class OrderController {
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null) {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId)) {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.refundOrder(userId,Integer.parseInt(orderId));
-        return ResponseUtil.ok(wowoOrder);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -335,7 +335,7 @@ public class OrderController {
     @PutMapping("orders/{id}/payment")
     @ApiOperation("订单成功支付(内部接口，供paymentService调用")
     public Object payOrder(
-                           @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
+            @ApiParam(name="id",value="订单id",required=true)@PathVariable("id")String id)
     {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         return true;
@@ -352,10 +352,10 @@ public class OrderController {
     @GetMapping("orders/unevaluated")
     @ApiOperation("查看未评价订单的订单详情")
     public Object getUnComment(
-                               @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
-                               @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-                               @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
-                               @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+            @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
+            @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
+            @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
+            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
     {
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
@@ -373,15 +373,15 @@ public class OrderController {
     @PostMapping("/orders/{id}/commentResult")
     @ApiOperation(value = "评价订单商品操作结果/comment", notes = "评价订单商品操作结果")
     public Object comment(
-                          @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId ){
+            @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId ){
 
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        Order wowoOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(wowoOrder == null) {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId)) {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         return orderService.comment(userId, Integer.parseInt(orderId));
@@ -402,13 +402,13 @@ return List<GetOrdersVo>
     */
 
     @GetMapping("orderItem/{orderItemId}/goodsType")
-     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
-         OrderItem oneItem=orderService.getOrderItem(orderItemId);
-         if(oneItem==null){
-             return ResponseUtil.fail();
-         }
-         Integer goodsType= oneItem.getItemType();
-         return ResponseUtil.ok(goodsType);
+    public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
+        OrderItem oneItem=orderService.getOrderItem(orderItemId);
+        if(oneItem==null){
+            return ResponseUtil.fail();
+        }
+        Integer goodsType= oneItem.getItemType();
+        return ResponseUtil.ok(goodsType);
     }
 
 
