@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
@@ -152,7 +153,7 @@ public class OrderController {
         {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
+        if(!order.getUserId().equals(userId))
         {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
@@ -389,7 +390,7 @@ public class OrderController {
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         //@RequestBody
-        List<GetOrdersVo> ordersVos = orderService.getOrders(userId,STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+        List<Order> ordersVos = orderService.getOrders(userId,Order.StatusCode.PAYED.getValue(),page,limit,sort,order);
         return ResponseUtil.ok(ordersVos);
     }
 

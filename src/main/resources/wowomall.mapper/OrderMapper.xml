@@ -48,7 +48,7 @@
 <select id="getGrouponNumById" parameterType="java.util.List" resultType="java.util.List">
         select count(distinct `order`.id),
         from `order`,`order_item`
-        where DATEDIFF(day,pay_time,#{nowTime})=7 and `order`.id ==  `order_item`.order_id and `order`.be_deleted = 0
+        where DATEDIFF(day,confirm_time,#{nowTime})=7 and `order`.id ==  `order_item`.order_id and `order`.be_deleted = 0
             and status_code = #{statusCode} and `order_item`.goods_id = #{goodId}
 </select>
 

@@ -63,10 +63,10 @@ public class Order extends OrderPo {
         //调用此函数前已调用过cacuCouponPrice
         //首先计算使用优惠券后的商品价格总和
         Coupon coupon=this.getCoupon();
-        if(wowoCoupon!=null){
+        if(coupon!=null){
             this.cacuCouponPrice();
         }
-        for(WowoOrderItem oneItem:this.wowoOrderItems){
+        for(orderItem oneItem:this.OrderItems){
             dealTotal=dealTotal.add(oneItem.getDealPrice().multiply(BigDecimal.valueOf(oneItem.getNumber())));
         }
 

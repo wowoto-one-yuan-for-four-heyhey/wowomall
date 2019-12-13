@@ -122,7 +122,10 @@ public class OrderDao {
 
     public Integer getGrouponNumById(Integer goodId){
         LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
-        return orderMapper.getGrouponNumById(goodId,statusCode,nowTime);
+        Integer num1 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime);
+        Integer num2 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime);
+        Integer num3 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime);
+        return num1 + num2 + num3;
     }
 
 }
