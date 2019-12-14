@@ -131,8 +131,8 @@ public class OrderServiceImpl implements OrderService {
         /*xbb*/
         Order order = orderDao.getOrderByOrderId(orderId);
         if(order == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
-        if(Order.StatusCode.REFUND.getValue() >= order.getStatusCode()){
-            order.setStatusCode(Order.StatusCode.REFUND.getValue());
+        if(Order.StatusCode.PAYED_CANCELED.getValue() >= order.getStatusCode()){
+            order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
             List<OrderItem> orderItems= order.getOrderItemList();
             for(OrderItem item : orderItems){
                 Integer itemId = item.getOrderId();
@@ -194,7 +194,7 @@ public class OrderServiceImpl implements OrderService {
     public Object cancelOrder(Integer userId, Integer orderId){
         Order wowoOrder = orderDao.getOrderByOrderId(orderId);
         if(null != wowoOrder){
-            wowoOrder.setStatusCode(Order.StatusCode.FINISHED.getValue());
+            wowoOrder.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
         }
         return true;
     }
@@ -210,7 +210,6 @@ public class OrderServiceImpl implements OrderService {
     public Object deleteOrder(Integer userId, Integer orderId){
         Order order = orderDao.getOrderByOrderId(orderId);
         if(null != order){
-            order.setStatusCode(Order.StatusCode.FINISHED.getValue());
             for(OrderItem orderItem: order.getOrderItemList()){
                 orderItem.setBeDeleted(true);
                 if(orderDao.updateOrderItem(orderItem) < 1){
@@ -237,8 +236,8 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(Order.StatusCode.NOT_TAKEN.getValue() >= order.getStatusCode()) {
-            order.setStatusCode(Order.StatusCode.NOT_TAKEN.getValue());
+        if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
             order.setShipTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
@@ -264,8 +263,8 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(order.getStatusCode() == Order.StatusCode.NOT_TAKEN.getValue()) {
-            order.setStatusCode(Order.StatusCode.NOT_COMMENTED.getValue());
+        if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
             order.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
@@ -293,8 +292,8 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
-        if(order.getStatusCode() == Order.StatusCode.NOT_COMMENTED.getValue()) {
-            order.setStatusCode(Order.StatusCode.FINISHED.getValue());
+        if(order.getStatusCode() == Order.StatusCode.SHIPPED_CONNFIEM.getValue()) {
+            order.setStatusCode(Order.StatusCode.COMMENTED.getValue());
             order.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
