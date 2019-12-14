@@ -4,7 +4,7 @@
 
 <insert id="addOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
     insert into `order`(
-        user_id, be_shared_item_ids, order_sn, status, mobile, message, goods_price, freight_price, coupon_price, integral_price, rebate_price, ship_sn, ship_channel, ship_time, confirm_time, end_time, pay_time, parent_id, address, gmt_create, gmt_modified, be_deleted
+        user_id, order_sn, status, mobile, message, goods_price, freight_price, coupon_price, integral_price, rebate_price, ship_sn, ship_channel, ship_time, confirm_time, end_time, pay_time, parent_id, address, gmt_create, gmt_modified, is_deleted
     )
     values (
         #{userId}, #{beSharedItemIds}, #{orderSn}, #{statusCode}, #{mobile}, #{message}, #{goodsPrice}, #{freightPrice}, #{couponPrice}, #{integralPrice}, #{rebatePrice}, #{shipSn}, #{shipChannel}, #{shipTime}, #{confirmTime}, #{endTime}, #{payTime}, #{parentId}, #{address}, now(), #{gmtModified}, 0
@@ -14,13 +14,12 @@
 <select id="getOrdersByStatusCode" parameterType="java.util.List" resultType="Order">
     select id,
             user_id,
-            be_shared_item_ids,
             order_sn,
             status as status_code,
             consignee,
             mobile,
             message,
-            godds_price,
+            goods_price,
             freight_price,
             coupon_price,
             rebate_price,
@@ -35,13 +34,12 @@
             address,
             gmt_create,
             gmt_modified,
-            be_deleted
+            is_deleted as be_deleted
     from `order`
-    where user_id = #{userId} and be_deleted = 0
+    where user_id = #{userId} and is_deleted = 0
     <if test="statusCode!=-1">
         and status_code = #{statusCode}
     </if>
-    order by #{sort} #{order}
     limit #{page}, #{limit}
 </select>
 
@@ -55,7 +53,6 @@
 <select id="getOrderByOrderId" parameterType="Integer" resultType="Order">
     select id,
            user_id,
-           be_shared_item_ids,
            order_sn,
            status as status_code,
            consignee,
@@ -76,9 +73,9 @@
            address,
            gmt_create,
            gmt_modified,
-           be_deleted
+           be_deleted as is_deleted
     from `order`
-    where be_deleted = 0 and id = #{orderId}
+    where is_deleted = 0 and id = #{orderId}
 </select>
 
 <update id="updateOrderSelective" parameterType="Order">

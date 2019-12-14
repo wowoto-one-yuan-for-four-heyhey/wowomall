@@ -52,9 +52,9 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit)
     {
-        List<Order> orders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        List<Order> orders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit);
         return orders;
     }
 

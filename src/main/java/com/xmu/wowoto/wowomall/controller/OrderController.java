@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
@@ -61,33 +62,14 @@ public class OrderController {
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
     public Object getOrders(@RequestParam(defaultValue = "-1")Integer showType,
                             @RequestParam(defaultValue = "1")Integer page,
-                            @RequestParam(defaultValue = "10")Integer limit,
-                            @RequestParam(defaultValue = "add_time") String sort,
-                            @RequestParam(defaultValue = "desc") String orderWay)
+                            @RequestParam(defaultValue = "10")Integer limit)
     {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(userId,showType,page,limit,sort,orderWay);
-        List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
-        for (int i = 0; i < orders.size(); i++){
-            GetOrdersVo getOrdersVo = getOrdersVos.get(i);
-            Order order = orders.get(i);
-            getOrdersVo.setOrder(order);
-            getOrdersVo.setAddress(order.getAddress());
-            List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
-            for (int j = 0; j < orderItemVos.size(); j++){
-                OrderItem orderItem = order.getOrderItemList().get(j);
-                OrderItemVo orderItemVo = orderItemVos.get(j);
-                orderItemVo.setOrderItem(orderItem);
-                ProductVo productVo = new ProductVo();
-                productVo.setProduct(orderItem.getProduct());
-                orderItemVo.setProductVo(productVo);
-            }
-            getOrdersVo.setOrderItemVo(orderItemVos);
-        }
-        return ResponseUtil.ok(getOrdersVos);
+        List<Order> orders = orderService.getOrders(userId,showType,page,limit);
+        return ResponseUtil.ok(orders);
     }
 
 
@@ -104,111 +86,39 @@ public class OrderController {
                             @RequestParam(defaultValue = "1")Integer page,
                             @RequestParam(defaultValue = "10")Integer limit,
                             @RequestParam(defaultValue = "add_time") String sort,
-                            @RequestParam(defaultValue = "desc") String orderWay)
-    {
-        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
+                            @RequestParam(defaultValue = "desc") String orderWay) {
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
         if(null == adminId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(adminId,showType,page,limit,sort,orderWay);
-        List<GetOrdersVo> getOrdersVos = new ArrayList<>(orders.size());
-        for (int i = 0; i < orders.size(); i++){
-            GetOrdersVo getOrdersVo = getOrdersVos.get(i);
-            Order order = orders.get(i);
-            getOrdersVo.setOrder(order);
-            getOrdersVo.setAddress(order.getAddress());
-            List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
-            for (int j = 0; j < orderItemVos.size(); j++){
-                OrderItem orderItem = order.getOrderItemList().get(j);
-                OrderItemVo orderItemVo = orderItemVos.get(j);
-                orderItemVo.setOrderItem(orderItem);
-                ProductVo productVo = new ProductVo();
-                productVo.setProduct(orderItem.getProduct());
-                orderItemVo.setProductVo(productVo);
-            }
-            getOrdersVo.setOrderItemVo(orderItemVos);
-        }
-        return ResponseUtil.ok(getOrdersVos);
+        List<Order> orders = orderService.getOrders(adminId,showType,page,limit);
+        return ResponseUtil.ok(orders);
     }
 
 
 
     /**
-     * 获取用户特定订单详情
+     * 获取特定订单详情
      * @param orderId 订单ID
      * @return 订单详细
      */
     @GetMapping("orders/{id}")
-    @ApiOperation("查看特定订单的订单详情(用户)")
-    public Object userDetail(@NotNull @PathVariable("id")Integer orderId)
+    public Object orderDetail(@NotNull @PathVariable("id")Integer orderId)
     {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId == null) {
             ResponseUtil.unlogin();
         }
         Order order = orderService.getOrder(orderId);
 
-        if(order == null)
-        {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!wowoOrder.getUserId().equals(userId))
-        {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
 
-
-        GetOrdersVo getOrdersVo = new GetOrdersVo();
-        getOrdersVo.setOrder(order);
-        getOrdersVo.setAddress(order.getAddress());
-        List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
-        for (int i = 0; i < orderItemVos.size(); i++){
-            OrderItemVo orderItemVo = orderItemVos.get(i);
-            OrderItem orderItem = order.getOrderItemList().get(i);
-            orderItemVo.setOrderItem(orderItem);
-            ProductVo productVo = new ProductVo();
-            productVo.setProduct(orderItem.getProduct());
-            orderItemVo.setProductVo(productVo);
-        }
-        getOrdersVo.setOrderItemVo(orderItemVos);
-        return ResponseUtil.ok(getOrdersVo);
-    }
-
-
-    /**
-     * 获取管理员特定订单详情
-     * @param orderId 订单ID
-     * @return 订单详细
-     */
-    @GetMapping("admin/orders/{id}")
-    @ApiOperation("查看特定订单的订单详情(管理员)")
-    public Object userDetail(@NotNull @PathVariable("id")Integer orderId)
-    {
-        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
-        if(adminId == null) {
-            ResponseUtil.unlogin();
-        }
-        Order order = orderService.getOrder(orderId);
-
-        if(order == null)
-        {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-
-        GetOrdersVo getOrdersVo = new GetOrdersVo();
-        getOrdersVo.setOrder(order);
-        getOrdersVo.setAddress(order.getAddress());
-        List<OrderItemVo> orderItemVos = new ArrayList<>(order.getOrderItemList().size());
-        for (int i = 0; i < orderItemVos.size(); i++){
-            OrderItemVo orderItemVo = orderItemVos.get(i);
-            OrderItem orderItem = order.getOrderItemList().get(i);
-            orderItemVo.setOrderItem(orderItem);
-            ProductVo productVo = new ProductVo();
-            productVo.setProduct(orderItem.getProduct());
-            orderItemVo.setProductVo(productVo);
-        }
-        getOrdersVo.setOrderItemVo(orderItemVos);
-        return ResponseUtil.ok(getOrdersVo);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -255,18 +165,16 @@ public class OrderController {
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId) {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null)
-        {
+        if(order == null) {
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
         }
-        if(!order.getUserId().equals(userId))
-        {
+        if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
         }
         orderService.cancelOrder(userId, Integer.parseInt(orderId));
@@ -381,10 +289,10 @@ public class OrderController {
     @GetMapping("orders/unevaluated")
     @ApiOperation("查看未评价订单的订单详情")
     public Object getUnComment(
-            @ApiParam(name="page",value="页码",required=true)@RequestParam(defaultValue = "1")Integer page,
-            @ApiParam(name="limit",value="每页条数",required=true)@RequestParam(defaultValue = "10")Integer limit,
-            @ApiParam(name="sort",value="以什么为序",required=true)@RequestParam(defaultValue = "gmtCreate") String sort,
-            @ApiParam(name="order",value="升/降序",required=true) @RequestParam(defaultValue = "desc") String order)
+            @RequestParam(defaultValue = "1")Integer page,
+            @RequestParam(defaultValue = "10")Integer limit,
+            @RequestParam(defaultValue = "gmtCreate") String sort,
+            @RequestParam(defaultValue = "desc") String order)
     {
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
@@ -422,13 +330,7 @@ public class OrderController {
         return cartService.cartIndex(userId);
     }
 
-    /*
-    /admin/orders
-    RequestParam(userId)，RequestParam (page), RequestParam  (limit), RequestParam(OrderSn),
-     RequestParam(List<Short> orderStatusArray)
-return List<GetOrdersVo>
 
-    */
 
     /**
      *提供接口给AfterSale查看orderItem是什么类型
@@ -475,9 +377,13 @@ return List<GetOrdersVo>
     }
 
 
-    /*查询grouponrule的参团人数*/
+    /**
+     * 查询grouponrule的参团人数
+     * @param grouponRule
+     * @return
+     */
     @GetMapping("orders/grouponOrders")
-    public Object getGrouponNum(@ApiParam(name="grouponRule",value="团购规则",required=true)@PathVariable("grouponRule")
+    public Object getGrouponNum(@PathVariable("grouponRule")
                                             GrouponRule grouponRule ){
 
         Integer goodId = grouponRule.getGoodsId();

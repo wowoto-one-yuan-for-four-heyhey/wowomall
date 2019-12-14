@@ -44,7 +44,7 @@ public interface OrderMapper {
      * @return 订单列表
      */
     List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode,
-                                      Integer page, Integer limit, String sort, String order);
+                                      Integer page, Integer limit);
 
     /**
      * 根据订单查询信息返回订单对象
