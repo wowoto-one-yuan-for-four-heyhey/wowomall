@@ -62,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
     public Order submit(Order order, List<CartItem> cartItems) {
         Order newOrder = null;
         if(this.createOrderItemFromCartItem(order, cartItems)){
+
             cartService.clearCartItem(cartItems);
 
             /**
@@ -74,16 +75,12 @@ public class OrderServiceImpl implements OrderService {
 
             order.cacuGoodsPrice();
             order.cacuDealPrice();
-            order.setAddress();
 
             //添加订单
             newOrder = orderDao.addOrder(order);
 
             //添加一条未支付的payment
         }
-
-
-
 
         return newOrder;
     }

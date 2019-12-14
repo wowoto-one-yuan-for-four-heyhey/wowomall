@@ -126,14 +126,13 @@ public class OrderController {
     public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-        logger.debug("submit: " + submitOrderVo);
-        if(null == userId)
-        {   return ResponseUtil.unlogin();}
-        if(null == submitOrderVo) {
-            return ResponseUtil.badArgument();
-        }
+
+        if(null == userId) {   return ResponseUtil.unlogin();}
+        if(null == submitOrderVo) { return ResponseUtil.badArgument(); }
+
         Order order = new Order();
         order.setAddressObj(submitOrderVo.getAddress());
+        order.setAddress(submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
             Coupon coupon = couponService.findCouponById(submitOrderVo.getCouponId());
@@ -292,8 +291,8 @@ public class OrderController {
 
         Integer userId = Integer.valueOf(request.getHeader("id"));
         //@RequestBody
-        List<GetOrdersVo> ordersVos = orderService.getOrders(userId, STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
-        return ResponseUtil.ok(ordersVos);
+        List<Order> orders = orderService.getOrders(userId, Order.StatusCode.SHIPPED_CONNFIEM.getValue(), page, limit);
+        return ResponseUtil.ok(orders);
     }
 
     /**
@@ -320,17 +319,17 @@ public class OrderController {
     }
 
     /**
-     *提供接口给AfterSale查看orderItem是什么类型
+     * 提供接口给AfterSale查看orderItem是什么类型
      * @param orderItemId
      * @return
      */
     @GetMapping("orderItem/{orderItemId}/goodsType")
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
-        OrderItem oneItem=orderService.getOrderItem(orderItemId);
+        OrderItem oneItem = orderService.getOrderItem(orderItemId);
         if(oneItem==null){
             return ResponseUtil.fail();
         }
-        Integer goodsType= oneItem.getItemType();
+        Integer goodsType = oneItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
 
