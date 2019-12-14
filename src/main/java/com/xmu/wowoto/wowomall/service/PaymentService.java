@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @date 12/08/2019
  */
 @Service
-@FeignClient("wowoto-payment")
+@FeignClient("payment")
 public interface PaymentService {
      @PostMapping(value= "payments")
      Payment addPayment();

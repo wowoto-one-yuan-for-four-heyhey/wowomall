@@ -19,6 +19,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class Order extends OrderPo {
+
     private Address addressObj;
     private User user;
     private List<OrderItem> orderItemList;
@@ -43,6 +44,21 @@ public class Order extends OrderPo {
     }
 
     /**
+     * 把addressObj存成address
+     */
+    public void setAddress(Address address){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(address.getProvince());
+        stringBuilder.append(address.getCounty());
+        stringBuilder.append(address.getCity());
+        stringBuilder.append(address.getAddressDetail());
+        stringBuilder.append(" ");
+        stringBuilder.append(address.getConsignee());
+        stringBuilder.append(" ");
+        stringBuilder.append(address.getPostalCode());
+    }
+
+    /**
      * 计算订单的商品总价
      */
     public void cacuGoodsPrice(){
@@ -62,7 +78,7 @@ public class Order extends OrderPo {
 
         //调用此函数前已调用过cacuCouponPrice
         //首先计算使用优惠券后的商品价格总和
-        Coupon coupon=this.getCoupon();
+        Coupon coupon = ;
         if(coupon!=null){
             this.cacuCouponPrice();
         }
@@ -80,11 +96,11 @@ public class Order extends OrderPo {
 
         //加上运费
         BigDecimal freightPrice = this.getFreightPrice();
-        if(freightPrice ==null){
+        if(freightPrice == null){
             this.cacuFreightPrice();
             freightPrice = this.getFreightPrice();
         }
-        dealTotal=dealTotal.add(freightPrice);
+        dealTotal = dealTotal.add(freightPrice);
 
         this.setIntegralPrice(dealTotal);
 

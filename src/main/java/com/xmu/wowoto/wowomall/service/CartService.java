@@ -17,29 +17,20 @@ import java.util.List;
 @Service
 @FeignClient("wowoto-cart")
 public interface CartService {
-    @GetMapping(value = "/carts")
-    Object cartIndex(@RequestParam(value = "userId") Integer userId);
 
     /**
      * 用ID获得CartItem对象
      * @param id 对象ID
-     * @return wowoCartItem对象
+     * @return CartItem
      */
     @GetMapping(value = "")
     CartItem findCartItemById(Integer id);
 
     /**
      * 清空购物车里的指定项目
-     * @param wowoCartItems 待清空的项目
-     */
-    @DeleteMapping(value = "cartItems")
-    void clearCartItem(List<CartItem> wowoCartItems);
-
-    /**
-     *  添加 商品到购物车 /add
-     *  @param wowoCartItems 待添加的购物车项目
+     * @param cartItems 待清空的项目
      */
     @PostMapping(value = "")
-    void addCartItem(CartItem wowoCartItems);
+    void clearCartItem(List<CartItem> cartItems);
 
 }

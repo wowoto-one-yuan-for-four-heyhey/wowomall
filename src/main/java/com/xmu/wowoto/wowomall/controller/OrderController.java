@@ -1,8 +1,5 @@
 package com.xmu.wowoto.wowomall.controller;
 
-import com.xmu.wowoto.wowomall.controller.vo.GetOrdersVo;
-import com.xmu.wowoto.wowomall.controller.vo.OrderItemVo;
-import com.xmu.wowoto.wowomall.controller.vo.ProductVo;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.CartService;
@@ -27,7 +24,6 @@ import java.util.List;
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
 import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_UNKNOWN;
 
-
 /**
  *
  * @author wowoto
@@ -41,7 +37,6 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
 
     @Autowired
     private CartService cartService;
@@ -68,7 +63,7 @@ public class OrderController {
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(userId,showType,page,limit);
+        List<Order> orders = orderService.getOrders(userId, showType, page, limit);
         return ResponseUtil.ok(orders);
     }
 
@@ -138,7 +133,7 @@ public class OrderController {
             return ResponseUtil.badArgument();
         }
         Order order = new Order();
-        order.setAddress(submitOrderVo.getAddress());
+        order.setAddressObj(submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
             Coupon coupon = couponService.findCouponById(submitOrderVo.getCouponId());
@@ -241,7 +236,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
         // orderItem
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) {
@@ -264,7 +259,7 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) {
@@ -295,9 +290,9 @@ public class OrderController {
             @RequestParam(defaultValue = "desc") String order)
     {
 
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         //@RequestBody
-        List<GetOrdersVo> ordersVos = orderService.getOrders(userId,STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
+        List<GetOrdersVo> ordersVos = orderService.getOrders(userId, STATUSCODE.NOT_COMMENTED.getValue(),page,limit,sort,order);
         return ResponseUtil.ok(ordersVos);
     }
 
@@ -324,14 +319,6 @@ public class OrderController {
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
 
-    @GetMapping(value = "/test")
-    public Object test() {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
-        return cartService.cartIndex(userId);
-    }
-
-
-
     /**
      *提供接口给AfterSale查看orderItem是什么类型
      * @param orderItemId
@@ -355,7 +342,7 @@ public class OrderController {
     @PutMapping("orders/{id}")
     public Object payOrder(@PathVariable("id")Integer id)
     {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId==null){
             return ResponseUtil.unlogin();
         }

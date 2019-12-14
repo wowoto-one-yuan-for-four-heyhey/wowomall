@@ -74,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
             order.cacuGoodsPrice();
             order.cacuDealPrice();
+            order.setAddress();
 
             //添加订单
             newOrder = orderDao.addOrder(order);

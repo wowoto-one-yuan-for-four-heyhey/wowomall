@@ -13,14 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Service
 public interface GoodsService {
     /**
-     * 扣减货品库存量
-     * @param productId
-     * @param quantity
-     * @return
-     */
-    public Boolean deductStock(Integer productId, Integer quantity);
-
-    /**
      *根据prodductId拿到product
      * @param productId
      */

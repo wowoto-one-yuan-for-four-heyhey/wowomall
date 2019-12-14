@@ -3,6 +3,7 @@ package com.xmu.wowoto.wowomall.dao;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.Product;
+import com.xmu.wowoto.wowomall.domain.po.OrderPo;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import com.xmu.wowoto.wowomall.service.GoodsService;
