@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.Payment;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @Date: 2019/12/15 20:01
  */
 @Service
-public interface PaymentService {
+@FeignClient("payment")
+public interface RemotePaymentService {
 
-    Payment createPayment(Payment payment);
+    @PostMapping("payment")
+    String createPayment(@RequestBody Payment payment);
 
 }

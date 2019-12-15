@@ -31,11 +31,9 @@ public interface OrderService {
      * @param statusCode 订单信息
      * @param page     分页页数
      * @param limit     分页大小
-     * @param sort      排序
-     * @param order     正序/逆序
      * @return 订单列表
      */
-    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order);
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit);
 
     /**
      * 获取用户特定订单详情
@@ -88,7 +86,6 @@ public interface OrderService {
      */
     public HashMap<String,Integer> payOrder(Order order);
 
-
     /**
      * 确认收货
      *
@@ -97,7 +94,6 @@ public interface OrderService {
      * @return 订单操作结果
      */
     public Object confirm(Integer userId,Integer orderId);
-
 
     /**
      * 评价
@@ -115,6 +111,5 @@ public interface OrderService {
      */
     public OrderItem getOrderItem(Integer orderItemId);
 
-
-    public Integer getGrouponNum(Integer goodId);
+    public List<Order> getGrouponOrders(Integer goodId);
 }

@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.po.OrderPo;
+import com.xmu.wowoto.wowomall.domain.Po.OrderPo;
+import com.xmu.wowoto.wowomall.util.Common;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,32 @@ public class Order extends OrderPo {
         public int getValue() { return value; }
     }
 
+    public Order(User user, Address address){
+        this.setUser(user);
+        this.setUserId(user.getId());
+        this.setAddressObj(address);
+        this.setAddress(address);
+        this.setMobile(address.getMobile());
+        this.setConsignee(address.getConsignee());
+        this.setOrderSn("P" + Common.getRandomNum(1));
+        this.setStatusCode(StatusCode.NOT_PAYED.value);
+    }
+
+    /**
+     * 把addressObj存成address
+     */
+    public void setAddress(Address address){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(address.getProvince());
+        stringBuilder.append(address.getCounty());
+        stringBuilder.append(address.getCity());
+        stringBuilder.append(address.getAddressDetail());
+        stringBuilder.append(" ");
+        stringBuilder.append(address.getConsignee());
+        stringBuilder.append(" ");
+        stringBuilder.append(address.getPostalCode());
+    }
+
     /**
      * 计算订单的商品总价
      */
@@ -62,11 +89,11 @@ public class Order extends OrderPo {
 
         //调用此函数前已调用过cacuCouponPrice
         //首先计算使用优惠券后的商品价格总和
-        Coupon coupon=this.getCoupon();
+        Coupon coupon = ;
         if(coupon!=null){
             this.cacuCouponPrice();
         }
-        for(orderItem oneItem:this.OrderItems){
+        for(OrderItem oneItem:this.orderItemList){
             dealTotal=dealTotal.add(oneItem.getDealPrice().multiply(BigDecimal.valueOf(oneItem.getNumber())));
         }
 
@@ -80,11 +107,11 @@ public class Order extends OrderPo {
 
         //加上运费
         BigDecimal freightPrice = this.getFreightPrice();
-        if(freightPrice ==null){
+        if(freightPrice == null){
             this.cacuFreightPrice();
             freightPrice = this.getFreightPrice();
         }
-        dealTotal=dealTotal.add(freightPrice);
+        dealTotal = dealTotal.add(freightPrice);
 
         this.setIntegralPrice(dealTotal);
 

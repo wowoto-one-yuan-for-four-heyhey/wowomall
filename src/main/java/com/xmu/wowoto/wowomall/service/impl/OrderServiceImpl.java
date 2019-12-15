@@ -4,9 +4,11 @@ import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
+import com.xmu.wowoto.wowomall.domain.Payment;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.service.PaymentService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private PaymentService paymentService;
+
     /**
      * 获取用户订单列表
      *
@@ -52,9 +57,9 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String order)
+    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit)
     {
-        List<Order> orders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit, sort, order);
+        List<Order> orders = orderDao.getOrdersByStatusCode(userId, statusCode, page, limit);
         return orders;
     }
 
@@ -64,14 +69,6 @@ public class OrderServiceImpl implements OrderService {
         if(this.createOrderItemFromCartItem(order, cartItems)){
             cartService.clearCartItem(cartItems);
 
-            /**
-             * 扣减库存
-             */
-            boolean enough = true;
-            for (OrderItem orderItem: order.getOrderItemList()){
-
-            }
-
             order.cacuGoodsPrice();
             order.cacuDealPrice();
 
@@ -79,10 +76,9 @@ public class OrderServiceImpl implements OrderService {
             newOrder = orderDao.addOrder(order);
 
             //添加一条未支付的payment
+            Payment payment = new Payment(order);
+            paymentService.createPayment(payment);
         }
-
-
-
 
         return newOrder;
     }
@@ -95,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
     private Boolean createOrderItemFromCartItem(Order order, List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>(cartItems.size());
         for (CartItem cartItem: cartItems){
-            if(goodsService.deductStock(cartItem.getProductId(), cartItem.getNumber())){
+            if(goodsService.deductStock(cartItem)){
                 OrderItem orderItem = new OrderItem(cartItem);
                 orderItems.add(orderItem);
             }else {
@@ -183,13 +179,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-            /**
-             * 取消订单
-             *
-             * @param userId   用户ID
-             * @param orderId  订单ID
-             * @return 操作结果
-             */
+    /**
+     * 取消订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
         Order wowoOrder = orderDao.getOrderByOrderId(orderId);
@@ -318,12 +314,14 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getOrderItemById(orderItemId);
     }
 
-
+    /**
+     * 获取团购订单数量
+     * @param goodId
+     * @return
+     */
     @Override
-    public Integer getGrouponNum(Integer goodId){
-        Integer num = orderDao.getGrouponNumById(goodId);
-        return num;
-
+    public List<Order> getGrouponOrders(Integer goodId){
+        return orderDao.getGrouponOrdersById(goodId);
     }
 }
 

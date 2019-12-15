@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
  * @date 12/08/2019
  */
 @Service
-public interface CouponService {
+public interface DiscountService {
 
     /**
      * 获取指定ID的优惠券
      *
      * @param couponId   优惠券ID
      */
-    public Coupon findCouponById(Integer couponId);
+    Coupon findCouponById(Integer couponId);
 }

@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.OrderItem;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -37,4 +38,13 @@ public interface OrderItemMapper {
      * @return
      */
     OrderItem getOrderItemById(Integer OrderItemId);
+
+    /**
+     * 根据状态码和日期获取item
+     * @param status
+     * @param start
+     * @param end
+     * @return
+     */
+    List<OrderItem> getOrderItemByStatus(Integer status, LocalDateTime start, LocalDateTime end);
 }

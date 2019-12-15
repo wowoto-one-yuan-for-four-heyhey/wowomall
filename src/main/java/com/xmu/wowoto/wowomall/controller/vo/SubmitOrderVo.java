@@ -2,7 +2,6 @@ package com.xmu.wowoto.wowomall.controller.vo;
 
 import com.xmu.wowoto.wowomall.domain.Address;
 
-
 import java.util.List;
 
 public class SubmitOrderVo {

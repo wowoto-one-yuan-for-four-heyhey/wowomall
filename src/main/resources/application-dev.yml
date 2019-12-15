@@ -9,7 +9,7 @@ spring:
     password: zqhlovekly
     driver-class-name: com.mysql.jdbc.Driver
   redis:
-    host: 129.28.122.147
+    host: 106.15.92.198
     port: 6379
     database: 0
     jedis:
@@ -20,7 +20,7 @@ spring:
         min-idle: 2
     timeout: 5000
   application:
-    name: wowoto-order
+    name: order
 
 mybatis:
   mapper-locations: classpath:wowomall.mapper/*Mapper.xml
@@ -38,3 +38,6 @@ eureka:
     prefer-ip-address: true
     ip-address: 148.70.28.112
     non-secure-port: 30020
+
+wowomall:
+  preDeductStock: 5

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -59,22 +60,18 @@ public class OrderDao {
      * 8:已评价
      * @param page     分页页数
      * @param limit     分页大小
-     * @param sort      排序
-     * @param orderWay     正序或逆序
      * @return 订单列表
      */
-    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit, String sort, String orderWay)
+    public List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode, Integer page, Integer limit)
     {
         page=(page-1)*limit;
-        List<Order> orders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit,sort,orderWay);
+        List<Order> orders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit);
         for (Order order: orders) {
             List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
             for (OrderItem orderItem: orderItems){
                 Product product = goodsService.getProductById(orderItem.getId());
                 orderItem.setProduct(product);
-
             }
-
             order.setOrderItemList(orderItems);
         }
         return orders;
@@ -116,16 +113,28 @@ public class OrderDao {
         return orderItemMapper.updateOrderItemSelective(orderItem);
     }
 
+    /**
+     * 根据id拿到orderItem
+     * @param orderItemId
+     * @return
+     */
     public OrderItem getOrderItemById(Integer orderItemId){
         return orderItemMapper.getOrderItemById(orderItemId);
     }
 
-    public Integer getGrouponNumById(Integer goodId){
+
+    /**
+     * 查询团购订单数量
+     * @param goodId
+     * @return
+     */
+    public List<Order> getGrouponOrdersById(Integer goodId){
+        List<Order> orders = new ArrayList<>();
         LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
-        Integer num1 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime);
-        Integer num2 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime);
-        Integer num3 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime);
-        return num1 + num2 + num3;
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime));
+        return orders;
     }
 
 }

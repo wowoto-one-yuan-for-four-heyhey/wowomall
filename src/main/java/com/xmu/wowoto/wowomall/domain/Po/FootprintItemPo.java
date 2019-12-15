@@ -1,4 +1,4 @@
-package com.xmu.wowoto.wowomall.domain.po;
+package com.xmu.wowoto.wowomall.domain.Po;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,24 +9,27 @@ import java.time.LocalDateTime;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description:收藏明细
+ * @Description:足迹信息
  * @Data:Created in 14:50 2019/12/11
  **/
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
-public class CollectItemPo {
+public class FootprintItemPo {
     private Integer id;
+
     /**
-    *商品id
+    *创建时间
     */
-    private Integer goodsId;
+    private LocalDateTime birthTime;
     /**
     *用户id
     */
     private Integer userId;
-
+    /**
+    *商品id
+    */
+    private Integer goodsId;
     private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
 }
