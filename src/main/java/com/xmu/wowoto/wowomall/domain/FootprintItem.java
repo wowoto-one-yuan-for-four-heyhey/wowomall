@@ -7,16 +7,14 @@ import lombok.ToString;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description:评论对象
+ * @Description:足迹明细对象
  * @Data:Created in 14:50 2019/12/11
  **/
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class Comment extends CommentPo {
+public class FootprintItem extends FootprintItemPo {
 
-    private User user;
-
-    private ProductPo productPo;
+    private GoodsPo goodsPo;
 }

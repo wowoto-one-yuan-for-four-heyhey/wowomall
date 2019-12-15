@@ -1,5 +1,4 @@
-package com.xmu.wowoto.wowomall.domain.po;
-
+package com.xmu.wowoto.wowomall.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,27 +9,26 @@ import java.time.LocalDateTime;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description:商品种类的信息
- * @Data:Created in 14:50 2019/12/11
+ * @Description: 专题信息
+ * @Date: Created in 16:00 2019/12/11
  **/
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
-public class GoodsCategoryPo {
+public class TopicPo {
+
     private Integer id;
     /**
-     * 种类的名称
+     * 专题图片的url的list
+     * JSON格式: {"pictures":[xxx,xxx]}, xxx为图片的url
      */
-    private String name;
+    private String picUrlList;
     /**
-     * 该种类的父种类ID
+     * 专题的内容
      */
-    private Integer pid;
-    /**
-     * 二级目录的pic
-     */
-    private String picUrl;
+    private String content;
+
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Boolean beDeleted;

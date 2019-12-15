@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.po.OrderPo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class Order extends OrderPo {
-
     private Address addressObj;
     private User user;
     private List<OrderItem> orderItemList;
@@ -82,7 +80,7 @@ public class Order extends OrderPo {
         if(coupon!=null){
             this.cacuCouponPrice();
         }
-        for(orderItem oneItem:this.OrderItems){
+        for(OrderItem oneItem:this.orderItemList){
             dealTotal=dealTotal.add(oneItem.getDealPrice().multiply(BigDecimal.valueOf(oneItem.getNumber())));
         }
 

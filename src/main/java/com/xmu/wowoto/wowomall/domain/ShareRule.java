@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.po.ShareRulePo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +20,11 @@ import java.util.List;
 public class ShareRule extends ShareRulePo {
     @Getter
     @Setter
-    private class Strategy{
+    public class Strategy{
         private Integer lowerBound;
         private Integer upperBound;
         private BigDecimal discountRate;
     }
     private List<Strategy> strategyList;
+    private Integer shareType;
 }

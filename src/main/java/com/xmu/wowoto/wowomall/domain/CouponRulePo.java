@@ -1,4 +1,4 @@
-package com.xmu.wowoto.wowomall.domain.po;
+package com.xmu.wowoto.wowomall.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,35 +42,35 @@ public class CouponRulePo {
     /**
      * 优惠券规则的有效期(即有效的天数)
      */
-    @Getter @Setter private Integer validPeriod;
+    private Integer validPeriod;
     /**
      * 折扣策略
      * JSON格式:{"name":“XXX”, "obj":{XXX}}
      * eg. {"name":"xmu.oomall.discount.domain.DiscountStrategy.NumberStrategy", "obj":{"threshold":5, "offCash":10.01}}
      */
-    @Getter @Setter private String strategy;
+    private String strategy;
     /**
      * 该优惠券规则下优惠券的总张数
      */
-    @Getter @Setter private Integer total;
+    private Integer total;
     /**
      * 该优惠券规则下优惠券的被领取数
      */
-    @Getter @Setter private Integer collectedNum;
+    private Integer collectedNum;
     /**
      * 存放适用于本优惠券规则的所有商品ID
      * JSON格式:{"goodsIds": [xxx,xxx,xxx,xxx,xxx]}
      * eg. {"goodsIds": [1, 2, 3, 4, 5]}
      */
-    @Getter @Setter private String goodsList1;
+    private String goodsList1;
     /**
      * 存放适用于本优惠券规则的所有商品ID(商品可能很多，可能需要多个list存放)
      * JSON格式:{"goodsIds": [xxx,xxx,xxx,xxx,xxx]}
      * eg. {"goodsIds": [1, 2, 3, 4, 5]}
      */
-    @Getter @Setter private String goodsList2;
-    @Getter @Setter private LocalDateTime gmtCreate;
-    @Getter @Setter private LocalDateTime gmtModified;
-    @Getter @Setter private Boolean beDeleted;
+    private String goodsList2;
+    private LocalDateTime gmtCreate;
+    private LocalDateTime gmtModified;
+    private Boolean beDeleted;
 
 }
