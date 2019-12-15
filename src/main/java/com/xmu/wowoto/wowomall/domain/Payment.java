@@ -19,6 +19,12 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Payment {
 
+    public Payment(Order order){
+        this.actualPrice = order.getIntegralPrice();
+        this.payChannel = 1;
+        this.beSuccessful = false;
+        this.orderId = order.getId();
+    }
     
 
     private Integer id;

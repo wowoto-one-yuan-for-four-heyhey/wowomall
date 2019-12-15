@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.domain;
 
 import com.xmu.wowoto.wowomall.domain.Po.OrderPo;
+import com.xmu.wowoto.wowomall.util.Common;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,17 @@ public class Order extends OrderPo {
         StatusCode(int value) { this.value = value; }
 
         public int getValue() { return value; }
+    }
+
+    public Order(User user, Address address){
+        this.setUser(user);
+        this.setUserId(user.getId());
+        this.setAddressObj(address);
+        this.setAddress(address);
+        this.setMobile(address.getMobile());
+        this.setConsignee(address.getConsignee());
+        this.setOrderSn("P" + Common.getRandomNum(1));
+        this.setStatusCode(StatusCode.NOT_PAYED.value);
     }
 
     /**

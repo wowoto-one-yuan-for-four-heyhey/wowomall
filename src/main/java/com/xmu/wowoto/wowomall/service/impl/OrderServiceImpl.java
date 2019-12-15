@@ -4,9 +4,11 @@ import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
+import com.xmu.wowoto.wowomall.domain.Payment;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.service.PaymentService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private PaymentService paymentService;
+
     /**
      * 获取用户订单列表
      *
@@ -62,16 +67,7 @@ public class OrderServiceImpl implements OrderService {
     public Order submit(Order order, List<CartItem> cartItems) {
         Order newOrder = null;
         if(this.createOrderItemFromCartItem(order, cartItems)){
-
             cartService.clearCartItem(cartItems);
-
-            /**
-             * 扣减库存
-             */
-            boolean enough = true;
-            for (OrderItem orderItem: order.getOrderItemList()){
-
-            }
 
             order.cacuGoodsPrice();
             order.cacuDealPrice();
@@ -80,6 +76,8 @@ public class OrderServiceImpl implements OrderService {
             newOrder = orderDao.addOrder(order);
 
             //添加一条未支付的payment
+            Payment payment = new Payment(order);
+            paymentService.createPayment(payment);
         }
 
         return newOrder;

@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.DiscountService;
 import com.xmu.wowoto.wowomall.service.OrderService;
+import com.xmu.wowoto.wowomall.service.UserService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,9 @@ import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_UNKNOWN;
 public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private OrderService orderService;
@@ -126,13 +130,13 @@ public class OrderController {
     public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
 
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-
         if(null == userId) {   return ResponseUtil.unlogin();}
         if(null == submitOrderVo) { return ResponseUtil.badArgument(); }
 
-        Order order = new Order();
-        order.setAddressObj(submitOrderVo.getAddress());
-        order.setAddress(submitOrderVo.getAddress());
+        User user = userService.getUserById(userId);
+        Address address = submitOrderVo.getAddress();
+
+        Order order = new Order(user, address);
 
         if(null != submitOrderVo.getCouponId()){
             Coupon coupon = discountService.findCouponById(submitOrderVo.getCouponId());
