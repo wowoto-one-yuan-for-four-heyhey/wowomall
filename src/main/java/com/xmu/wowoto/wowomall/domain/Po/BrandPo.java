@@ -1,5 +1,4 @@
-package com.xmu.wowoto.wowomall.domain;
-
+package com.xmu.wowoto.wowomall.domain.Po;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,25 +8,28 @@ import java.time.LocalDateTime;
 
 /**
  * @Author: 数据库与对象模型标准组
- * @Description: 专题信息
- * @Date: Created in 16:00 2019/12/11
+ * @Description:品牌信息
+ * @Data:Created in 14:50 2019/12/11
  **/
+
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
-public class TopicPo {
-
+public class BrandPo {
     private Integer id;
     /**
-     * 专题图片的url的list
-     * JSON格式: {"pictures":[xxx,xxx]}, xxx为图片的url
-     */
-    private String picUrlList;
+    *品牌名称
+    */
+    private String name;
     /**
-     * 专题的内容
+    *品牌描述
+    */
+    private String description;
+    /**
+    *品牌图片链接
      */
-    private String content;
+    private String picUrl;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;

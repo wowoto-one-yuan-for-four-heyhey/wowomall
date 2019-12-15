@@ -39,8 +39,6 @@ public interface OrderMapper {
      * 8:已评价
      * @param page     分页页数
      * @param limit     分页大小
-     * @param sort      排序(正序)
-     * @param order     order
      * @return 订单列表
      */
     List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode,
@@ -61,5 +59,5 @@ public interface OrderMapper {
      */
     Integer updateOrderSelective(Order order);
 
-    Integer getGrouponNumById(Integer goodId, Integer statusCode, LocalDateTime nowTime);
+    List<Order> getGrouponOrdersById(Integer goodId, Integer statusCode, LocalDateTime nowTime);
 }

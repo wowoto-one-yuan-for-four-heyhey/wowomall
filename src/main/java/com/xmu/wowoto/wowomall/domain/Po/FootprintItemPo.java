@@ -1,4 +1,4 @@
-package com.xmu.wowoto.wowomall.domain;
+package com.xmu.wowoto.wowomall.domain.Po;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

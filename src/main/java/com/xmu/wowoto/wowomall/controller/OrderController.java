@@ -3,7 +3,7 @@ package com.xmu.wowoto.wowomall.controller;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.CartService;
-import com.xmu.wowoto.wowomall.service.CouponService;
+import com.xmu.wowoto.wowomall.service.DiscountService;
 import com.xmu.wowoto.wowomall.service.OrderService;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
@@ -42,7 +42,7 @@ public class OrderController {
     private CartService cartService;
 
     @Autowired
-    private CouponService couponService;
+    private DiscountService discountService;
 
     @Autowired
     private HttpServletRequest request;
@@ -135,7 +135,7 @@ public class OrderController {
         order.setAddress(submitOrderVo.getAddress());
 
         if(null != submitOrderVo.getCouponId()){
-            Coupon coupon = couponService.findCouponById(submitOrderVo.getCouponId());
+            Coupon coupon = discountService.findCouponById(submitOrderVo.getCouponId());
             order.setCouponId(coupon.getId());
         }
 
@@ -369,16 +369,12 @@ public class OrderController {
      * @return
      */
     @GetMapping("orders/grouponOrders")
-    public Object getGrouponNum(@PathVariable("grouponRule")
+    public Object getGrouponOrders(@PathVariable("grouponRule")
                                             GrouponRule grouponRule ){
 
         Integer goodId = grouponRule.getGoodsId();
-        Integer num = orderService.getGrouponNum(goodId);
-        return ResponseUtil.ok(num);
+        List<Order> orders = orderService.getGrouponOrders(goodId);
+        return ResponseUtil.ok(orders);
     }
-
-
-
-
 
 }

@@ -1,5 +1,7 @@
 package com.xmu.wowoto.wowomall.domain;
 
+import com.xmu.wowoto.wowomall.domain.Po.BrandPo;
+import com.xmu.wowoto.wowomall.domain.Po.GoodsPo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

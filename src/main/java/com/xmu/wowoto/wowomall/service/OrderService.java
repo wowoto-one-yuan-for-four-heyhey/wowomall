@@ -86,7 +86,6 @@ public interface OrderService {
      */
     public HashMap<String,Integer> payOrder(Order order);
 
-
     /**
      * 确认收货
      *
@@ -95,7 +94,6 @@ public interface OrderService {
      * @return 订单操作结果
      */
     public Object confirm(Integer userId,Integer orderId);
-
 
     /**
      * 评价
@@ -113,6 +111,5 @@ public interface OrderService {
      */
     public OrderItem getOrderItem(Integer orderItemId);
 
-
-    public Integer getGrouponNum(Integer goodId);
+    public List<Order> getGrouponOrders(Integer goodId);
 }

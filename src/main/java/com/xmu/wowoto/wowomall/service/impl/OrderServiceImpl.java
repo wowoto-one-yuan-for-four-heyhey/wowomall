@@ -93,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     private Boolean createOrderItemFromCartItem(Order order, List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>(cartItems.size());
         for (CartItem cartItem: cartItems){
-            if(goodsService.deductStock(cartItem.getProductId(), cartItem.getNumber())){
+            if(goodsService.deductStock(cartItem)){
                 OrderItem orderItem = new OrderItem(cartItem);
                 orderItems.add(orderItem);
             }else {
@@ -181,13 +181,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-            /**
-             * 取消订单
-             *
-             * @param userId   用户ID
-             * @param orderId  订单ID
-             * @return 操作结果
-             */
+    /**
+     * 取消订单
+     *
+     * @param userId   用户ID
+     * @param orderId  订单ID
+     * @return 操作结果
+     */
     @Override
     public Object cancelOrder(Integer userId, Integer orderId){
         Order wowoOrder = orderDao.getOrderByOrderId(orderId);
@@ -322,12 +322,9 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public Integer getGrouponNum(Integer goodId){
-        Integer num = orderDao.getGrouponNumById(goodId);
-        return num;
-
+    public List<Order> getGrouponOrders(Integer goodId){
+        return orderDao.getGrouponOrdersById(goodId);
     }
-
 }
 
 

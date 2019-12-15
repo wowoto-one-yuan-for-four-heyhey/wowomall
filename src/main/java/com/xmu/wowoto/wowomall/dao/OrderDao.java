@@ -3,7 +3,6 @@ package com.xmu.wowoto.wowomall.dao;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.Product;
-import com.xmu.wowoto.wowomall.domain.po.OrderPo;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import com.xmu.wowoto.wowomall.service.GoodsService;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -128,12 +128,13 @@ public class OrderDao {
      * @param goodId
      * @return
      */
-    public Integer getGrouponNumById(Integer goodId){
+    public List<Order> getGrouponOrdersById(Integer goodId){
+        List<Order> orders = new ArrayList<>();
         LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
-        Integer num1 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime);
-        Integer num2 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime);
-        Integer num3 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime);
-        return num1 + num2 + num3;
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime));
+        return orders;
     }
 
 }
