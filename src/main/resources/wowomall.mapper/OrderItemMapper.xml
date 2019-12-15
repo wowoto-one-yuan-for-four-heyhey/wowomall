@@ -90,4 +90,22 @@
         from order_item
         where id = #{orderItemId} and be_deleted = 0
     </select>
+
+    <select id="getOrderItemByStatus"  resultType="OrderItem">
+               select id,
+                   order_id,
+                   itemType,
+                   status_code,
+                   `number`,
+                   price,
+                   deal_price,
+                   product_id,
+                   goods_id,
+                   nameWithSpecifications,
+                   picUrl,
+                   gmt_create,
+                   gmt_modified.
+        from order_item
+        where id = #{orderItemId} and be_deleted = 0
+    </select>
 </mapper>

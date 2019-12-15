@@ -123,6 +123,11 @@ public class OrderDao {
     }
 
 
+    /**
+     * 查询团购订单数量
+     * @param goodId
+     * @return
+     */
     public Integer getGrouponNumById(Integer goodId){
         LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
         Integer num1 = orderMapper.getGrouponNumById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime);

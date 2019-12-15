@@ -316,13 +316,18 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getOrderItemById(orderItemId);
     }
 
-
+    /**
+     * 获取团购订单数量
+     * @param goodId
+     * @return
+     */
     @Override
     public Integer getGrouponNum(Integer goodId){
         Integer num = orderDao.getGrouponNumById(goodId);
         return num;
 
     }
+
 }
 
 
