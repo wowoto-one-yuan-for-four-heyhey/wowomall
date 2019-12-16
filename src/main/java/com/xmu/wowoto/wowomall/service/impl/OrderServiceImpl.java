@@ -145,10 +145,10 @@ public class OrderServiceImpl implements OrderService {
 
             orderDao.updateOrder(order);
 
-                //对用户 钱进行更新
-                // 对价格进行更新
+            //对用户 钱进行更新
+            // 对价格进行更新
 
-                //return ResponseUtil.ok(updateNum);
+            //return ResponseUtil.ok(updateNum);
         }
         return order;
     }
@@ -191,6 +191,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order cancelOrder(Order order){
         order.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
+        order.setEndTime(LocalDateTime.now());
         orderDao.updateOrder(order);
         return order;
     }
@@ -205,9 +206,10 @@ public class OrderServiceImpl implements OrderService {
     public Order deleteOrder(Order order){
         for(OrderItem orderItem: order.getOrderItemList()){
             orderItem.setBeDeleted(true);
-            orderDao.(orderItem);
+            orderDao.updateOrderItem(orderItem);
         }
         order.setBeDeleted(true);
+        order.setEndTime(LocalDateTime.now());
         orderDao.updateOrder(order);
         return order;
     }
@@ -219,19 +221,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order confirm(Order order){
-
-        if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
-            order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
-            order.setConfirmTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(order);
-            if(updateNum == 1){
-                return ResponseUtil.ok(updateNum);
-            }else {
-                return ResponseUtil.fail();
-            }
-        } else {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+        for(OrderItem orderItem: order.getOrderItemList()){
+            orderItem.setStatusCode(OrderItem.StatusCode.CONFIRMED.getValue());
+            orderDao.updateOrderItem(orderItem);
         }
+        order.setStatusCode(Order.StatusCode.SHIPPED_CONFIRM.getValue());
+        order.setConfirmTime(LocalDateTime.now());
+        orderDao.updateOrder(order);
+        return order;
     }
 
     /**
@@ -242,19 +239,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order shipOrder(Order order){
-
-        if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
-            order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
-            order.setShipTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(order);
-            if(updateNum == 1){
-                return order;
-            }else {
-                return null;
-            }
-        } else {
-            return null;
+        for(OrderItem orderItem: order.getOrderItemList()){
+            orderItem.setStatusCode(OrderItem.StatusCode.NOT_CONFIRMED.getValue());
+            orderDao.updateOrderItem(orderItem);
         }
+        order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
+        order.setShipTime(LocalDateTime.now());
+        orderDao.updateOrder(order);
+        return order;
     }
 
     /**
@@ -274,8 +266,8 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public List<Order> getGrouponOrders(Integer goodId,LocalDateTime startTime,LocalDateTime endTime){
-        return orderDao.getGrouponOrdersById(goodId,startTime,endTime);
+    public List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
+        return null;
     }
 }
 
