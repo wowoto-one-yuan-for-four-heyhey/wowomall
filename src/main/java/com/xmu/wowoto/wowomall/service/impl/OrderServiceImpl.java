@@ -38,6 +38,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private DiscountService discountService;
 
+    @Autowired
+    private FreightService freightService;
+
+    @Autowired
+    private LogisticsService logisticsService;
+
     /**
      * 获取用户订单列表
      *
@@ -67,7 +73,14 @@ public class OrderServiceImpl implements OrderService {
         if(this.createOrderItemFromCartItem(order, cartItems)){
             cartService.clearCartItem(cartItems);
 
+            //计算价格
             order = discountService.caculatePrice(order);
+
+            //计算运费
+            order.setFreightPrice(freightService.caculateFreight(order));
+
+            //物流单号
+            order.setOrderSn(logisticsService.getShipSn());
 
             //添加订单
             newOrder = orderDao.addOrder(order);
@@ -299,6 +312,7 @@ public class OrderServiceImpl implements OrderService {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
     }
+
 
 
     /**
