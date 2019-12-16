@@ -273,7 +273,7 @@ public class OrderController {
             return ResponseUtil.fail();
         }
         Integer payStatus=result.get("order");
-        if(payStatus>-1){
+        if(payStatus > -1){
             return ResponseUtil.ok(result);
         }
         else{
