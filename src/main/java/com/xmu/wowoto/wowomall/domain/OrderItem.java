@@ -22,7 +22,7 @@ public class OrderItem extends OrderItemPo {
         NOT_PAYED(0),
         NOT_SHIPPED(1),
         NOT_CONFIRMED(2),
-        NOT_COMMENT(3),
+        CONFIRMED(3),
         FINISHED(4),
         APPLY_RETURN(5),
         RETURN_SUCCESS(6),

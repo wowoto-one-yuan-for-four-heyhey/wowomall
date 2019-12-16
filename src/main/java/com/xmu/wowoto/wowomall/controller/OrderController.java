@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 /**
  *
  * @author wowoto
@@ -200,7 +198,7 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirm( @PathVariable("id")String orderId ){
+    public Object confirmOrder( @PathVariable("id")String orderId ){
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
@@ -210,9 +208,7 @@ public class OrderController {
         if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
-        if(order == null){
-            return ResponseUtil.fail();
-        }
+
         return ResponseUtil.ok(order);
     }
 
@@ -277,7 +273,7 @@ public class OrderController {
             return ResponseUtil.fail();
         }
         Integer payStatus=result.get("order");
-        if(payStatus>-1){
+        if(payStatus > -1){
             return ResponseUtil.ok(result);
         }
         else{

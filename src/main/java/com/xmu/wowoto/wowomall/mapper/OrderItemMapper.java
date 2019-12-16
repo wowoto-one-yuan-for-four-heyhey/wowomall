@@ -55,4 +55,6 @@ public interface OrderItemMapper {
      * @return
      */
     List<OrderItem> getOrderItemByTimeLimit(LocalDateTime start, LocalDateTime end);
+
+    Integer updateOrderItemById(Integer id);
 }

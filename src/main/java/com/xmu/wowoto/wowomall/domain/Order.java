@@ -33,8 +33,8 @@ public class Order extends OrderPo {
         PAYED(3),
         PAYED_CANCELED(4),
         SHIPPED(5),
-        SHIPPED_CONNFIEM(6),
-        SHIPPED_SYSTEM_CONNFIEM(7),
+        SHIPPED_CONFIRM(6),
+        SHIPPED_SYSTEM_CONFIRM(7),
         COMMENTED(8);
 
         private final int value;

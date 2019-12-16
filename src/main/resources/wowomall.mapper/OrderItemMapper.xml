@@ -92,42 +92,41 @@
     </select>
 
     <select id="getOrderItemByStatus"  resultType="OrderItem">
-              select id,
-                   order_id,
-                   item_type,
-                   status as status_code,
-                   `number`,
-                   price,
-                   deal_price,
-                   product_id,
-                   goods_id,
-                    name_with_specifications,
-                   picUrl,
-                   gmt_create,
-                   gmt_modified
-        from oomall_order_item
-        where id = #{orderItemId}
+    select id,
+       order_id,
+       item_type,
+       status as status_code,
+       `number`,
+       price,
+       deal_price,
+       product_id,
+       goods_id,
+        name_with_specifications,
+       picUrl,
+       gmt_create,
+       gmt_modified
+    from oomall_order_item
+    where id = #{orderItemId}
     </select>
 
     <select id="getOrderItemByTimeLimit" resultType="OrderItem">
-            select id,
-                   order_id,
-                   item_type,
-                   status as status_code,
-                   `number`,
-                   price,
-                   deal_price,
-                   product_id,
-                   goods_id,
-                   name_with_specifications,
-                   picUrl,
-                   gmt_create,
-                   gmt_modified
+        select id,
+               order_id,
+               item_type,
+               status as status_code,
+               `number`,
+               price,
+               deal_price,
+               product_id,
+               goods_id,
+               name_with_specifications,
+               picUrl,
+               gmt_create,
+               gmt_modified
         from oomall_order_item
         where gmt_create between #{start}
               and #{end}
               and item_type &gt; 0 and item_type &lt; 5
-
-
     </select>
+
 </mapper>
