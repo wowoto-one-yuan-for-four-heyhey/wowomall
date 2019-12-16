@@ -26,8 +26,10 @@ public class OrderDao {
 
     @Autowired
     private OrderMapper orderMapper;
+
     @Autowired
     private OrderItemMapper orderItemMapper;
+
     @Autowired
     private GoodsService goodsService;
 

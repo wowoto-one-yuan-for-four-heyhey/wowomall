@@ -18,6 +18,25 @@ import lombok.ToString;
 public class OrderItem extends OrderItemPo {
     private Product product;
 
+    public enum StatusCode{
+        NOT_PAYED(0),
+        NOT_SHIPPED(1),
+        NOT_CONFIRMED(2),
+        NOT_COMMENT(3),
+        FINISHED(4),
+        APPLY_RETURN(5),
+        RETURN_SUCCESS(6),
+        APPLY_EXCHANGE(7),
+        EXCHANGE_SUCCESS(8),
+        PRESALE(9);
+
+        private final int value;
+
+        StatusCode(int value) { this.value = value; }
+
+        public int getValue() { return value; }
+    }
+
     public OrderItem(CartItem cartItem){
         this.setNumber(cartItem.getNumber());
         Product product = cartItem.getProduct();

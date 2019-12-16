@@ -190,11 +190,9 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order cancelOrder(Order order){
-        Order wowoOrder = orderDao.getOrderByOrderId(orderId);
-        if(null != wowoOrder){
-            wowoOrder.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
-        }
-        return true;
+        order.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
+        orderDao.updateOrder(order);
+        return order;
     }
 
     /**
@@ -204,38 +202,27 @@ public class OrderServiceImpl implements OrderService {
      * @return 操作结果
      */
     @Override
-    public boolean deleteOrder(Order order){
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(null != order){
-            for(OrderItem orderItem: order.getOrderItemList()){
-                orderItem.setBeDeleted(true);
-                if(orderDao.updateOrderItem(orderItem) < 1){
-                    return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
-                }
-            }
-            order.setBeDeleted(true);
-            return ResponseUtil.ok(orderDao.updateOrder(order));
-        }else {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+    public Order deleteOrder(Order order){
+        for(OrderItem orderItem: order.getOrderItemList()){
+            orderItem.setBeDeleted(true);
+            orderDao.(orderItem);
         }
+        order.setBeDeleted(true);
+        orderDao.updateOrder(order);
+        return order;
     }
 
     /**
-     * 订单发货
+     * 订单确认
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
-     * @return 操作结果
+     * @param order
      */
     @Override
-    public Object shipOrder(Integer userId,Integer orderId){
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(order == null){
-            return ResponseUtil.fail();
-        }
-        if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
-            order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
-            order.setShipTime(LocalDateTime.now());
+    public Order confirm(Order order){
+
+        if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
+            order.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
@@ -248,22 +235,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 订单确认
+     * 订单发货
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
     @Override
-    public Object confirm(Integer userId,Integer orderId){
+    public Order shipOrder(Order order){
         Order order = orderDao.getOrderByOrderId(orderId);
         if(order == null){
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+            return ResponseUtil.fail();
         }
-
-        if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
-            order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
-            order.setConfirmTime(LocalDateTime.now());
+        if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
+            order.setShipTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);

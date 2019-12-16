@@ -48,10 +48,8 @@ public class OrderController {
     private CartService cartService;
 
     @Autowired
-    private DiscountService discountService;
-
-    @Autowired
     private HttpServletRequest request;
+
     /**
      * 获取用户订单列表
      *
@@ -193,7 +191,7 @@ public class OrderController {
 
         order = orderService.deleteOrder(order);
 
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -210,6 +208,8 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+
+        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
 
@@ -265,14 +265,11 @@ public class OrderController {
     public Object payOrder(@PathVariable("id")Integer id)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(userId==null){
-            return ResponseUtil.unlogin();
-        }
-        Order oneOrder=orderService.getOrder(id);
-        if(oneOrder==null){
-            return ResponseUtil.fail();
-        }
-        HashMap<String,Integer> result=orderService.payOrder(oneOrder);
+        if(userId == null){ return ResponseUtil.unlogin(); }
+        Order order = orderService.getOrder(id);
+        if(order == null){ return ResponseUtil.badArgumentValue(); }
+
+        HashMap<String,Integer> result=orderService.payOrder(order);
         if(result.containsKey("orderItem")){
             return ResponseUtil.fail();
         }
@@ -309,7 +306,4 @@ public class OrderController {
         List<Order> orders = orderService.getGrouponOrders(goodsId);
         return ResponseUtil.ok(orders);
     }
-
-
-
 }
