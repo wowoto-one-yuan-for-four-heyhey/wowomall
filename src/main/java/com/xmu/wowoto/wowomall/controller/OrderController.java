@@ -331,7 +331,7 @@ public class OrderController {
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
         OrderItem oneItem = orderService.getOrderItem(orderItemId);
         if(oneItem==null){
-            return ResponseUtil.fail();
+            return ResponseUtil.badArgumentValue();
         }
         Integer goodsType = oneItem.getItemType();
         return ResponseUtil.ok(goodsType);
