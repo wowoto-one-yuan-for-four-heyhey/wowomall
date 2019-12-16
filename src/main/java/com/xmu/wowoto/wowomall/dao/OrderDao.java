@@ -134,9 +134,9 @@ public class OrderDao {
     public List<Order> getGrouponOrdersById(Integer goodId){
         List<Order> orders = new ArrayList<>();
         LocalDateTime nowTime = LocalDateTime.now().minusDays(8);
-        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONNFIEM.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONFIRM.getValue(),nowTime));
         orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime));
-        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime));
+        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONFIRM.getValue(),nowTime));
         return orders;
     }
 

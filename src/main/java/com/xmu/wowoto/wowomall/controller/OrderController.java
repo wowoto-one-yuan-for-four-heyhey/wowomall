@@ -23,10 +23,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
-import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_UNKNOWN;
-
 /**
  *
  * @author wowoto
@@ -201,7 +197,7 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirm( @PathVariable("id")String orderId ){
+    public Object confirmOrder( @PathVariable("id")String orderId ){
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
