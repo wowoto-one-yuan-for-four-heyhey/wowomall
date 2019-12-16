@@ -258,6 +258,7 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
+
         if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
             order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
             order.setConfirmTime(LocalDateTime.now());
