@@ -14,7 +14,7 @@ public class OrderServiceImplTest {
 
     @Test
     void getOrderDetail(){
-        orderService.getOrderDetail(2, 2);
+
     }
 
     @Test
