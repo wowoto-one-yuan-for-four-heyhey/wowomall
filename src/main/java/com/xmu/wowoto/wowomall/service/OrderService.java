@@ -89,7 +89,6 @@ public interface OrderService {
      */
     OrderItem getOrderItem(Integer orderItemId);
 
-    @Override
     HashMap<String,Integer> payOrder(Order oneOrder);
 
     List<Order> getGrouponOrders(Integer goodId);
