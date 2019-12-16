@@ -1,7 +1,7 @@
 package com.xmu.wowoto.wowomall.service;
 
+import com.xmu.wowoto.wowomall.domain.Order;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 

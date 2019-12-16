@@ -11,11 +11,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * 定时任务
- * @author K
+ * @author fringe
  * @date 12/14/2019
  */
 @Component
@@ -23,6 +24,10 @@ public class TimerService {
 
     @Autowired
     OrderDao orderDao;
+    @Autowired
+    ShareService shareService;
+    @Autowired
+    UserService userService;
 
     @Scheduled(cron = "0 0 2 * * ?")
     public void cacuRebate(){
@@ -31,7 +36,15 @@ public class TimerService {
             Order order=orderDao.getOrderByOrderId(item.getOrderId());
             List<OrderItem> rebateList=new ArrayList<>();
             rebateList.add(item);
-
+            order.setOrderItemList(rebateList);
+            Map<Integer,Integer> result = shareService.getRebate(order);
+            if(result.size()==0){
+                continue;
+            }
+            for(Integer key: result.keySet()){
+                Integer value = result.get(key);
+                Integer errNo=userService.addRebate(key,value);
+            }
         }
 
     }
