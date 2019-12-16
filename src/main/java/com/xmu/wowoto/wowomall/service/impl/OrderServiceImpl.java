@@ -227,7 +227,7 @@ public class OrderServiceImpl implements OrderService {
             if(updateNum == 1){
                 return ResponseUtil.ok(updateNum);
             }else {
-                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+                return ResponseUtil.fail();
             }
         } else {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
@@ -242,21 +242,18 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order shipOrder(Order order){
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(order == null){
-            return ResponseUtil.fail();
-        }
+
         if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
             order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
             order.setShipTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
-                return ResponseUtil.ok(updateNum);
+                return order;
             }else {
-                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
+                return null;
             }
         } else {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+            return null;
         }
     }
 

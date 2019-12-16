@@ -233,6 +233,9 @@ public class OrderController {
         if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
 
         order = orderService.shipOrder(order);
+        if(order == null){
+            return ResponseUtil.illegal();
+        }
         return ResponseUtil.ok(order);
     }
 
