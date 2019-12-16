@@ -2,6 +2,7 @@ package com.xmu.wowoto.wowomall.controller;
 
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
+import com.xmu.wowoto.wowomall.domain.Po.GrouponRulePo;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.DiscountService;
 import com.xmu.wowoto.wowomall.service.OrderService;
@@ -366,18 +367,21 @@ public class OrderController {
     }
 
 
+
     /**
-     * 查询grouponrule的参团人数
-     * @param grouponRule
+     * 查询grouponrule的参团人数 discountService调用
+     * @param grouponRulePo
      * @return
      */
     @GetMapping("orders/grouponOrders")
-    public Object getGrouponOrders(@PathVariable("grouponRule")
-                                            GrouponRule grouponRule ){
+    public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
 
-        Integer goodId = grouponRule.getGoodsId();
-        List<Order> orders = orderService.getGrouponOrders(goodId);
+        Integer goodsId = grouponRulePo.getGoodsId();
+        List<Order> orders = orderService.getGrouponOrders(goodsId);
         return ResponseUtil.ok(orders);
     }
+
+    @PutMapping("/orders")
+    public Object updatePOfOrder(@RequestBody List<Order> orderList)
 
 }

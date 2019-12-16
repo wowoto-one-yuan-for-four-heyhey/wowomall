@@ -3,7 +3,7 @@
 <mapper namespace="com.xmu.wowoto.wowomall.mapper.OrderItemMapper">
 
     <insert id="addOrderItems" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        insert into order_item(
+        insert into oomall_order_item(
             order_id, item_type, status, number, price, deal_price, product_id, goods_id, name_with_specifications, gmt_create, gmt_modified, is_deleted
         )
         values
@@ -26,12 +26,12 @@
                picUrl,
                gmt_create,
                gmt_modified.
-        from order_item
+        from oomall_order_item
         where order_id = #{orderId} and be_deleted = 0
     </select>
 
     <select id="updateOrderItemSelective" parameterType="OrderItem" resultType="Integer">
-        update order_item
+        update oomall_order_item
         <set>
             <if test="orderId != null">
                 order_id = #{orderId},
@@ -86,26 +86,48 @@
                    nameWithSpecifications,
                    picUrl,
                    gmt_create,
-                   gmt_modified.
-        from order_item
+                   gmt_modified
+        from oomall_order_item
         where id = #{orderItemId} and be_deleted = 0
     </select>
 
     <select id="getOrderItemByStatus"  resultType="OrderItem">
-               select id,
+              select id,
                    order_id,
-                   itemType,
-                   status_code,
+                   item_type,
+                   status as status_code,
                    `number`,
                    price,
                    deal_price,
                    product_id,
                    goods_id,
-                   nameWithSpecifications,
+                    name_with_specifications,
                    picUrl,
                    gmt_create,
-                   gmt_modified.
-        from order_item
-        where id = #{orderItemId} and be_deleted = 0
+                   gmt_modified
+        from oomall_order_item
+        where id = #{orderItemId}
+    </select>
+
+    <select id="getOrderItemByTimeLimit" resultType="OrderItem">
+            select id,
+                   order_id,
+                   item_type,
+                   status as status_code,
+                   `number`,
+                   price,
+                   deal_price,
+                   product_id,
+                   goods_id,
+                   name_with_specifications,
+                   picUrl,
+                   gmt_create,
+                   gmt_modified
+        from oomall_order_item
+        where gmt_create between #{start}
+              and #{end}
+              and item_type &gt; 0 and item_type &lt; 5
+
+
     </select>
 </mapper>

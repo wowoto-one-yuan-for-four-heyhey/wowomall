@@ -72,9 +72,9 @@ public class Order extends OrderPo {
     /**
      * 计算订单的商品总价
      */
-    public void cacuGoodsPrice() {
+    public void cacuGoodsPrice(){
         BigDecimal total = BigDecimal.ZERO;
-        for (OrderItem orderItem : this.orderItemList) {
+        for(OrderItem orderItem: this.orderItemList){
             total = total.add(orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getNumber())));
         }
         this.setGoodsPrice(total);
