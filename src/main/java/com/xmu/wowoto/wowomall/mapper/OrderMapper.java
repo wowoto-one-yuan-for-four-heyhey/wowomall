@@ -59,5 +59,5 @@ public interface OrderMapper {
      */
     Integer updateOrderSelective(Order order);
 
-    List<Order> getGrouponOrdersById(Integer goodId, Integer statusCode, LocalDateTime nowTime);
+    List<Order> getGrouponOrdersById(Integer goodId, Integer statusCode, LocalDateTime startTime,LocalDateTime endTime);
 }

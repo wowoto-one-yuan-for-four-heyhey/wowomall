@@ -277,8 +277,8 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public List<Order> getGrouponOrders(Integer goodId){
-        return orderDao.getGrouponOrdersById(goodId);
+    public List<Order> getGrouponOrders(Integer goodId,LocalDateTime startTime,LocalDateTime endTime){
+        return orderDao.getGrouponOrdersById(goodId,startTime,endTime);
     }
 }
 

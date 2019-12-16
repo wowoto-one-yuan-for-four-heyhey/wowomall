@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -91,5 +92,5 @@ public interface OrderService {
 
     HashMap<String,Integer> payOrder(Order oneOrder);
 
-    List<Order> getGrouponOrders(Integer goodId);
+    List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
 }

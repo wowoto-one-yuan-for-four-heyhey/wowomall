@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +71,6 @@ public class OrderController {
         List<Order> orders = orderService.getOrders(userId, showType, page, limit);
         return ResponseUtil.ok(orders);
     }
-
 
 
     /**
@@ -303,7 +303,9 @@ public class OrderController {
     @GetMapping("orders/grouponOrders")
     public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
         Integer goodsId = grouponRulePo.getGoodsId();
-        List<Order> orders = orderService.getGrouponOrders(goodsId);
+        LocalDateTime startTime = grouponRulePo.getStartTime();
+        LocalDateTime endTime = grouponRulePo.getEndTime();
+        List<Order> orders = orderService.getGrouponOrders(goodsId,startTime,endTime);
         return ResponseUtil.ok(orders);
     }
 }

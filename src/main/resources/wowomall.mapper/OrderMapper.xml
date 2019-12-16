@@ -46,7 +46,8 @@
 <select id="getGrouponOrderById" parameterType="java.util.List" resultType="java.util.List">
         select *
         from `oomall_order`,`oomall_order_item`
-        where DATEDIFF(day,confirm_time,#{nowTime})=7 and `order`.id ==  `order_item`.order_id and `order`.be_deleted = 0
+        where pay_time between #{startTime} and #{endTime} and
+        `order`.id ==  `order_item`.order_id and `order`.be_deleted = 0
             and status_code = #{statusCode} and `order_item`.goods_id = #{goodId}
 </select>
 
