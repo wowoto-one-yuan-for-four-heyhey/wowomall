@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
-
 /**
  *
  * @author wowoto
