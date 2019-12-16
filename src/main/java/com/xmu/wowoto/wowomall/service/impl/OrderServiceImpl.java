@@ -166,18 +166,18 @@ public class OrderServiceImpl implements OrderService {
             List<OrderItem> orderItems = oneOrder.getOrderItemList();
             for (OrderItem item : orderItems) {
                 item.setStatusCode(Order.StatusCode.PAYED.getValue());
-                Integer re= orderDao.updateOrderItem(item);
+                Integer re = orderDao.updateOrderItem(item);
                 if(re != 1) {
-                    result.put("orderItem",re);
+                    result.put("orderItem", re);
                 }
             }
             oneOrder.setPayTime(LocalDateTime.now());
             oneOrder.setStatusCode(Order.StatusCode.PAYED.getValue());
             Integer status = orderDao.updateOrder(oneOrder);
-            result.put("order",status);
+            result.put("order", status);
             return result;
         }
-        result.put("order",-1);
+        result.put("order", -1);
         return result;
     }
 
