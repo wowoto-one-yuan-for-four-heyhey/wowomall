@@ -25,7 +25,6 @@ public class Payment {
         this.beSuccessful = false;
         this.orderId = order.getId();
     }
-    
 
     private Integer id;
     /**
@@ -63,5 +62,4 @@ public class Payment {
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Boolean beDeleted;
-
 }
