@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Service
 public interface UserService {
-    User getUserById(@PathVariable Integer userId);
+    User getUserById(Integer userId);
 }
