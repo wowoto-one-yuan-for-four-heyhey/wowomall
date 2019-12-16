@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_INVALID_OPERATION;
-import static com.xmu.wowoto.wowomall.util.ResponseCode.ORDER_UNKNOWN;
 
 /**
  *
@@ -212,7 +210,9 @@ public class OrderController {
         if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
-
+        if(order == null){
+            return ResponseUtil.fail();
+        }
         return ResponseUtil.ok(order);
     }
 

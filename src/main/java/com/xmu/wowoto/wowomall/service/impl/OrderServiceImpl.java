@@ -225,12 +225,12 @@ public class OrderServiceImpl implements OrderService {
             order.setConfirmTime(LocalDateTime.now());
             Integer updateNum = orderDao.updateOrder(order);
             if(updateNum == 1){
-                return ResponseUtil.ok(updateNum);
+                return order;
             }else {
-                return ResponseUtil.fail();
+                return null;
             }
         } else {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
+            return null;
         }
     }
 
