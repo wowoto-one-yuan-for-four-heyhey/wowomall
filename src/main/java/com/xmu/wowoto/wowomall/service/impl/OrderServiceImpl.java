@@ -1,14 +1,8 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.dao.OrderDao;
-import com.xmu.wowoto.wowomall.domain.CartItem;
-import com.xmu.wowoto.wowomall.domain.Order;
-import com.xmu.wowoto.wowomall.domain.OrderItem;
-import com.xmu.wowoto.wowomall.domain.Payment;
-import com.xmu.wowoto.wowomall.service.CartService;
-import com.xmu.wowoto.wowomall.service.GoodsService;
-import com.xmu.wowoto.wowomall.service.OrderService;
-import com.xmu.wowoto.wowomall.service.PaymentService;
+import com.xmu.wowoto.wowomall.domain.*;
+import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
 
 /**
  *
@@ -39,6 +31,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private DiscountService discountService;
+
+    @Autowired
+    private FreightService freightService;
+
+    @Autowired
+    private LogisticsService logisticsService;
 
     /**
      * 获取用户订单列表
@@ -70,7 +71,18 @@ public class OrderServiceImpl implements OrderService {
             cartService.clearCartItem(cartItems);
 
             order.cacuGoodsPrice();
-            order.cacuDealPrice();
+
+            //计算优惠促销价格
+            order = discountService.caculatePrice(order);
+
+            //计算运费
+            order.setFreightPrice(freightService.caculateFreight(order));
+
+            //物流单号
+            order.setOrderSn(logisticsService.getShipSn());
+
+            //最终计算
+            order.cacuIntegral();
 
             //添加订单
             newOrder = orderDao.addOrder(order);
@@ -88,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
      * @param order 订单对象
      * @param cartItems 购物车对象列表
      */
-    private Boolean createOrderItemFromCartItem(Order order, List<CartItem> cartItems) {
+    private boolean createOrderItemFromCartItem(Order order, List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>(cartItems.size());
         for (CartItem cartItem: cartItems){
             if(goodsService.deductStock(cartItem)){
@@ -118,15 +130,11 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 更改订单状态为退款(管理员操作)
      *
-     * @param orderId 订单ID
-     * @param userId 用户ID
+     * @param order
      * @return 订单列表
      */
     @Override
-    public Object refundOrder(Integer userId,Integer orderId){
-        /*xbb*/
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(order == null){ return  ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage()); }
+    public Order refundOrder(Order order){
         if(Order.StatusCode.PAYED_CANCELED.getValue() >= order.getStatusCode()){
             order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
             List<OrderItem> orderItems= order.getOrderItemList();
@@ -135,19 +143,14 @@ public class OrderServiceImpl implements OrderService {
                 // 对item的操作
             }
 
-            Integer status = orderDao.updateOrder(order);
-            if(status == 1) {
+            orderDao.updateOrder(order);
+
                 //对用户 钱进行更新
                 // 对价格进行更新
 
                 //return ResponseUtil.ok(updateNum);
-                return ResponseUtil.ok();
-            }
-            else{
-                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
-            }
         }
-       return  ResponseUtil.fail();
+        return order;
     }
 
     /**
@@ -164,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
             for (OrderItem item : orderItems) {
                 item.setStatusCode(Order.StatusCode.PAYED.getValue());
                 Integer re= orderDao.updateOrderItem(item);
-                if(re!=1) {
+                if(re != 1) {
                     result.put("orderItem",re);
                 }
             }
@@ -182,12 +185,11 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 取消订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
     @Override
-    public Object cancelOrder(Integer userId, Integer orderId){
+    public Order cancelOrder(Order order){
         Order wowoOrder = orderDao.getOrderByOrderId(orderId);
         if(null != wowoOrder){
             wowoOrder.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
@@ -198,12 +200,11 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 删除订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
     @Override
-    public Object deleteOrder(Integer userId, Integer orderId){
+    public boolean deleteOrder(Order order){
         Order order = orderDao.getOrderByOrderId(orderId);
         if(null != order){
             for(OrderItem orderItem: order.getOrderItemList()){
@@ -230,7 +231,7 @@ public class OrderServiceImpl implements OrderService {
     public Object shipOrder(Integer userId,Integer orderId){
         Order order = orderDao.getOrderByOrderId(orderId);
         if(order == null){
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
+            return ResponseUtil.fail();
         }
         if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
             order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
@@ -259,6 +260,7 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
+
         if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
             order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
             order.setConfirmTime(LocalDateTime.now());
@@ -272,36 +274,6 @@ public class OrderServiceImpl implements OrderService {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
     }
-
-
-
-    /**
-     * 评价订单
-     *
-     * @param userId   用户ID
-     * @param orderId  订单ID
-     * @return 操作结果
-     */
-    @Override
-    public Object comment(Integer userId,Integer orderId){
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(order == null){
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
-        }
-        if(order.getStatusCode() == Order.StatusCode.SHIPPED_CONNFIEM.getValue()) {
-            order.setStatusCode(Order.StatusCode.COMMENTED.getValue());
-            order.setConfirmTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(order);
-            if(updateNum == 1){
-                return ResponseUtil.ok(updateNum);
-            }else {
-                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
-            }
-        } else {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
-        }
-    }
-
 
     /**
      * 得到一项orderItem

@@ -24,6 +24,7 @@ public class Order extends OrderPo {
     private User user;
     private List<OrderItem> orderItemList;
     private Integer couponId;
+    private List<Payment> paymentList;
 
     public enum StatusCode{
         NOT_PAYED(0),
@@ -80,56 +81,17 @@ public class Order extends OrderPo {
         this.setGoodsPrice(total);
     }
 
-
-    /**
-     * 计算订单的成交价格
-     */
-    public void cacuDealPrice(){
-        BigDecimal dealTotal=BigDecimal.ZERO;
-
-        //调用此函数前已调用过cacuCouponPrice
-        //首先计算使用优惠券后的商品价格总和
-        Coupon coupon = ;
-        if(coupon!=null){
-            this.cacuCouponPrice();
-        }
-        for(OrderItem oneItem:this.orderItemList){
-            dealTotal=dealTotal.add(oneItem.getDealPrice().multiply(BigDecimal.valueOf(oneItem.getNumber())));
-        }
-
-        //减去返点减免
-        BigDecimal rebatePrice =this.getRebatePrice();
-        if(rebatePrice ==null){
-            this.cacuRebatePrice();
-            rebatePrice =this.getRebatePrice();
-        }
-        dealTotal=dealTotal.subtract(rebatePrice);
-
-        //加上运费
-        BigDecimal freightPrice = this.getFreightPrice();
-        if(freightPrice == null){
-            this.cacuFreightPrice();
-            freightPrice = this.getFreightPrice();
-        }
-        dealTotal = dealTotal.add(freightPrice);
-
-        this.setIntegralPrice(dealTotal);
-
+    public void cacuIntegral(){
+        BigDecimal integral = BigDecimal.ZERO;
+        integral.add(this.getGoodsPrice());
+        if(this.getFreightPrice() != null)
+            integral.add(this.getFreightPrice());
+        if(this.getCouponPrice() != null)
+            integral.subtract(this.getCouponPrice());
+        if(this.getRebatePrice() != null)
+            integral.subtract(this.getRebatePrice());
+        this.setIntegralPrice(integral);
     }
-    /**
-     * 计算订单的运费
-     */
-    public void cacuFreightPrice(){ }
-
-    /**
-     * 计算订单的优惠券费用
-     */
-    public void cacuCouponPrice(){ }
-
-    /**
-     * 计算订单的返点费用
-     */
-    public void cacuRebatePrice(){ }
 
     public void setItemsOrderId(){
         for (OrderItem orderItem: orderItemList){

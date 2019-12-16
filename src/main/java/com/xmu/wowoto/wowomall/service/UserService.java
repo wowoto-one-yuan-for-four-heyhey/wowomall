@@ -11,5 +11,19 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Service
 public interface UserService {
+
+    /**
+     * 根据Id拿到user
+     * @param userId
+     * @return
+     */
     User getUserById(@PathVariable Integer userId);
+
+    /**
+     * 添加用户返点
+     * @param userId
+     * @param rebate
+     * @return
+     */
+    Integer addRebate(Integer userId,Integer rebate);
 }

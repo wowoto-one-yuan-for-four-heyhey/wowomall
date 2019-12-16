@@ -1,8 +1,10 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.domain.Coupon;
+import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.service.DiscountService;
 import com.xmu.wowoto.wowomall.service.RemoteDiscountService;
+import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,8 @@ public class DiscountServiceImpl implements DiscountService {
     RemoteDiscountService remoteDiscountService;
 
     @Override
-    public Coupon findCouponById(Integer couponId) {
-        return new Coupon();
+    public Order caculatePrice(Order order) {
+        String json = remoteDiscountService.caculatePrice(order);
+        return JacksonUtil.parseObject(json, "data", Order.class);
     }
 }

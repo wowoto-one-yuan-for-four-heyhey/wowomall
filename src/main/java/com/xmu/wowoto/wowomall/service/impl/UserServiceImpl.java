@@ -17,9 +17,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RemoteUserService remoteUserService;
 
+    /**
+     * 根据id拿到user
+     * @param userId
+     * @return
+     */
     @Override
     public User getUserById(Integer userId) {
         String json = remoteUserService.getUserById(userId);
         return JacksonUtil.parseObject(json, "data", User.class);
+    }
+
+    /**
+     * 添加用户返点
+     * @param userId
+     * @param rebate
+     * @return
+     */
+    @Override
+    public Integer addRebate(Integer userId,Integer rebate){
+        String json = remoteUserService.addRebate(userId,rebate);
+        Integer errNo=JacksonUtil.parseInteger(json,"errno");
+        return errNo;
     }
 }
