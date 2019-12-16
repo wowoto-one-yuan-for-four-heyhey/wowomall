@@ -89,7 +89,7 @@ public class Order extends OrderPo {
 
         //调用此函数前已调用过cacuCouponPrice
         //首先计算使用优惠券后的商品价格总和
-        Coupon coupon = ;
+        Coupon coupon =new Coupon();
         if(coupon!=null){
             this.cacuCouponPrice();
         }

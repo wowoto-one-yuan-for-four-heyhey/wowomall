@@ -47,4 +47,12 @@ public interface OrderItemMapper {
      * @return
      */
     List<OrderItem> getOrderItemByStatus(Integer status, LocalDateTime start, LocalDateTime end);
+
+    /**
+     * 找出固定时间范围内的订单
+     * @param start
+     * @param end
+     * @return
+     */
+    List<OrderItem> getOrderItemByTimeLimit(LocalDateTime start, LocalDateTime end);
 }

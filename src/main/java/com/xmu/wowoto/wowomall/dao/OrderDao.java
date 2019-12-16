@@ -6,6 +6,7 @@ import com.xmu.wowoto.wowomall.domain.Product;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import com.xmu.wowoto.wowomall.service.GoodsService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -135,6 +136,13 @@ public class OrderDao {
         orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),nowTime));
         orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONNFIEM.getValue(),nowTime));
         return orders;
+    }
+
+    public List<OrderItem> getRebatingOrderItems(){
+        LocalDateTime start=LocalDateTime.now().minusDays(8);
+        LocalDateTime end=LocalDateTime.now().minusDays(7);
+        List<OrderItem> list =orderItemMapper.getOrderItemByTimeLimit(start,end);
+        return list;
     }
 
 }
