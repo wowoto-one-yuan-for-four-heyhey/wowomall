@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * @Author: Tens  fringe
+ * @Author: Tens
  * @Description:
  * @Date: 2019/12/15 20:25
  */

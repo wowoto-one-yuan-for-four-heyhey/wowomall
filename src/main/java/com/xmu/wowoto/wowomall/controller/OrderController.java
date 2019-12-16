@@ -140,8 +140,7 @@ public class OrderController {
         Order order = new Order(user, address);
 
         if(null != submitOrderVo.getCouponId()){
-            Coupon coupon = discountService.findCouponById(submitOrderVo.getCouponId());
-            order.setCouponId(coupon.getId());
+            order.setCouponId(submitOrderVo.getCouponId());
         }
 
         List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
