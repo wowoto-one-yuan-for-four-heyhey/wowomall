@@ -83,19 +83,14 @@ public interface OrderService {
     Order confirm(Order order);
 
     /**
-     * 评价
-     *
-     * @param order
-     * @return 订单操作结果
-     */
-    Order comment(Order order);
-
-    /**
      * 得到一项orderItem
      * @param orderItemId
      * @return
      */
     OrderItem getOrderItem(Integer orderItemId);
+
+    @Override
+    HashMap<String,Integer> payOrder(Order oneOrder);
 
     List<Order> getGrouponOrders(Integer goodId);
 }

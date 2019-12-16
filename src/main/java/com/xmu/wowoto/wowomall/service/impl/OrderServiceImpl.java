@@ -197,12 +197,10 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
-
     /**
      * 删除订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
     @Override
@@ -276,37 +274,6 @@ public class OrderServiceImpl implements OrderService {
             return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
     }
-
-
-
-    /**
-     * 评价订单
-     *
-     * @param userId   用户ID
-     * @param orderId  订单ID
-     * @return 操作结果
-     */
-    @Override
-    public Object comment(Integer userId,Integer orderId){
-        Order order = orderDao.getOrderByOrderId(orderId);
-        if(order == null){
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
-        }
-        if(order.getStatusCode() == Order.StatusCode.SHIPPED_CONNFIEM.getValue()) {
-            order.setStatusCode(Order.StatusCode.COMMENTED.getValue());
-            order.setConfirmTime(LocalDateTime.now());
-            Integer updateNum = orderDao.updateOrder(order);
-            if(updateNum == 1){
-                return ResponseUtil.ok(updateNum);
-            }else {
-                return ResponseUtil.fail(ORDER_INVALID.getCode(),ORDER_INVALID.getMessage());
-            }
-        } else {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
-        }
-    }
-
-
 
     /**
      * 得到一项orderItem

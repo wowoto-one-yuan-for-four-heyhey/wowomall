@@ -137,8 +137,7 @@ public class OrderController {
         Integer rebate = submitOrderVo.getRebate();
         if(null != rebate && user.getRebate() >= rebate){
             order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
-            Integer restRebate = user.getRebate() - rebate;
-            userService.updateRebate(userId, restRebate);
+            userService.addRebate(userId, rebate);
         }
 
         if(null != submitOrderVo.getCouponId()){ order.setCouponId(submitOrderVo.getCouponId()); }
@@ -256,7 +255,34 @@ public class OrderController {
         return ResponseUtil.ok(order);
     }
 
-
+    /**
+     * 提供接口给payment回调，修改该订单为付款完成
+     * @param id 订单ID
+     * @return 是否成功发起支付
+     */
+    @PutMapping("orders/{id}")
+    public Object payOrder(@PathVariable("id")Integer id)
+    {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
+        if(userId==null){
+            return ResponseUtil.unlogin();
+        }
+        Order oneOrder=orderService.getOrder(id);
+        if(oneOrder==null){
+            return ResponseUtil.fail();
+        }
+        HashMap<String,Integer> result=orderService.payOrder(oneOrder);
+        if(result.containsKey("orderItem")){
+            return ResponseUtil.fail();
+        }
+        Integer payStatus=result.get("order");
+        if(payStatus>-1){
+            return ResponseUtil.ok(result);
+        }
+        else{
+            return ResponseUtil.fail();
+        }
+    }
 
     /**
      * 提供接口给AfterSale查看orderItem是什么类型
@@ -278,10 +304,11 @@ public class OrderController {
      */
     @GetMapping("orders/grouponOrders")
     public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
-
         Integer goodsId = grouponRulePo.getGoodsId();
         List<Order> orders = orderService.getGrouponOrders(goodsId);
         return ResponseUtil.ok(orders);
     }
+
+
 
 }
