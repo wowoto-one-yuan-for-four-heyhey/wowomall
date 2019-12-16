@@ -185,12 +185,11 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 取消订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
     @Override
-    public Object cancelOrder(Integer userId, Integer orderId){
+    public Order cancelOrder(Order order){
         Order wowoOrder = orderDao.getOrderByOrderId(orderId);
         if(null != wowoOrder){
             wowoOrder.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
@@ -206,7 +205,7 @@ public class OrderServiceImpl implements OrderService {
      * @return 操作结果
      */
     @Override
-    public Object deleteOrder(Integer userId, Integer orderId){
+    public boolean deleteOrder(Order order){
         Order order = orderDao.getOrderByOrderId(orderId);
         if(null != order){
             for(OrderItem orderItem: order.getOrderItemList()){

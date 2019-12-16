@@ -83,16 +83,15 @@ public class OrderController {
      */
     @GetMapping("admin/orders")
     @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
-    public Object getOrders(@RequestParam(defaultValue = "-1")Integer showType,
+    public Object getOrders(@RequestParam(defaultValue = "-1")Integer userId,
+                            @RequestParam(defaultValue = "-1")Integer showType,
                             @RequestParam(defaultValue = "1")Integer page,
-                            @RequestParam(defaultValue = "10")Integer limit,
-                            @RequestParam(defaultValue = "add_time") String sort,
-                            @RequestParam(defaultValue = "desc") String orderWay) {
+                            @RequestParam(defaultValue = "10")Integer limit) {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         if(null == adminId) {
             return ResponseUtil.unlogin();
         }
-        List<Order> orders = orderService.getOrders(adminId,showType,page,limit);
+        List<Order> orders = orderService.getOrders(userId,showType,page,limit);
         return ResponseUtil.ok(orders);
     }
 
@@ -170,7 +169,8 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-        orderService.cancelOrder(userId, Integer.parseInt(orderId));
+
+        order = orderService.cancelOrder(order);
         return ResponseUtil.ok(order);
     }
 
@@ -191,7 +191,7 @@ public class OrderController {
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
 
-        orderService.deleteOrder(userId, Integer.parseInt(orderId));
+        order = orderService.deleteOrder(order);
 
         return ResponseUtil.ok();
     }
@@ -204,14 +204,14 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirm(
-            @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    public Object confirm( @PathVariable("id")String orderId ){
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-        orderService.confirm(userId, Integer.parseInt(orderId));
+
+        order = orderService.confirm(order);
 
         return ResponseUtil.ok(order);
     }
@@ -224,15 +224,15 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/ship")
     @ApiOperation("更改订单状态为发货(管理员操作)")
-    public Object shipOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    public Object shipOrder(@PathVariable("id")String orderId){
         // orderItem
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) { return ResponseUtil.unlogin(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
 
-        orderService.shipOrder(userId, Integer.parseInt(orderId));
+        order = orderService.shipOrder(order);
         return ResponseUtil.ok(order);
     }
 
@@ -246,56 +246,17 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) { return ResponseUtil.unlogin(); }
-        orderService.refundOrder(userId,Integer.parseInt(orderId));
+
+        if(order == null) { return ResponseUtil.badArgumentValue(); }
+
+        order = orderService.refundOrder(order);
         return ResponseUtil.ok(order);
     }
 
 
-    /**
-     * 待评价订单商品信息/goods (用户操作)
-     * @param limit 每页条数
-     * @param page 页码
-     * @param sort 以什么为序
-     * @param order 升/降序
-     * @return 订单详细
-     */
-    @GetMapping("orders/unevaluated")
-    @ApiOperation("查看未评价订单的订单详情")
-    public Object getUnComment(
-            @RequestParam(defaultValue = "1")Integer page,
-            @RequestParam(defaultValue = "10")Integer limit,
-            @RequestParam(defaultValue = "gmtCreate") String sort,
-            @RequestParam(defaultValue = "desc") String order)
-    {
-
-        Integer userId = Integer.valueOf(request.getHeader("id"));
-        //@RequestBody
-        List<Order> orders = orderService.getOrders(userId, Order.StatusCode.SHIPPED_CONNFIEM.getValue(), page, limit);
-        return ResponseUtil.ok(orders);
-    }
-
-    /**
-     * 确认收货
-     *
-     * @param orderId 订单ID
-     * @return 订单操作结果
-     */
-    @PostMapping("/orders/{id}/commentResult")
-    @ApiOperation(value = "评价订单商品操作结果/comment", notes = "评价订单商品操作结果")
-    public Object comment(
-            @ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId ){
-
-        Integer userId = Integer.valueOf(request.getHeader("id"));
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
-
-        if(order == null) { return ResponseUtil.unlogin(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-        return orderService.comment(userId, Integer.parseInt(orderId));
-    }
 
     /**
      * 提供接口给AfterSale查看orderItem是什么类型
@@ -309,37 +270,6 @@ public class OrderController {
         Integer goodsType = orderItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
-
-    /**
-     * 提供接口给payment回调，修改该订单为付款完成
-     * @param id 订单ID
-     * @return 是否成功发起支付
-     */
-    @PutMapping("orders/{id}")
-    public Object payOrder(@PathVariable("id")Integer id)
-    {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(userId==null){
-            return ResponseUtil.unlogin();
-        }
-        Order oneOrder=orderService.getOrder(id);
-        if(oneOrder==null){
-            return ResponseUtil.fail();
-        }
-        HashMap<String,Integer> result=orderService.payOrder(oneOrder);
-        if(result.containsKey("orderItem")){
-            return ResponseUtil.fail();
-        }
-        Integer payStatus=result.get("order");
-        if(payStatus>-1){
-            return ResponseUtil.ok(result);
-        }
-        else{
-            return ResponseUtil.fail();
-        }
-    }
-
-
 
     /**
      * 查询grouponrule的参团人数 discountService调用
