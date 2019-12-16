@@ -18,11 +18,11 @@ public interface OrderService {
 
     /**
      * 提交订单
-     * @param wowoOrder 新订单
-     * @param wowoCartItems 购物车中加入订单的货品
+     * @param order 新订单
+     * @param cartItems 购物车中加入订单的货品
      * @return 新产生的订单
      */
-    public Order submit(Order wowoOrder, List<CartItem> wowoCartItems);
+    Order submit(Order order, List<CartItem> cartItems);
 
     /**
      * 获取用户订单列表
@@ -33,83 +33,69 @@ public interface OrderService {
      * @param limit     分页大小
      * @return 订单列表
      */
-    public List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit);
+    List<Order> getOrders(Integer userId, Integer statusCode, Integer page, Integer limit);
 
     /**
      * 获取用户特定订单详情
      * @param orderId 订单ID
      * @return 订单详细
      */
-    public Order getOrder(Integer orderId);
+    Order getOrder(Integer orderId);
 
     /**
      * 订单发货修改订单状态
      *
-     * @param userId 用户ID
-     * @param orderId 订单ID
+     * @param order
      * @return 修改列数
      */
-    public Object shipOrder(Integer userId,Integer orderId);
+    Order shipOrder(Order order);
 
     /**
      * 取消订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
-    public Object cancelOrder(Integer userId, Integer orderId);
+    Order cancelOrder(Order order);
 
     /**
      * 删除订单
      *
-     * @param userId   用户ID
-     * @param orderId  订单ID
+     * @param order
      * @return 操作结果
      */
-    public Object deleteOrder(Integer userId, Integer orderId);
+    Order deleteOrder(Order order);
 
     /**
      * 订单修改订单状态为退款(管理员操作)
      *
-     * @param orderId 订单ID
-     * @param userId 用户ID
+     * @param order 订单ID
      * @return 订单详细
      */
-    public Object refundOrder(Integer userId,Integer orderId);
-
-    /**
-     * 提供给支付模块修改订单状态->支付成功  (供paymentService调用)"
-     * @param order
-     * statusCode PAYED
-     * @return 是否成功
-     */
-    public HashMap<String,Integer> payOrder(Order order);
+    Order refundOrder(Order order);
 
     /**
      * 确认收货
      *
-     * @param orderId 订单ID
-     * @param userId 用户ID
+     * @param order
      * @return 订单操作结果
      */
-    public Object confirm(Integer userId,Integer orderId);
+    Order confirm(Order order);
 
     /**
      * 评价
      *
-     * @param orderId 订单ID
-     * @param userId 用户ID
+     * @param order
      * @return 订单操作结果
      */
-    public Object comment(Integer userId,Integer orderId);
+    Order comment(Order order);
 
     /**
      * 得到一项orderItem
      * @param orderItemId
      * @return
      */
-    public OrderItem getOrderItem(Integer orderItemId);
+    OrderItem getOrderItem(Integer orderItemId);
 
-    public List<Order> getGrouponOrders(Integer goodId);
+    List<Order> getGrouponOrders(Integer goodId);
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,17 +107,12 @@ public class OrderController {
     public Object orderDetail(@NotNull @PathVariable("id")Integer orderId)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(userId == null) {
-            ResponseUtil.unlogin();
-        }
+        if(userId == null) { ResponseUtil.unlogin(); }
+
         Order order = orderService.getOrder(orderId);
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.badArgument(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
 
         return ResponseUtil.ok(order);
     }
@@ -139,9 +135,14 @@ public class OrderController {
 
         Order order = new Order(user, address);
 
-        if(null != submitOrderVo.getCouponId()){
-            order.setCouponId(submitOrderVo.getCouponId());
+        Integer rebate = submitOrderVo.getRebate();
+        if(null != rebate && user.getRebate() >= rebate){
+            order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
+            Integer restRebate = user.getRebate() - rebate;
+            userService.updateRebate(userId, restRebate);
         }
+
+        if(null != submitOrderVo.getCouponId()){ order.setCouponId(submitOrderVo.getCouponId()); }
 
         List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
@@ -164,17 +165,11 @@ public class OrderController {
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId) {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(null == userId) {
-            return ResponseUtil.unlogin();
-        }
+        if(null == userId) { return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
         orderService.cancelOrder(userId, Integer.parseInt(orderId));
         return ResponseUtil.ok(order);
     }
@@ -189,20 +184,15 @@ public class OrderController {
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object deleteOrder(@PathVariable("id")String orderId) {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
-        if(null == userId) {
-            return ResponseUtil.unlogin();
-        }
+        if(null == userId) { return ResponseUtil.unlogin(); }
+
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null)
-        {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId))
-        {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+
         orderService.deleteOrder(userId, Integer.parseInt(orderId));
+
         return ResponseUtil.ok();
     }
 
@@ -219,13 +209,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
         orderService.confirm(userId, Integer.parseInt(orderId));
+
         return ResponseUtil.ok(order);
     }
 
@@ -242,13 +229,10 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
-        orderService.shipOrder(userId,Integer.parseInt(orderId));
+        if(order == null) { return ResponseUtil.unlogin(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+
+        orderService.shipOrder(userId, Integer.parseInt(orderId));
         return ResponseUtil.ok(order);
     }
 
@@ -265,12 +249,7 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.unlogin(); }
         orderService.refundOrder(userId,Integer.parseInt(orderId));
         return ResponseUtil.ok(order);
     }
@@ -313,12 +292,8 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) {
-            return ResponseUtil.fail(ORDER_UNKNOWN.getCode() ,ORDER_UNKNOWN.getMessage());
-        }
-        if(!order.getUserId().equals(userId)) {
-            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode() ,ORDER_INVALID_OPERATION.getMessage());
-        }
+        if(order == null) { return ResponseUtil.unlogin(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
         return orderService.comment(userId, Integer.parseInt(orderId));
     }
 
@@ -329,11 +304,9 @@ public class OrderController {
      */
     @GetMapping("orderItem/{orderItemId}/goodsType")
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
-        OrderItem oneItem = orderService.getOrderItem(orderItemId);
-        if(oneItem==null){
-            return ResponseUtil.badArgumentValue();
-        }
-        Integer goodsType = oneItem.getItemType();
+        OrderItem orderItem = orderService.getOrderItem(orderItemId);
+        if(orderItem == null){ return ResponseUtil.badArgumentValue(); }
+        Integer goodsType = orderItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
 
@@ -379,11 +352,6 @@ public class OrderController {
         Integer goodsId = grouponRulePo.getGoodsId();
         List<Order> orders = orderService.getGrouponOrders(goodsId);
         return ResponseUtil.ok(orders);
-    }
-
-    @PutMapping("/orders")
-    public Object updatePOfOrder(@RequestBody List<Order> orderList){
-
     }
 
 }

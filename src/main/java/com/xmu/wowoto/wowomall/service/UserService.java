@@ -21,8 +21,9 @@ public interface UserService {
 
     /**
      * 添加用户返点
-     * @param user
+     * @param userId
+     * @param rebate
      * @return
      */
-    Integer  addRebate(User user);
+    Integer updateRebate(Integer userId, Integer rebate);
 }

@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 添加用户返点
-     * @param user
+     * @param userId
+     * @param rebate
      * @return
      */
     @Override
-    public Integer addRebate(User user){
-        String json = remoteUserService.addRebate(user);
-        Integer errNo=JacksonUtil.parseInteger(json,"errno");
-        return errNo;
+    public Integer updateRebate(Integer userId, Integer rebate){
+        String json = remoteUserService.updateRebate(userId, rebate);
+        return JacksonUtil.parseInteger(json, "errno");
     }
 }

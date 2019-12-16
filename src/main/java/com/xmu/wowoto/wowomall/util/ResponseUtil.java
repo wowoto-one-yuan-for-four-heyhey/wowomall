@@ -86,8 +86,6 @@ public class ResponseUtil {
         return fail(503, "业务不支持");
     }
 
-
-
     public static Object updatedDataFailed() {
         return fail(505, "更新数据失败");
     }

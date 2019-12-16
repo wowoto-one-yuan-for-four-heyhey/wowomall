@@ -5,6 +5,18 @@ import com.xmu.wowoto.wowomall.domain.Address;
 import java.util.List;
 
 public class SubmitOrderVo {
+    public Integer getRebate() {
+        return rebate;
+    }
+
+    public void setRebate(Integer rebate) {
+        this.rebate = rebate;
+    }
+
+    /**
+     *  用户提交的返点数
+     */
+    private Integer rebate;
     /**
      *  用户在购物车中选中项目的id
      */

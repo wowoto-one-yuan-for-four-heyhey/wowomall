@@ -81,6 +81,18 @@ public class Order extends OrderPo {
         this.setGoodsPrice(total);
     }
 
+    public void cacuIntegral(){
+        BigDecimal integral = BigDecimal.ZERO;
+        integral.add(this.getGoodsPrice());
+        if(this.getFreightPrice() != null)
+            integral.add(this.getFreightPrice());
+        if(this.getCouponPrice() != null)
+            integral.subtract(this.getCouponPrice());
+        if(this.getRebatePrice() != null)
+            integral.subtract(this.getRebatePrice());
+        this.setIntegralPrice(integral);
+    }
+
     public void setItemsOrderId(){
         for (OrderItem orderItem: orderItemList){
             orderItem.setOrderId(this.getId());
