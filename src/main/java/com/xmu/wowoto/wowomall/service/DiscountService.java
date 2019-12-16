@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.Coupon;
+import com.xmu.wowoto.wowomall.domain.Order;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,11 +11,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface DiscountService {
-
     /**
-     * 获取指定ID的优惠券
+     * 算价格
      *
-     * @param couponId   优惠券ID
+     * @param order   订单详情
      */
-    Coupon findCouponById(Integer couponId);
+    Order caculatePrice(Order order);
 }
