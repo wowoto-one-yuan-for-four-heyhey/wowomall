@@ -191,7 +191,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order cancelOrder(Order order){
         order.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
-        order.setEndTime(LocalDateTime.now());
         orderDao.updateOrder(order);
         return order;
     }
@@ -206,10 +205,9 @@ public class OrderServiceImpl implements OrderService {
     public Order deleteOrder(Order order){
         for(OrderItem orderItem: order.getOrderItemList()){
             orderItem.setBeDeleted(true);
-            orderDao.updateOrderItem(orderItem);
+            orderDao.(orderItem);
         }
         order.setBeDeleted(true);
-        order.setEndTime(LocalDateTime.now());
         orderDao.updateOrder(order);
         return order;
     }
@@ -221,14 +219,19 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order confirm(Order order){
-        for(OrderItem orderItem: order.getOrderItemList()){
-            orderItem.setStatusCode(OrderItem.StatusCode.CONFIRMED.getValue());
-            orderDao.updateOrderItem(orderItem);
+
+        if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
+            order.setConfirmTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(order);
+            if(updateNum == 1){
+                return ResponseUtil.ok(updateNum);
+            }else {
+                return ResponseUtil.fail();
+            }
+        } else {
+            return ResponseUtil.fail(ORDER_INVALID_OPERATION.getCode(),ORDER_INVALID_OPERATION.getMessage());
         }
-        order.setStatusCode(Order.StatusCode.SHIPPED_CONFIRM.getValue());
-        order.setConfirmTime(LocalDateTime.now());
-        orderDao.updateOrder(order);
-        return order;
     }
 
     /**
@@ -239,14 +242,19 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order shipOrder(Order order){
-        for(OrderItem orderItem: order.getOrderItemList()){
-            orderItem.setStatusCode(OrderItem.StatusCode.NOT_CONFIRMED.getValue());
-            orderDao.updateOrderItem(orderItem);
+
+        if(Order.StatusCode.SHIPPED.getValue() >= order.getStatusCode()) {
+            order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
+            order.setShipTime(LocalDateTime.now());
+            Integer updateNum = orderDao.updateOrder(order);
+            if(updateNum == 1){
+                return order;
+            }else {
+                return null;
+            }
+        } else {
+            return null;
         }
-        order.setStatusCode(Order.StatusCode.SHIPPED.getValue());
-        order.setShipTime(LocalDateTime.now());
-        orderDao.updateOrder(order);
-        return order;
     }
 
     /**
@@ -266,8 +274,8 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public List<Order> getGrouponOrders(Integer goodId){
-        return orderDao.getGrouponOrdersById(goodId);
+    public List<Order> getGrouponOrders(Integer goodId,LocalDateTime startTime,LocalDateTime endTime){
+        return orderDao.getGrouponOrdersById(goodId,startTime,endTime);
     }
 }
 

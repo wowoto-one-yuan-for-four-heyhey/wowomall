@@ -18,7 +18,7 @@ public class JacksonUtil {
 
     public static String parseString(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -35,7 +35,7 @@ public class JacksonUtil {
 
     public static List<String> parseStringList(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -53,7 +53,7 @@ public class JacksonUtil {
 
     public static Integer parseInteger(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -69,7 +69,7 @@ public class JacksonUtil {
 
     public static List<Integer> parseIntegerList(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -88,7 +88,7 @@ public class JacksonUtil {
 
     public static Boolean parseBoolean(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -104,7 +104,7 @@ public class JacksonUtil {
 
     public static Short parseShort(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -121,7 +121,7 @@ public class JacksonUtil {
 
     public static Byte parseByte(String body, String field) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -138,7 +138,7 @@ public class JacksonUtil {
 
     public static <T> T parseObject(String body, String field, Class<T> clazz) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         JsonNode node;
         try {
             node = mapper.readTree(body);
@@ -155,7 +155,7 @@ public class JacksonUtil {
             return null;
         }
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         try {
 
             return mapper.readTree(json);
@@ -168,7 +168,7 @@ public class JacksonUtil {
 
     public static Map<String, String> toMap(String data) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         try {
             return mapper.readValue(data, new TypeReference<Map<String, String>>() {
             });
@@ -180,7 +180,7 @@ public class JacksonUtil {
 
     public static String toJson(Object data) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());;
+                .registerModule(new JavaTimeModule());
         try {
             return mapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {

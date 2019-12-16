@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,6 +229,9 @@ public class OrderController {
         if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
 
         order = orderService.shipOrder(order);
+        if(order == null){
+            return ResponseUtil.illegal();
+        }
         return ResponseUtil.ok(order);
     }
 
@@ -298,7 +302,9 @@ public class OrderController {
     @GetMapping("orders/grouponOrders")
     public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
         Integer goodsId = grouponRulePo.getGoodsId();
-        List<Order> orders = orderService.getGrouponOrders(goodsId);
+        LocalDateTime startTime = grouponRulePo.getStartTime();
+        LocalDateTime endTime = grouponRulePo.getEndTime();
+        List<Order> orders = orderService.getGrouponOrders(goodsId,startTime,endTime);
         return ResponseUtil.ok(orders);
     }
 }

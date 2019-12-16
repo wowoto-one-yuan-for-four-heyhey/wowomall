@@ -23,6 +23,7 @@ public class CartServiceImpl implements CartService {
      * @param id 对象ID
      * @return CartItem
      */
+    @Override
     public CartItem findCartItemById(Integer id){
         String json = remoteCartService.findCartItemById(id);
         return JacksonUtil.parseObject(json, "data", CartItem.class);
@@ -32,6 +33,7 @@ public class CartServiceImpl implements CartService {
      * 清空购物车里的指定项目
      * @param cartItems 待清空的项目
      */
+    @Override
     public boolean clearCartItem(List<CartItem> cartItems){
         String json = remoteCartService.clearCartItem(cartItems);
         return JacksonUtil.parseInteger(json, "errno") == 1;
