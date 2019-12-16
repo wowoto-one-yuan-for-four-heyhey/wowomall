@@ -5,10 +5,7 @@ import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.Payment;
-import com.xmu.wowoto.wowomall.service.CartService;
-import com.xmu.wowoto.wowomall.service.GoodsService;
-import com.xmu.wowoto.wowomall.service.OrderService;
-import com.xmu.wowoto.wowomall.service.PaymentService;
+import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PaymentService paymentService;
 
+    @Autowired
+    private DiscountService discountService;
+
     /**
      * 获取用户订单列表
      *
@@ -69,8 +69,7 @@ public class OrderServiceImpl implements OrderService {
         if(this.createOrderItemFromCartItem(order, cartItems)){
             cartService.clearCartItem(cartItems);
 
-            order.cacuGoodsPrice();
-            order.cacuDealPrice();
+            order = discountService.caculatePrice(order);
 
             //添加订单
             newOrder = orderDao.addOrder(order);
@@ -259,6 +258,7 @@ public class OrderServiceImpl implements OrderService {
         if(order == null){
             return ResponseUtil.fail(ORDER_UNKNOWN.getCode(),ORDER_UNKNOWN.getMessage());
         }
+
         if(order.getStatusCode() == Order.StatusCode.SHIPPED.getValue()) {
             order.setStatusCode(Order.StatusCode.SHIPPED_CONNFIEM.getValue());
             order.setConfirmTime(LocalDateTime.now());

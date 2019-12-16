@@ -80,57 +80,6 @@ public class Order extends OrderPo {
         this.setGoodsPrice(total);
     }
 
-
-    /**
-     * 计算订单的成交价格
-     */
-    public void cacuDealPrice(){
-        BigDecimal dealTotal=BigDecimal.ZERO;
-
-        //调用此函数前已调用过cacuCouponPrice
-        //首先计算使用优惠券后的商品价格总和
-        Coupon coupon =new Coupon();
-        if(coupon!=null){
-            this.cacuCouponPrice();
-        }
-        for(OrderItem oneItem:this.orderItemList){
-            dealTotal=dealTotal.add(oneItem.getDealPrice().multiply(BigDecimal.valueOf(oneItem.getNumber())));
-        }
-
-        //减去返点减免
-        BigDecimal rebatePrice =this.getRebatePrice();
-        if(rebatePrice ==null){
-            this.cacuRebatePrice();
-            rebatePrice =this.getRebatePrice();
-        }
-        dealTotal=dealTotal.subtract(rebatePrice);
-
-        //加上运费
-        BigDecimal freightPrice = this.getFreightPrice();
-        if(freightPrice == null){
-            this.cacuFreightPrice();
-            freightPrice = this.getFreightPrice();
-        }
-        dealTotal = dealTotal.add(freightPrice);
-
-        this.setIntegralPrice(dealTotal);
-
-    }
-    /**
-     * 计算订单的运费
-     */
-    public void cacuFreightPrice(){ }
-
-    /**
-     * 计算订单的优惠券费用
-     */
-    public void cacuCouponPrice(){ }
-
-    /**
-     * 计算订单的返点费用
-     */
-    public void cacuRebatePrice(){ }
-
     public void setItemsOrderId(){
         for (OrderItem orderItem: orderItemList){
             orderItem.setOrderId(this.getId());
