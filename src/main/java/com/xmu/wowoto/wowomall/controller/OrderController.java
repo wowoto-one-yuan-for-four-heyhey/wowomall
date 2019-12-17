@@ -46,6 +46,8 @@ public class OrderController {
 
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private PaymentService paymentService;
 
     /**
      * 获取用户订单列表
@@ -266,14 +268,14 @@ public class OrderController {
      * @return 是否成功发起支付
      */
     @PutMapping("orders/{id}")
-    public Object payOrder(@PathVariable("id")Integer id)
+    public Object orderPayed(@PathVariable("id")Integer id )
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId == null){ return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(id);
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 
-        HashMap<String,Integer> result = orderService.payOrder(order);
+        HashMap<String,Integer> result=orderService.payOrder(order);
         if(result.containsKey("orderItem")){
             return ResponseUtil.fail();
         }
@@ -311,6 +313,42 @@ public class OrderController {
         LocalDateTime endTime = grouponRulePo.getEndTime();
         Integer number = orderService.getGrouponOrders(goodsId,startTime,endTime);
         return ResponseUtil.ok(number);
+    }
+
+    /**
+     * 用户点击支付   //包含预售尾款定金判断
+     * @param id
+     * @return
+     */
+    @PostMapping("orders/{id}/pay")
+    public Object payOrder(@PathVariable Integer id){
+        Integer userId = Integer.valueOf(request.getHeader("id"));
+        if(userId==null){
+            return ResponseUtil.unlogin();
+        }
+        List<Payment> list= paymentService.getPaymentById(id);
+        if(list==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        if(list.size()==1){
+           paymentService.payPayment(list.get(0).getId());
+        }
+        else{
+           if(list.get(0).getBeginTime().isBefore(list.get(1).getBeginTime())) {
+               if(!list.get(0).getBeSuccessful()){
+                   paymentService.payPayment(list.get(0).getId());
+               }
+           }
+           else{
+               if(!list.get(1).getBeSuccessful()){
+                   if(LocalDateTime.now().isAfter(list.get(1).getBeginTime()) &&
+                       LocalDateTime.now().isAfter(list.get(1).getEndTime())) {
+                       paymentService.payPayment(list.get(1).getId());
+                   }
+               }
+           }
+        }
+        return null;
     }
 
     @PostMapping("orders/grouponOrders")
