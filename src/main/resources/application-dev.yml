@@ -36,8 +36,8 @@ eureka:
       defaultZone: http://148.70.28.112:8761/eureka
   instance:
     prefer-ip-address: true
-    ip-address: 148.70.28.112
-    non-secure-port: 30020
+#    ip-address: 148.70.28.112
+#    non-secure-port: 30020
 
 wowomall:
   preDeductStock: 5
