@@ -327,10 +327,10 @@ public class OrderController {
             return ResponseUtil.unlogin();
         }
         List<Payment> list= paymentService.getPaymentById(id);
-        if(list==null){
+        if(list == null){
             return ResponseUtil.badArgumentValue();
         }
-        if(list.size()==1){
+        if(list.size() == 1){
            paymentService.payPayment(list.get(0).getId());
         }
         else{
