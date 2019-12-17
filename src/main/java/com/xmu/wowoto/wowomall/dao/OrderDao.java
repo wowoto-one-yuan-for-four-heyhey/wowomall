@@ -130,12 +130,12 @@ public class OrderDao {
      * @param goodId
      * @return
      */
-    public List<Order> getGrouponOrdersById(Integer goodId,LocalDateTime startTime ,LocalDateTime endTime){
-        List<Order> orders = new ArrayList<>();
-        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONFIRM.getValue(),startTime,endTime));
-        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),startTime,endTime));
-        orders.addAll(orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONFIRM.getValue(),startTime,endTime));
-        return orders;
+    public Integer getGrouponOrdersById(Integer goodId,LocalDateTime startTime ,LocalDateTime endTime){
+        Integer number = 0;
+        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONFIRM.getValue(),startTime,endTime);
+        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),startTime,endTime);
+        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONFIRM.getValue(),startTime,endTime);
+        return number;
     }
 
     public List<OrderItem> getRebatingOrderItems(){
