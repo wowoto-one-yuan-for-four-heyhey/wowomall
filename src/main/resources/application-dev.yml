@@ -7,9 +7,14 @@ spring:
     url: jdbc:mysql://148.70.28.112:3306/wowomall?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: wowoto
     password: zqhlovekly
+#    url: jdbc:mysql://47.96.159.71:3306/oomall?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true # 耿佳南
+#    username: oomall
+#    password: oomallp@$$w0rd
+
     driver-class-name: com.mysql.jdbc.Driver
   redis:
     host: 106.15.92.198
+#    host: 47.98.252.133 # 朝旺
     port: 6379
     database: 0
     jedis:
@@ -34,10 +39,11 @@ eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
       defaultZone: http://148.70.28.112:8761/eureka
+#      defaultZone: http://47.96.159.71:8888/eureka/ # GJN
   instance:
     prefer-ip-address: true
-#    ip-address: 148.70.28.112
-#    non-secure-port: 30020
+    ip-address: 148.70.28.112
+    non-secure-port: 30020
 
 wowomall:
   preDeductStock: 5
