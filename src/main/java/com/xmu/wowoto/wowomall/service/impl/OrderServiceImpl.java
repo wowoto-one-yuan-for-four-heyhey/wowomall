@@ -271,7 +271,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Integer getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
-        return null;
+        return orderDao.getGrouponOrdersById(goodId, startTime, endTime);
     }
 }
 

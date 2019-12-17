@@ -305,7 +305,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("orders/grouponOrders")
-    public Integer getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
+    public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
         Integer goodsId = grouponRulePo.getGoodsId();
         LocalDateTime startTime = grouponRulePo.getStartTime();
         LocalDateTime endTime = grouponRulePo.getEndTime();
