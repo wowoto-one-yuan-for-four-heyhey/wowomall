@@ -3,13 +3,10 @@ package com.xmu.wowoto.wowomall.service;
 import com.xmu.wowoto.wowomall.domain.Payment;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * @Author: Tens
+ * @Author: Tens  /fringe
  * @Description:
  * @Date: 2019/12/15 20:01
  */
@@ -23,4 +20,11 @@ public interface RemotePaymentService {
     @PutMapping("payment/{id}")
     String payPayment(@PathVariable("id") Integer id);
 
+    /**
+     * 根据Id拿到payments
+     * @param id
+     * @return
+     */
+    @GetMapping("payment/{id}")
+    String getPaymentsById(@PathVariable Integer id);
 }

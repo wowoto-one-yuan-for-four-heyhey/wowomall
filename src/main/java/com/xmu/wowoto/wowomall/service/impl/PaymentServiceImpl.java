@@ -6,6 +6,9 @@ import com.xmu.wowoto.wowomall.service.RemotePaymentService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 /**
  * @Author: Tens
@@ -27,5 +30,18 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment payPayment(Integer id) {
         String json = remotePaymentService.payPayment(id);
         return JacksonUtil.parseObject(json, "data", Payment.class);
+    }
+
+    /**
+     * 根据ID拿到payment
+     * @param paymentId
+     * @return
+     */
+    @Override
+    public List<Payment> getPaymentById(Integer paymentId)
+    {
+        String json= remotePaymentService.getPaymentById(paymentId);
+        List<Payment> list= JacksonUtil.parseObject(json,"data",List.class);
+        return list;
     }
 }
