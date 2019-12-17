@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @Date: 2019/12/16 19:50
  */
 @Service
-@FeignClient("Freight")
+@FeignClient("freightService")
 public interface RemoteFreightService {
 
     @PostMapping("/freightPrice")

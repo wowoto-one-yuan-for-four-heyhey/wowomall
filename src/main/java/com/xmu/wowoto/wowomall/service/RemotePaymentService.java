@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date: 2019/12/15 20:01
  */
 @Service
-@FeignClient("payment")
+@FeignClient("paymentService")
 public interface RemotePaymentService {
 
     @PostMapping("payment")

@@ -20,7 +20,7 @@ spring:
         min-idle: 2
     timeout: 5000
   application:
-    name: order
+    name: orderService
 
 mybatis:
   mapper-locations: classpath:wowomall.mapper/*Mapper.xml

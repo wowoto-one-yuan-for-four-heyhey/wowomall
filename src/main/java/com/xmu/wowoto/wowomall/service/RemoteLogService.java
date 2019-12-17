@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @Date: 2019/12/16 22:29
  */
 @Service
-@FeignClient("Log")
+@FeignClient("logService")
 public interface RemoteLogService {
 
     @PostMapping("/log")
