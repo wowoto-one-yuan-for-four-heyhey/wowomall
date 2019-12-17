@@ -27,6 +27,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     Config config;
 
+    @Override
     public Product getProductById(Integer productId){
         String json = remoteGoodsService.getProductById(productId);
         return JacksonUtil.parseObject(json, "data", Product.class);

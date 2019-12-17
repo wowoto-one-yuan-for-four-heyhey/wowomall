@@ -70,7 +70,7 @@ public class OrderDao {
         for (Order order: orders) {
             List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
             for (OrderItem orderItem: orderItems){
-                Product product = goodsService.getProductById(orderItem.getId());
+                Product product = goodsService.getProductById(orderItem.getProductId());
                 orderItem.setProduct(product);
             }
             order.setOrderItemList(orderItems);
