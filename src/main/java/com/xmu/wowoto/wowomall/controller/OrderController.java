@@ -273,7 +273,7 @@ public class OrderController {
         Order order = orderService.getOrder(id);
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 
-        HashMap<String,Integer> result=orderService.payOrder(order);
+        HashMap<String,Integer> result = orderService.payOrder(order);
         if(result.containsKey("orderItem")){
             return ResponseUtil.fail();
         }
@@ -311,5 +311,10 @@ public class OrderController {
         LocalDateTime endTime = grouponRulePo.getEndTime();
         Integer number = orderService.getGrouponOrders(goodsId,startTime,endTime);
         return ResponseUtil.ok(number);
+    }
+
+    @PostMapping("orders/grouponOrders")
+    public Object refundGrouponOrders(@RequestBody GrouponRulePo grouponRulePo, @RequestBody BigDecimal price){
+        return null;
     }
 }

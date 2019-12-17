@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.Po.OrderPo;
 import com.xmu.wowoto.wowomall.util.Common;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -174,6 +175,8 @@ public class Order extends OrderPo {
         if(this.getRebatePrice() != null)
             integral.subtract(this.getRebatePrice());
         this.setIntegralPrice(integral);
+
+        this.distributePrice();
     }
 
     public void cacuPayment(){
@@ -194,6 +197,24 @@ public class Order extends OrderPo {
     public void setItemsOrderId(){
         for (OrderItem orderItem: orderItemList){
             orderItem.setOrderId(this.getId());
+        }
+    }
+
+    public void distributePrice(){
+        BigDecimal totalRebate = this.getRebatePrice();
+
+        BigDecimal totalDealPrice = BigDecimal.ZERO;
+        for(OrderItem orderItem: orderItemList){
+            BigDecimal rebate = orderItem.getDealPrice().divide(this.getGoodsPrice()).multiply(totalRebate);
+            orderItem.setDealPrice(orderItem.getDealPrice().subtract(rebate));
+            totalDealPrice.add(orderItem.getDealPrice());
+        }
+
+        BigDecimal error = totalDealPrice.subtract(totalRebate.multiply(BigDecimal.valueOf(1.0)).setScale(2, RoundingMode.HALF_UP));
+        if(error.compareTo(BigDecimal.ZERO) != 0){
+            OrderItem first = orderItemList.get(0);
+            BigDecimal dealPrice = first.getDealPrice().add(error);
+            first.setDealPrice(dealPrice);
         }
     }
 

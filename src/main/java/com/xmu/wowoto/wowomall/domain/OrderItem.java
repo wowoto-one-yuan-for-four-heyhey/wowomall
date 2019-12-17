@@ -2,6 +2,8 @@ package com.xmu.wowoto.wowomall.domain;
 
 import com.xmu.wowoto.wowomall.domain.Po.OrderItemPo;
 
+import java.time.LocalDateTime;
+
 /**
  * @Author: 数据库与对象模型标准组
  * @Description:订单明细对象
@@ -16,6 +18,13 @@ public class OrderItem extends OrderItemPo {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        OrderItem newItem = (OrderItem) super.clone();
+        newItem.setId(null);
+        return newItem;
     }
 
     public boolean equals(final Object o) {
