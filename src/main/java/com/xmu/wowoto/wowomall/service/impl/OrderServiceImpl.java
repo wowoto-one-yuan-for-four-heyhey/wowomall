@@ -3,14 +3,15 @@ package com.xmu.wowoto.wowomall.service.impl;
 import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.service.*;
+import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -271,28 +272,73 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
-        return orderDao.getGrouponOrdersById(goodId, startTime, endTime);
+        return orderDao.getGrouponOrdersNumberById(goodId, startTime, endTime);
     }
 
-    /**
-     * 获取团购订单
-     * @param goodsId
-     * @param startTime
-     * @param endTime
-     * @return
-     */
     @Override
-    public List<Order> getGrouponOrders(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
-        List<OrderItem> list= orderDao.getrGrouponOrderItems (goodsId, startTime, endTime);
-        List<Order> orderList=new ArrayList<>(list.size());
-        for(OrderItem item: list){
-            Order order=orderDao.getOrderByOrderId(item.getOrderId());
-            List<OrderItem> grouponList=new ArrayList<>();
-            grouponList.add(item);
-            order.setOrderItemList(grouponList);
-            orderList.add(order);
+    public List<Payment> refundGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime, Double rate) {
+        List<OrderItem> orderItems = orderDao.getGrouponOrderItems(goodId, startTime, endTime);
+        List<Payment> payments = new ArrayList<>();
+        for(OrderItem orderItem: orderItems){
+            Order order = orderDao.getOrderByOrderId(orderItem.getOrderId());
+            List<OrderItem> orderItemList = order.getOrderItemList();
+            OrderItem item = orderItemList.get(0);
+            BigDecimal aa = item.getDealPrice();
+            Integer a = aa.intValue();
+            Double dealPrice = a * rate;
+            BigDecimal decimal = new BigDecimal(Double.toString(dealPrice));
+            orderItemList.get(0).setDealPrice(decimal);
+            order.setIntegralPrice(decimal);
+
+            orderDao.updateOrder(order);
+            //然后去新增一条payment
+            Payment payment = new Payment();
+            payment.setActualPrice(decimal.subtract(aa));
+            payment.setBeSuccessful(true);
+            payment.setPayTime(LocalDateTime.now());
+            payment.setOrderId(order.getId());
+            paymentService.createPayment(payment);
+            payments.add(payment);
         }
-        return orderList;
+        return payments;
+    }
+
+    @Override
+    public List<Payment> refundPresaleOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
+        List<OrderItem> orderItems = orderDao.getPresaleOrderItems(goodId, startTime, endTime);
+        List<Payment> payments = new ArrayList<>();
+        for (OrderItem orderItem: orderItems){
+            Order order = orderDao.getOrderByOrderId(orderItem.getOrderId());
+            order.setPaymentList(paymentService.getPaymentById(order.getId()));
+            OrderItem item = order.getOrderItemList().get(0);
+
+            if(order.getPaymentList().size() <= 1){
+                return null;
+            }
+
+            Payment payment1 = order.getPaymentList().get(0);
+            Payment payment2 = order.getPaymentList().get(1);
+            
+            if(payment1.getBeSuccessful()){
+                Payment refundPayment = new Payment();
+                refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment1.getActualPrice()));
+                refundPayment.setBeSuccessful(true);
+                refundPayment.setPayTime(LocalDateTime.now());
+                refundPayment.setOrderId(order.getId());
+                paymentService.createPayment(refundPayment);
+                payments.add(refundPayment);
+            }
+            if(payment2.getBeSuccessful()){
+                Payment refundPayment = new Payment();
+                refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment2.getActualPrice()));
+                refundPayment.setBeSuccessful(true);
+                refundPayment.setPayTime(LocalDateTime.now());
+                refundPayment.setOrderId(order.getId());
+                paymentService.createPayment(refundPayment);
+                payments.add(refundPayment);
+            }
+        }
+        return payments;
     }
 
     /**

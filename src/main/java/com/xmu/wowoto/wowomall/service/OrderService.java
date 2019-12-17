@@ -3,6 +3,7 @@ package com.xmu.wowoto.wowomall.service;
 import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.domain.Order;
 import com.xmu.wowoto.wowomall.domain.OrderItem;
+import com.xmu.wowoto.wowomall.domain.Payment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -107,13 +108,22 @@ public interface OrderService {
     Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
 
     /**
-     * 获取团购订单
+     * 团购订单退款
      * @param goodId
      * @param startTime
      * @param endTime
      * @return
      */
-     List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
+    List<Payment> refundGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime, Double rate);
+
+    /**
+     * 预售订单退款
+     * @param goodId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<Payment> refundPresaleOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 更新一项order

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -134,7 +133,7 @@ public class OrderDao {
      * @param goodId
      * @return
      */
-    public Integer getGrouponOrdersById(Integer goodId,LocalDateTime startTime ,LocalDateTime endTime){
+    public Integer getGrouponOrdersNumberById(Integer goodId, LocalDateTime startTime , LocalDateTime endTime){
         Integer number = 0;
         number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONFIRM.getValue(),startTime,endTime);
         number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),startTime,endTime);
@@ -145,7 +144,7 @@ public class OrderDao {
     public List<OrderItem> getRebatingOrderItems(){
         LocalDateTime start=LocalDateTime.now().minusDays(8);
         LocalDateTime end=LocalDateTime.now().minusDays(7);
-        List<OrderItem> list =orderItemMapper.getOrderItemByShareTimeLimit(start,end);
+        List<OrderItem> list = orderItemMapper.getOrderItemByShareTimeLimit(start,end);
         return list;
     }
 
@@ -157,8 +156,19 @@ public class OrderDao {
      * @param endTime
      * @return
      */
-    public List<OrderItem> getrGrouponOrderItems (Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
-          return orderItemMapper.getOrderItemByGrouponLimit(goodsId,startTime,endTime);
+    public List<OrderItem> getGrouponOrderItems(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
+          return orderItemMapper.getOrderItemByTimeLimit(goodsId,startTime,endTime);
+    }
+
+    /**
+     * 获取预售orderItem
+     * @param goodsId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public List<OrderItem> getPresaleOrderItems(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
+        return orderItemMapper.getOrderItemByTimeLimit(goodsId,startTime,endTime);
     }
 
     public Integer payOrder(Order order)

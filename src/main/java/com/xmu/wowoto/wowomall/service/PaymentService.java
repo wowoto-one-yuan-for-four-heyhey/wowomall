@@ -20,11 +20,11 @@ public interface PaymentService {
     Payment createPayment(Payment payment);
 
     /**
-     * 根据ID拿到payment
-     * @param id
+     * 根据orderId拿到payment
+     * @param orderId
      * @return
      */
-    List<Payment> getPaymentById(Integer id);
+    List<Payment> getPaymentById(Integer orderId);
 
     Payment payPayment(Integer id);
 

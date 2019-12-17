@@ -325,7 +325,7 @@ public class OrderController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        List<Payment> list= paymentService.getPaymentById(id);
+        List<Payment> list = paymentService.getPaymentById(id);
         if(list == null){
             return ResponseUtil.badArgumentValue();
         }
@@ -360,37 +360,15 @@ public class OrderController {
     public Object grouponRefund(@RequestBody GrouponRulePo grouponRulePo, @RequestParam Double rate) {
         Integer goodsId = grouponRulePo.getId();
         if (null == goodsId) { return ResponseUtil.badArgumentValue(); }
-        List<Order> orders = orderService.getGrouponOrders(grouponRulePo.getGoodsId(), grouponRulePo.getStartTime(), grouponRulePo.getEndTime());
-        if(orders == null){ return ResponseUtil.badArgumentValue(); }
-        for(Order order: orders){
-            List<OrderItem> orderItemList = order.getOrderItemList();
-            OrderItem item = orderItemList.get(0);
-            BigDecimal aa = item.getDealPrice();
-            Integer a = aa.intValue();
-            Double dealPrice = a*rate;
-            BigDecimal decimal=new BigDecimal(Double.toString(dealPrice));
-            orderItemList.get(0).setDealPrice(decimal);
-            order.setIntegralPrice(decimal);
-            orderService.updateOrder(order);
-            //然后去新增一条payment
-            Payment payment = new Payment();
-            payment.setActualPrice(decimal.subtract(aa));
-            payment.setBeSuccessful(true);
-            payment.setPayTime(LocalDateTime.now());
-            payment.setOrderId(order.getId());
-            paymentService.createPayment(payment);
-        }
+        orderService.refundGrouponOrders(grouponRulePo.getGoodsId(), grouponRulePo.getStartTime(), grouponRulePo.getEndTime(), rate);
         return ResponseUtil.ok();
     }
 
     @PostMapping("orders/presaleRule/refund")
     public Object presaleRefund(@RequestBody PresaleRule presaleRule){
         Integer goodsId = presaleRule.getGoodsId();
-        if(null == goodsId){
-            return ResponseUtil.badArgument();
-        }
-
-
+        if(null == goodsId){ return ResponseUtil.badArgument(); }
+        orderService.refundPresaleOrders(presaleRule.getGoodsId(), presaleRule.getStartTime(), presaleRule.getEndTime());
         return ResponseUtil.ok();
     }
 }

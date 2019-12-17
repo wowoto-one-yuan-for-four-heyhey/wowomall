@@ -34,13 +34,13 @@ public class PaymentServiceImpl implements PaymentService {
 
     /**
      * 根据ID拿到payment
-     * @param paymentId
+     * @param orderId
      * @return
      */
     @Override
-    public List<Payment> getPaymentById(Integer paymentId)
+    public List<Payment> getPaymentById(Integer orderId)
     {
-        String json= remotePaymentService.getPaymentsById(paymentId);
+        String json= remotePaymentService.getPaymentsById(orderId);
         List<Payment> list= JacksonUtil.parseObject(json,"data",List.class);
         return list;
     }

@@ -59,11 +59,11 @@ public interface OrderItemMapper {
     Integer updateOrderItemById(Integer id);
 
     /**
-     * 查询团购
+     * 查询时间段内订单
      * @param goodId
      * @param startTime
      * @param endTime
      * @return
      */
-    List<OrderItem> getOrderItemByGrouponLimit(Integer goodId,LocalDateTime startTime,LocalDateTime endTime);
+    List<OrderItem> getOrderItemByTimeLimit(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
 }
