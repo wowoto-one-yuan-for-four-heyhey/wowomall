@@ -176,6 +176,21 @@ public class Order extends OrderPo {
         this.setIntegralPrice(integral);
     }
 
+    public void cacuPayment(){
+        if(this.paymentList.size() > 1){
+            //预售订单
+            BigDecimal deposit = this.paymentList.get(0).getActualPrice();
+            deposit.add(this.getFreightPrice());
+            this.paymentList.get(0).setActualPrice(deposit);
+        }else {
+            //团购、普通订单
+            BigDecimal price = this.getPaymentList().get(0).getActualPrice();
+            price.add(this.getFreightPrice());
+            price.subtract(this.getRebatePrice());
+            this.paymentList.get(0).setActualPrice(price);
+        }
+    }
+
     public void setItemsOrderId(){
         for (OrderItem orderItem: orderItemList){
             orderItem.setOrderId(this.getId());

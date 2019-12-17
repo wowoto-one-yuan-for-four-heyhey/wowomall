@@ -81,15 +81,19 @@ public class OrderServiceImpl implements OrderService {
             //物流单号
             order.setOrderSn(logisticsService.getShipSn());
 
-            //最终计算
+            //订单最终计算
             order.cacuIntegral();
+
+            //支付最终计算
+            order.cacuPayment();
 
             //添加订单
             newOrder = orderDao.addOrder(order);
 
-            //添加一条未支付的payment
-            Payment payment = new Payment(order);
-            paymentService.createPayment(payment);
+            //添加payment
+            for(Payment payment: order.getPaymentList()){
+                paymentService.createPayment(payment);
+            }
         }
 
         return newOrder;
@@ -266,7 +270,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
+    public Integer getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
         return null;
     }
 }

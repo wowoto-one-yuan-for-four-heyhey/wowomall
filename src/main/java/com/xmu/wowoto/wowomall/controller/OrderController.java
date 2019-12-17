@@ -3,10 +3,7 @@ package com.xmu.wowoto.wowomall.controller;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.domain.Po.GrouponRulePo;
-import com.xmu.wowoto.wowomall.service.CartService;
-import com.xmu.wowoto.wowomall.service.DiscountService;
-import com.xmu.wowoto.wowomall.service.OrderService;
-import com.xmu.wowoto.wowomall.service.UserService;
+import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +40,9 @@ public class OrderController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private LogService logService;
 
     @Autowired
     private HttpServletRequest request;
@@ -86,7 +86,12 @@ public class OrderController {
         if(null == adminId) {
             return ResponseUtil.unlogin();
         }
+
         List<Order> orders = orderService.getOrders(userId,showType,page,limit);
+
+        Log log = new Log(request, Log.Type.SELECT.getValue(), "get Orders", 1, -1);
+        logService.addLog(log);
+
         return ResponseUtil.ok(orders);
     }
 
@@ -300,11 +305,11 @@ public class OrderController {
      * @return
      */
     @GetMapping("orders/grouponOrders")
-    public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
+    public Integer getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
         Integer goodsId = grouponRulePo.getGoodsId();
         LocalDateTime startTime = grouponRulePo.getStartTime();
         LocalDateTime endTime = grouponRulePo.getEndTime();
-        List<Order> orders = orderService.getGrouponOrders(goodsId,startTime,endTime);
-        return ResponseUtil.ok(orders);
+        Integer number = orderService.getGrouponOrders(goodsId,startTime,endTime);
+        return ResponseUtil.ok(number);
     }
 }

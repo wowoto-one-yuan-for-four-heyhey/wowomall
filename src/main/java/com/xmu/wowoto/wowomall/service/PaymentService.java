@@ -2,6 +2,7 @@ package com.xmu.wowoto.wowomall.service;
 
 import com.xmu.wowoto.wowomall.domain.Payment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,5 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface PaymentService {
 
     Payment createPayment(Payment payment);
+
+    Payment payPayment(Integer id);
 
 }

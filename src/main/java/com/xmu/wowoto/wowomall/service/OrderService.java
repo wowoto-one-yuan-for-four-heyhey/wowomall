@@ -92,5 +92,5 @@ public interface OrderService {
 
     HashMap<String,Integer> payOrder(Order oneOrder);
 
-    List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
+    Integer getGrouponOrders(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
 }

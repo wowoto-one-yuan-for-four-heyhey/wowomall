@@ -22,4 +22,10 @@ public class PaymentServiceImpl implements PaymentService {
         String json = remotePaymentService.createPayment(payment);
         return JacksonUtil.parseObject(json, "data", Payment.class);
     }
+
+    @Override
+    public Payment payPayment(Integer id) {
+        String json = remotePaymentService.payPayment(id);
+        return JacksonUtil.parseObject(json, "data", Payment.class);
+    }
 }
