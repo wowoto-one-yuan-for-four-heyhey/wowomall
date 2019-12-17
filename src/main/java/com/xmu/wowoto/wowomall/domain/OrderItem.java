@@ -73,6 +73,9 @@ public class OrderItem extends OrderItemPo {
 
         public int getValue() { return value; }
     }
+    public OrderItem(){
+        super();
+    }
 
     public OrderItem(CartItem cartItem){
         this.setNumber(cartItem.getNumber());

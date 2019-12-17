@@ -34,10 +34,10 @@ public interface OrderItemMapper {
 
     /**
      * 根据id返回一项订单详情
-     * @param OrderItemId
+     * @param orderItemId
      * @return
      */
-    OrderItem getOrderItemById(Integer OrderItemId);
+    OrderItem getOrderItemById(Integer orderItemId);
 
     /**
      * 根据状态码和日期获取item

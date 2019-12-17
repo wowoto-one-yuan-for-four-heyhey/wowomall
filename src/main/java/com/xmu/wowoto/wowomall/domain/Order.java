@@ -128,6 +128,10 @@ public class Order extends OrderPo {
         public int getValue() { return value; }
     }
 
+    public Order(){
+        super();
+    }
+
     public Order(User user, Address address){
         this.setUser(user);
         this.setUserId(user.getId());
