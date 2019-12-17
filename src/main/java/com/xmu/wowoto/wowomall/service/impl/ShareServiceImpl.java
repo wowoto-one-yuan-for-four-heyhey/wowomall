@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.service.RemoteShareService;
 import com.xmu.wowoto.wowomall.service.ShareService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import java.util.Map;
  * @Description:
  * @Date: 2019/12/15 20:28
  */
+@Service
 public class ShareServiceImpl implements ShareService {
 
     @Autowired

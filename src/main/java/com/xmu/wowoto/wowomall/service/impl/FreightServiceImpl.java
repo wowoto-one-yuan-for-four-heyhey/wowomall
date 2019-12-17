@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.service.FreightService;
 import com.xmu.wowoto.wowomall.service.RemoteFreightService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @Description:
  * @Date: 2019/12/16 19:57
  */
+@Service
 public class FreightServiceImpl implements FreightService {
     @Autowired
     RemoteFreightService remoteFreightService;

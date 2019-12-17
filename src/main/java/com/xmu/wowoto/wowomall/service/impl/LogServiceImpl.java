@@ -5,12 +5,14 @@ import com.xmu.wowoto.wowomall.service.LogService;
 import com.xmu.wowoto.wowomall.service.RemoteLogService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author: Tens
  * @Description:
  * @Date: 2019/12/16 22:31
  */
+@Service
 public class LogServiceImpl implements LogService {
 
     @Autowired

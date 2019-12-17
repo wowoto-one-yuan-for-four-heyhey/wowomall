@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @Author: Tens
@@ -20,5 +21,5 @@ public interface RemoteGoodsService {
     String getProductById(@PathVariable("id") Integer productId);
 
     @PutMapping("products/{id}")
-    String updateProductById(@PathVariable("id") Integer productId, Product product);
+    String updateProductById(@PathVariable("id") Integer productId, @RequestBody Product product);
 }

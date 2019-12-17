@@ -372,7 +372,7 @@ public class OrderController {
             OrderItem item= orderItemList.get(0);
             BigDecimal aa=item.getDealPrice();
             Integer a=aa.intValue();
-            Double dealPrice= a*rate;
+            Double dealPrice = a*rate;
             BigDecimal decimal=new BigDecimal(Double.toString(dealPrice));
             orderItemList.get(0).setDealPrice(decimal);
             order.setIntegralPrice(decimal);
@@ -388,5 +388,8 @@ public class OrderController {
         return ResponseUtil.ok();
     }
 
-
+    @PostMapping("orders/presaleRule/refund")
+    public Object presaleRefund(@RequestBody PresaleRule presaleRule){
+        return null;
+    }
 }

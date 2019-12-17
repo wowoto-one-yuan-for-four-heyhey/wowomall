@@ -8,12 +8,14 @@ import com.xmu.wowoto.wowomall.util.Config;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import com.xmu.wowoto.wowomall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author: Tens
  * @Description:
  * @Date: 2019/12/15 15:06
  */
+@Service
 public class GoodsServiceImpl implements GoodsService {
 
     @Autowired

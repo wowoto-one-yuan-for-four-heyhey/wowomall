@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.RemoteCartService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @Description:
  * @Date: 2019/12/14 20:13
  */
+@Service
 public class CartServiceImpl implements CartService {
 
     @Autowired
