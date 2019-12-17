@@ -311,7 +311,7 @@ public class OrderController {
         Integer goodsId = grouponRulePo.getGoodsId();
         LocalDateTime startTime = grouponRulePo.getStartTime();
         LocalDateTime endTime = grouponRulePo.getEndTime();
-        Integer number = orderService.getGrouponOrders(goodsId,startTime,endTime);
+        Integer number = orderService.getGrouponOrdersNum(goodsId,startTime,endTime);
         return ResponseUtil.ok(number);
     }
 
@@ -351,8 +351,42 @@ public class OrderController {
         return null;
     }
 
-    @PostMapping("orders/grouponOrders")
-    public Object refundGrouponOrders(@RequestBody GrouponRulePo grouponRulePo, @RequestBody BigDecimal price){
-        return null;
+    /**
+     * 提供给discount模块用于团购成功还款
+     * @param grouponRulePo
+     * @param rate
+     * @return
+     */
+    @PostMapping("orders/grouponOrders/refund")
+    public Object grouponRefund(@RequestBody GrouponRulePo grouponRulePo, @RequestParam Double rate) {
+        Integer goodsId = grouponRulePo.getId();
+        if (null == goodsId) {
+            return ResponseUtil.badArgumentValue();
+        }
+        List<Order> orders=orderService.getGrouponOrders(grouponRulePo.getGoodsId(),grouponRulePo.getStartTime(),grouponRulePo.getEndTime());
+        if(orders==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        for(Order order:orders){
+            List<OrderItem> orderItemList = order.getOrderItemList();
+            OrderItem item= orderItemList.get(0);
+            BigDecimal aa=item.getDealPrice();
+            Integer a=aa.intValue();
+            Double dealPrice= a*rate;
+            BigDecimal decimal=new BigDecimal(Double.toString(dealPrice));
+            orderItemList.get(0).setDealPrice(decimal);
+            order.setIntegralPrice(decimal);
+            orderService.updateOrder(order);
+            //然后去新增一条payment
+            Payment payment=new Payment();
+            payment.setActualPrice(decimal.subtract(aa));
+            payment.setBeSuccessful(true);
+            payment.setPayTime(LocalDateTime.now());
+            payment.setOrderId(order.getId());
+            paymentService.createPayment(payment);
+        }
+        return ResponseUtil.ok();
     }
+
+
 }

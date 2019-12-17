@@ -90,7 +90,35 @@ public interface OrderService {
      */
     OrderItem getOrderItem(Integer orderItemId);
 
+    /**
+     * 修改订单状态为支付
+     * @param oneOrder
+     * @return
+     */
     HashMap<String,Integer> payOrder(Order oneOrder);
 
-    Integer getGrouponOrders(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
+    /**
+     * 获取团购订单数量
+     * @param goodId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime,LocalDateTime endTime);
+
+    /**
+     * 获取团购订单
+     * @param goodId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+     List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * 更新一项order
+     * @param order
+     * @return
+     */
+     Integer updateOrder(Order order);
 }

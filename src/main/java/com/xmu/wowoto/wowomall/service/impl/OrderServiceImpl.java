@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -168,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
         if (Order.StatusCode.PAYED.getValue() > oneOrder.getStatusCode()) {
             List<OrderItem> orderItems = oneOrder.getOrderItemList();
             for (OrderItem item : orderItems) {
-                item.setStatusCode(Order.StatusCode.PAYED.getValue());
+                item.setStatusCode(2);
                 Integer re = orderDao.updateOrderItem(item);
                 if(re != 1) {
                     result.put("orderItem", re);
@@ -269,8 +270,39 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public Integer getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
+    public Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
         return orderDao.getGrouponOrdersById(goodId, startTime, endTime);
+    }
+
+    /**
+     * 获取团购订单
+     * @param goodsId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public List<Order> getGrouponOrders(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
+        List<OrderItem> list= orderDao.getrGrouponOrderItems (goodsId, startTime, endTime);
+        List<Order> orderList=new ArrayList<>(list.size());
+        for(OrderItem item: list){
+            Order order=orderDao.getOrderByOrderId(item.getOrderId());
+            List<OrderItem> grouponList=new ArrayList<>();
+            grouponList.add(item);
+            order.setOrderItemList(grouponList);
+            orderList.add(order);
+        }
+        return orderList;
+    }
+
+    /**
+     * 更新一项order
+     * @param order
+     * @return
+     */
+    @Override
+    public Integer updateOrder(Order order){
+        return orderDao.updateOrder(order);
     }
 }
 

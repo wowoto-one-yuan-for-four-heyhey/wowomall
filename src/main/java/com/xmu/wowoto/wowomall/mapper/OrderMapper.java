@@ -60,4 +60,13 @@ public interface OrderMapper {
     Integer updateOrderSelective(Order order);
 
     Integer getGrouponOrdersById(Integer goodId, Integer statusCode, LocalDateTime startTime,LocalDateTime endTime);
+
+    /**
+     * 获取团购订单
+     * @param goodId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
 }

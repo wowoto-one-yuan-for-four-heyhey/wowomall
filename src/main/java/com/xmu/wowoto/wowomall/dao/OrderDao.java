@@ -103,7 +103,11 @@ public class OrderDao {
      * @return 修改数量
      */
     public Integer updateOrder(Order order){
-        return orderMapper.updateOrderSelective(order);
+        for(OrderItem item:order.getOrderItemList()){
+            orderItemMapper.updateOrderItemSelective(item);
+        }
+        Integer result= orderMapper.updateOrderSelective(order);
+        return result;
     }
 
     /**
@@ -141,8 +145,30 @@ public class OrderDao {
     public List<OrderItem> getRebatingOrderItems(){
         LocalDateTime start=LocalDateTime.now().minusDays(8);
         LocalDateTime end=LocalDateTime.now().minusDays(7);
-        List<OrderItem> list =orderItemMapper.getOrderItemByTimeLimit(start,end);
+        List<OrderItem> list =orderItemMapper.getOrderItemByShareTimeLimit(start,end);
         return list;
     }
 
+
+    /**
+     * 获取团购orderItem
+     * @param goodsId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public List<OrderItem> getrGrouponOrderItems (Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
+          return orderItemMapper.getOrderItemByGrouponLimit(goodsId,startTime,endTime);
+    }
+
+    public Integer payOrder(Order order)
+    {
+        order.setStatusCode(3);
+        orderMapper.updateOrderSelective(order);
+        for(OrderItem item:order.getOrderItemList()){
+            item.setStatusCode(2);
+            orderItemMapper.updateOrderItemSelective(item);
+        }
+        return 1;
+    }
 }

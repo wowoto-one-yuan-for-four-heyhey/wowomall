@@ -54,7 +54,16 @@ public interface OrderItemMapper {
      * @param end
      * @return
      */
-    List<OrderItem> getOrderItemByTimeLimit(LocalDateTime start, LocalDateTime end);
+    List<OrderItem> getOrderItemByShareTimeLimit(LocalDateTime start, LocalDateTime end);
 
     Integer updateOrderItemById(Integer id);
+
+    /**
+     * 查询团购
+     * @param goodId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<OrderItem> getOrderItemByGrouponLimit(Integer goodId,LocalDateTime startTime,LocalDateTime endTime);
 }
