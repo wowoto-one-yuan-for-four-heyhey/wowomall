@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Date: 2019/12/16 20:08
  */
 @Service
-@FeignClient("logistics")
+@FeignClient("logisticsService")
 public interface RemoteLogisticsService {
 
     @GetMapping("/logistics")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
  */
 
 @Service
-@FeignClient("GoodsInfo")
+@FeignClient("goodsInfoService")
 public interface RemoteGoodsService {
     @GetMapping("products/{id}")
     String getProductById(@PathVariable("id") Integer productId);

@@ -16,7 +16,7 @@ import java.util.List;
  * @Date: 2019/12/14 20:09
  */
 @Service
-@FeignClient("Cart")
+@FeignClient("cartService")
 public interface RemoteCartService {
     /**
      * 用ID获得CartItem对象

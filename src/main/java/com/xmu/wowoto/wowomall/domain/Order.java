@@ -152,7 +152,10 @@ public class Order extends OrderPo {
         stringBuilder.append(address.getConsignee());
         stringBuilder.append(" ");
         stringBuilder.append(address.getPostalCode());
+        this.setAddress(stringBuilder.toString());
     }
+
+
 
     /**
      * 计算订单的商品总价

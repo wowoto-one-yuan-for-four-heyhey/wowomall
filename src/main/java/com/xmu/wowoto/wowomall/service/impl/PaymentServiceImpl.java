@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<Payment> getPaymentById(Integer paymentId)
     {
-        String json= remotePaymentService.getPaymentById(paymentId);
+        String json= remotePaymentService.getPaymentsById(paymentId);
         List<Payment> list= JacksonUtil.parseObject(json,"data",List.class);
         return list;
     }

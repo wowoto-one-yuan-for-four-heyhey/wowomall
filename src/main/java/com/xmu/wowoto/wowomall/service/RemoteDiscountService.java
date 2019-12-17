@@ -17,7 +17,7 @@ import java.util.List;
  * @Date: 2019/12/15 15:14
  */
 @Service
-@FeignClient("Discount")
+@FeignClient("discountService")
 public interface RemoteDiscountService {
 
     @PostMapping(value = "/discounts/order")

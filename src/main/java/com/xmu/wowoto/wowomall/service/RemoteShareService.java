@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Date: 2019/12/15 20:58
  */
 @Service
-@FeignClient("ShareService")
+@FeignClient("shareService")
 public interface RemoteShareService {
 
     /**
