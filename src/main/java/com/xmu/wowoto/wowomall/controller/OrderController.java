@@ -93,8 +93,11 @@ public class OrderController {
                             @RequestParam(defaultValue = "1")Integer page,
                             @RequestParam(defaultValue = "10")Integer limit) {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
-        if(null == adminId) {
+        if(null == adminId ) {
             return ResponseUtil.unlogin();
+        }
+        if(adminId < 1){
+            return ResponseUtil.illegal();
         }
         if(orderStatusArray.size()==1 && orderStatusArray.get(0)==-1) {
             orderStatusArray=null;
@@ -203,7 +206,6 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-
         order = orderService.deleteOrder(order);
 
         return ResponseUtil.ok(order);
@@ -223,7 +225,6 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-
         if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);

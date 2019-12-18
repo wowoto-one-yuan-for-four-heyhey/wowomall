@@ -18,4 +18,12 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class Product extends ProductPo {
     private GoodsPo goodsPo;
+
+    public GoodsPo getGoodsPo() {
+        return goodsPo;
+    }
+
+    public void setGoodsPo(GoodsPo goodsPo) {
+        this.goodsPo = goodsPo;
+    }
 }
