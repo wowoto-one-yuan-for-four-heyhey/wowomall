@@ -140,7 +140,8 @@ public class OrderDao {
         Integer number = 0;
         number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_CONFIRM.getValue(),startTime,endTime);
         number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.COMMENTED.getValue(),startTime,endTime);
-        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED_SYSTEM_CONFIRM.getValue(),startTime,endTime);
+        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.PAYED.getValue(),startTime,endTime);
+        number += orderMapper.getGrouponOrdersById(goodId,Order.StatusCode.SHIPPED.getValue(),startTime,endTime);
         return number;
     }
 

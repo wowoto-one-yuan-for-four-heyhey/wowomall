@@ -43,12 +43,12 @@
     limit #{page}, #{limit}
 </select>
 
-<select id="getGrouponOrderById" parameterType="java.util.List" resultType="java.util.List">
-        select count(*)
+<select id="getGrouponOrdersById" parameterType="java.util.List" resultType="Integer">
+        select COUNT(`oomall_order_item`.id)
         from `oomall_order`,`oomall_order_item`
-        where pay_time between #{startTime} and #{endTime} and
-        `order`.id == `order_item`.order_id and `order`.be_deleted = 0
-            and status_code = #{statusCode} and `order_item`.goods_id = #{goodId}
+        where ( pay_time between #{startTime} and #{endTime} ) and
+        `oomall_order`.id = `oomall_order_item`.order_id and `oomall_order`.is_deleted = 0
+        and `oomall_order`.status = #{statusCode} and `oomall_order_item`.goods_id = #{goodId}
 </select>
 
 <select id="getOrderByOrderId" parameterType="Integer" resultType="Order">
