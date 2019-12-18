@@ -25,5 +25,5 @@ public interface UserService {
      * @param rebate
      * @return
      */
-    Integer addRebate(Integer userId,Integer rebate);
+    Integer updateUserRebate(Integer userId,Integer rebate);
 }

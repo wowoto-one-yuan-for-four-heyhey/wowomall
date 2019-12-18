@@ -145,7 +145,7 @@ public class OrderController {
         Integer rebate = submitOrderVo.getRebate();
         if(null != rebate && user.getRebate() >= rebate){
             order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
-            userService.addRebate(userId, -rebate);
+            userService.updateUserRebate(userId, -rebate);
         }
 
         if(null != submitOrderVo.getCouponId()){
@@ -278,17 +278,21 @@ public class OrderController {
             return ResponseUtil.badArgumentValue();
         }
         OrderItem item = orderService.getOrderItem(orderItemId);
+        if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
+            return ResponseUtil.ok(order);
+        }
         if(item == null){
             return ResponseUtil.badArgumentValue();
         }
 
         OrderItem reOrderItem = orderService.refundOrderItem(item,order);
         order = orderService.refundOrder(order,reOrderItem);
-        order = orderService.refundOrder(order);
         Log log=new Log();
         log.setType(2);
         log.setStatusCode(1);
-        log.setActions("管理员更改订单"+order.toString()+"状态为退款");
+        log.setActionId(1);
+        log.setActions("管理员更改订单"+order.getId()+"状态为退款");
+
         remoteLogService.addLog(log);
         return ResponseUtil.ok(order);
     }

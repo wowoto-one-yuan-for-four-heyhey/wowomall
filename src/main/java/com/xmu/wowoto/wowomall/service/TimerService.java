@@ -43,7 +43,7 @@ public class TimerService {
             }
             for(Integer key: result.keySet()){
                 Integer value = result.get(key);
-                Integer errNo=userService.addRebate(key,value);
+                Integer errNo=userService.updateUserRebate(key,value);
             }
         }
 

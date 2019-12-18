@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -147,14 +144,13 @@ public class OrderServiceImpl implements OrderService {
         if(Order.StatusCode.PAYED_CANCELED.getValue() >= order.getStatusCode()){
             order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
             List<OrderItem> orderItems= order.getOrderItemList();
-            List<OrderItem> items= order.getOrderItemList();
-            System.out.println("size:");
-            System.out.println(orderItems.size());
-            Integer beDelete = 1;
+            List<OrderItem> items = new LinkedList<OrderItem>();
+            Integer beDelete = 0;
             for(OrderItem item : orderItems){
-                Integer itemId = item.getOrderId();
+                Integer itemId = item.getId();
                 if(itemId.equals(orderItem.getId())){
                     items.add(orderItem);
+                    beDelete++;
                 }else {
                     items.add(item);
                     if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS)){
@@ -163,15 +159,21 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
             if(items.size() == beDelete){
-                System.out.println(22222);
                 order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
             }
             order.setOrderItemList(items);
             BigDecimal rebatePrice = order.getRebatePrice();
             BigDecimal orderItemPrice = orderItem.getPrice();
             BigDecimal goodsPrice = order.getGoodsPrice();
-            BigDecimal rebate = rebatePrice.multiply(orderItemPrice).divide(goodsPrice);
-            userService.addRebate(order.getUserId(),rebate.intValue());
+
+            if(goodsPrice.equals(0)){
+                return null;
+                //异常抛错
+            }
+            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
+
+
+            userService.updateUserRebate(order.getUserId(),rebate.intValue());
 
             if(order.getOrderItemList().size() == beDelete){
                 order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());

@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Integer addRebate(Integer userId,Integer rebate){
-        String json = remoteUserService.addRebate(userId,rebate);
+    public Integer updateUserRebate(Integer userId,Integer rebate){
+        String json = remoteUserService.updateUserRebate(userId,rebate);
         Integer errNo = JacksonUtil.parseInteger(json,"errno");
         return errNo;
     }
