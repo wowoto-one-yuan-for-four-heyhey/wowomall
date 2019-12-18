@@ -272,6 +272,9 @@ public class OrderController {
     {
 
         Integer adminId = Integer.valueOf(request.getHeader("id"));
+        if(adminId == 0){
+            return ResponseUtil.unlogin();
+        }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) {
