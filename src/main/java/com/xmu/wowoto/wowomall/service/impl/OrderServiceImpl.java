@@ -146,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
             for(OrderItem item : orderItems){
                 Integer itemId = item.getOrderId();
                 // 对item的操作
+                System.out.println(itemId);
             }
 
             orderDao.updateOrder(order);

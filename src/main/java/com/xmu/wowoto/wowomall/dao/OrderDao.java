@@ -92,7 +92,9 @@ public class OrderDao {
             orderItem.setProduct(product);
 
         }
-        order.setOrderItemList(orderItems);
+        if(order != null) {
+            order.setOrderItemList(orderItems);
+        }
         return order;
     }
 

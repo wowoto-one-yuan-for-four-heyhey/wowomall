@@ -74,7 +74,7 @@
            address,
            gmt_create,
            gmt_modified,
-           be_deleted as is_deleted
+           is_deleted as be_deleted
     from `oomall_order`
     where is_deleted = 0 and id = #{orderId}
 </select>
@@ -84,9 +84,6 @@
     <set>
         <if test="userId != null">
             user_id = #{userId},
-        </if>
-        <if test="beSharedItemIds != null">
-            be_shared_item_ids = #{beSharedItemIds},
         </if>
         <if test="orderSn != null">
             order_sn = #{orderSn},
@@ -149,7 +146,7 @@
             gmt_modified = now(),
         </if>
         <if test="beDeleted != null">
-            be_deleted = #{beDeleted},
+            is_deleted = #{beDeleted},
         </if>
     </set>
     where id = #{id}
