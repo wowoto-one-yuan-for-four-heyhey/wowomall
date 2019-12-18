@@ -279,7 +279,7 @@ public class OrderController {
         }
         OrderItem item = orderService.getOrderItem(orderItemId);
         if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
-            return ResponseUtil.ok(order);
+            return ResponseUtil.illegal();
         }
         if(item == null){
             return ResponseUtil.badArgumentValue();
