@@ -1,5 +1,6 @@
 package com.xmu.wowoto.wowomall.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.domain.Po.GrouponRulePo;
@@ -297,7 +298,7 @@ public class OrderController {
         Log log=new Log();
         log.setType(2);
         log.setStatusCode(1);
-        log.setActionId(1);
+        log.setActionId(order.getId());
         log.setActions("管理员更改订单"+order.getId()+"状态为退款");
 
         remoteLogService.addLog(log);
