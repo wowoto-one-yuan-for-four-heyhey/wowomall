@@ -172,7 +172,8 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-
+        if(!order.getStatusCode().equals(Order.StatusCode.NOT_PAYED.getValue())){
+            return ResponseUtil.illegal(); }
         order = orderService.cancelOrder(order);
         return ResponseUtil.ok(order);
     }
