@@ -131,7 +131,7 @@ public class OrderController {
      * @return 提交订单操作结果
      */
     @PostMapping("orders")
-    public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
+    public Object submit(@RequestBody SubmitOrderVo submitOrderVo){
 
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {   return ResponseUtil.unlogin();}
@@ -251,6 +251,7 @@ public class OrderController {
         Log log=new Log();
         log.setType(2);
         log.setStatusCode(1);
+        log.setActionId(order.getId());
         log.setActions("管理员更改订单"+order.toString()+"状态为发货");
         remoteLogService.addLog(log);
 
@@ -267,8 +268,7 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
-                              @RequestParam Integer orderItemId)
-                              //@RequestBody OrderItem orderItem)
+                              @RequestBody OrderItem orderItem)
     {
 
         Integer adminId = Integer.valueOf(request.getHeader("id"));
@@ -277,7 +277,7 @@ public class OrderController {
         if(order == null) {
             return ResponseUtil.badArgumentValue();
         }
-        OrderItem item = orderService.getOrderItem(orderItemId);
+        OrderItem item = orderService.getOrderItem(orderItem.getId());
         if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
             return ResponseUtil.illegal();
         }
