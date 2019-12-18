@@ -127,23 +127,31 @@ public class OrderController {
     @PostMapping("orders")
     public Object submit( @RequestBody SubmitOrderVo submitOrderVo){
 
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {   return ResponseUtil.unlogin();}
         if(null == submitOrderVo) { return ResponseUtil.badArgument(); }
+
         User user = userService.getUserById(userId);
         Address address = submitOrderVo.getAddress();
+
         Order order = new Order(user, address);
+
         Integer rebate = submitOrderVo.getRebate();
         if(null != rebate && user.getRebate() >= rebate){
             order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
-            userService.addRebate(userId, rebate);
+            userService.addRebate(userId, -rebate);
         }
-        if(null != submitOrderVo.getCouponId()){ order.setCouponId(submitOrderVo.getCouponId()); }
+
+        if(null != submitOrderVo.getCouponId()){
+            order.setCouponId(submitOrderVo.getCouponId());
+        }
+
         List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
             CartItem cartItem = cartService.findCartItemById(cartItemId);
             cartItems.add(cartItem);
         }
+
         order = orderService.submit(order, cartItems);
 
         return ResponseUtil.ok(order);
@@ -206,9 +214,8 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-        System.out.println(order.getStatusCode());
-        System.out.println("Order.StatusCode.SHIPPED");
-        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED.getValue())){ return ResponseUtil.illegal(); }
+
+        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
 
@@ -230,7 +237,7 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
-        if(!order.getStatusCode().equals(Order.StatusCode.PAYED.getValue())){ return ResponseUtil.illegal(); }
+
         order = orderService.shipOrder(order);
         if(order == null){
             return ResponseUtil.illegal();
