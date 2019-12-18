@@ -105,7 +105,7 @@ public class OrderController {
      * @return 订单详细
      */
     @GetMapping("orders/{id}")
-    public Object orderDetail(@NotNull @PathVariable("id")Integer orderId)
+    public Object orderDetail(@PathVariable("id")Integer orderId)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId == null) { ResponseUtil.unlogin(); }
@@ -149,6 +149,9 @@ public class OrderController {
         List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
             CartItem cartItem = cartService.findCartItemById(cartItemId);
+            if(cartItem == null){
+                return ResponseUtil.badArgumentValue();
+            }
             cartItems.add(cartItem);
         }
 

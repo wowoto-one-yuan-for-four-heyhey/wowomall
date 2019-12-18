@@ -44,9 +44,10 @@ public class GoodsServiceImpl implements GoodsService {
         Integer number = cartItem.getNumber();
 
         String key = "Stock_" + productId;
-        Integer stock = Integer.valueOf(redisUtil.get(key));
+        String value = redisUtil.get(key);
+        Integer stock;
 
-        if(stock != null && stock - number >= 0){
+        if(value != null && (stock = Integer.valueOf(value)) != null && stock - number >= 0){
             redisUtil.set(key, String.valueOf(stock - number));
             return true;
         }else{

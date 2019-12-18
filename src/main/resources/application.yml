@@ -2,6 +2,6 @@ spring:
   profiles:
     active: dev
 
-
-
-
+ribbon:
+  ConnectTimeout: 50000
+  ReadTimeout: 50000

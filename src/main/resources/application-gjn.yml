@@ -8,7 +8,12 @@ spring:
     username: oomall
     password: oomallp@$$w0rd
 
+
     driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 1
+
   redis:
     host: 47.98.252.133
     port: 6379

@@ -32,17 +32,6 @@ public class RedisUtil {
         return result;
     }
 
-    public boolean getAndSet(final String key, String value) {
-        boolean result = false;
-        try {
-            redisTemplate.opsForValue().getAndSet(key, value);
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     /**
      * 删除缓存
      * */
