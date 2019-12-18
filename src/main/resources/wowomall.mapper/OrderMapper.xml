@@ -85,9 +85,6 @@
         <if test="userId != null">
             user_id = #{userId},
         </if>
-        <if test="beSharedItemIds != null">
-            be_shared_item_ids = #{beSharedItemIds},
-        </if>
         <if test="orderSn != null">
             order_sn = #{orderSn},
         </if>

@@ -223,7 +223,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@PathVariable("id")String orderId){
         // orderItem
-        Integer adminId = Integer.valueOf(request.getHeader("userId"));
+        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
@@ -265,7 +265,7 @@ public class OrderController {
     @PutMapping("orders/{id}")
     public Object orderPayed(@PathVariable("id")Integer id )
     {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(userId == null){ return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(id);
         if(order == null){ return ResponseUtil.badArgumentValue(); }
