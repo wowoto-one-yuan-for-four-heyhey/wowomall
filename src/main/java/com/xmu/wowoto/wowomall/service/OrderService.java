@@ -6,6 +6,7 @@ import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.Payment;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +75,10 @@ public interface OrderService {
      * @param order 订单ID
      * @return 订单详细
      */
-    Order refundOrder(Order order);
+    Order refundOrder(Order order,OrderItem orderItem);
+
+
+    OrderItem refundOrderItem(OrderItem orderItem, Order order);
 
     /**
      * 确认收货

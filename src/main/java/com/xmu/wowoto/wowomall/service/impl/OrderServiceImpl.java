@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -41,6 +42,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private LogisticsService logisticsService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取用户订单列表
@@ -139,24 +143,78 @@ public class OrderServiceImpl implements OrderService {
      * @return 订单列表
      */
     @Override
-    public Order refundOrder(Order order){
+    public Order refundOrder(Order order,OrderItem orderItem){
         if(Order.StatusCode.PAYED_CANCELED.getValue() >= order.getStatusCode()){
             order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
             List<OrderItem> orderItems= order.getOrderItemList();
+            List<OrderItem> items= order.getOrderItemList();
+            System.out.println("size:");
+            System.out.println(orderItems.size());
+            Integer beDelete = 1;
             for(OrderItem item : orderItems){
                 Integer itemId = item.getOrderId();
-                // 对item的操作
-                System.out.println(itemId);
+                if(itemId.equals(orderItem.getId())){
+                    items.add(orderItem);
+                }else {
+                    items.add(item);
+                    if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS)){
+                        beDelete ++;
+                    }
+                }
             }
+            if(items.size() == beDelete){
+                System.out.println(22222);
+                order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
+            }
+            order.setOrderItemList(items);
+            BigDecimal rebatePrice = order.getRebatePrice();
+            BigDecimal orderItemPrice = orderItem.getPrice();
+            BigDecimal goodsPrice = order.getGoodsPrice();
+            BigDecimal rebate = rebatePrice.multiply(orderItemPrice).divide(goodsPrice);
+            userService.addRebate(order.getUserId(),rebate.intValue());
 
+            if(order.getOrderItemList().size() == beDelete){
+                order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
+            }
+            order.setGmtModified(LocalDateTime.now());
             orderDao.updateOrder(order);
-
             //对用户 钱进行更新
             // 对价格进行更新
 
             //return ResponseUtil.ok(updateNum);
         }
         return order;
+    }
+
+    /**
+     * 更改订单状态为退款(管理员操作)
+     *
+     * @param orderItem 订单项
+     * @return 订单列表
+     */
+    @Override
+    public OrderItem refundOrderItem(OrderItem orderItem, Order order){
+        if(OrderItem.StatusCode.APPLY_RETURN.getValue() >= orderItem.getStatusCode()){
+            orderItem.setStatusCode(OrderItem.StatusCode.RETURN_SUCCESS.getValue());
+
+            orderDao.updateOrderItem(orderItem);
+            Payment payment = new Payment();
+            payment.setActualPrice(orderItem.getPrice().negate());
+            payment.setOrderId(orderItem.getOrderId());
+            payment.setPayTime(LocalDateTime.now());
+            payment.setGmtCreate(LocalDateTime.now());
+
+            //List<Payment> orderPay = paymentService.getPaymentById(order.getId());
+            //payment.setPayChannel( orderPay.get(0).getPayChannel());
+            payment.setBeSuccessful(true);
+            //paymentService.createPayment(payment);
+
+            //对用户 钱进行更新
+            // 对价格进行更新
+
+            //return ResponseUtil.ok(updateNum);
+        }
+        return orderItem;
     }
 
     /**

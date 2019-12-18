@@ -247,15 +247,23 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
-    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
+                              @RequestParam Integer orderItemId)
+                              //@RequestBody OrderItem orderItem)
+    {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) {
             return ResponseUtil.badArgumentValue();
         }
+        OrderItem item = orderService.getOrderItem(orderItemId);
+        if(item == null){
+            return ResponseUtil.badArgumentValue();
+        }
 
-        order = orderService.refundOrder(order);
+        OrderItem reOrderItem = orderService.refundOrderItem(item,order);
+        order = orderService.refundOrder(order,reOrderItem);
         return ResponseUtil.ok(order);
     }
 

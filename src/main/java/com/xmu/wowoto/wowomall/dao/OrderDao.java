@@ -90,7 +90,6 @@ public class OrderDao {
         for (OrderItem orderItem: orderItems){
             Product product = goodsService.getProductById(orderItem.getId());
             orderItem.setProduct(product);
-
         }
         if(order != null) {
             order.setOrderItemList(orderItems);

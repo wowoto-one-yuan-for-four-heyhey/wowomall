@@ -40,7 +40,7 @@
                 item_type = #{itemType},
             </if>
             <if test="statusCode != null">
-                statusCode = #{status},
+                status = #{statusCode},
             </if>
             <if test="number != null">
                 `number` = #{number},
@@ -54,8 +54,8 @@
             <if test="productId != null">
                 product_id= #{productId},
             </if>
-            <if test="goodId != null">
-                goods_id = #{goodId},
+            <if test="goodsId != null">
+                goods_id = #{goodsId},
             </if>
             <if test="nameWithSpecifications != null">
                 name_with_specifications = #{nameWithSpecifications},
