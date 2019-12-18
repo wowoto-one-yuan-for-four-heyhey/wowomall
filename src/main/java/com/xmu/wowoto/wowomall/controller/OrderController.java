@@ -205,8 +205,9 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-
-        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
+        System.out.println(order.getStatusCode());
+        System.out.println("Order.StatusCode.SHIPPED");
+        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED.getValue())){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
 
@@ -228,7 +229,7 @@ public class OrderController {
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
-
+        if(!order.getStatusCode().equals(Order.StatusCode.PAYED.getValue())){ return ResponseUtil.illegal(); }
         order = orderService.shipOrder(order);
         if(order == null){
             return ResponseUtil.illegal();
