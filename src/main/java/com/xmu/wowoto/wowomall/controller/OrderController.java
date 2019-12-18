@@ -158,7 +158,7 @@ public class OrderController {
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId) {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) { return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
@@ -179,7 +179,7 @@ public class OrderController {
     @DeleteMapping("orders/{id}")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object deleteOrder(@PathVariable("id")String orderId) {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) { return ResponseUtil.unlogin(); }
 
         Order order = orderService.getOrder(Integer.parseInt(orderId));
@@ -201,7 +201,7 @@ public class OrderController {
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
     public Object confirmOrder( @PathVariable("id")String orderId ){
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
@@ -225,7 +225,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@PathVariable("id")String orderId){
         // orderItem
-        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
@@ -248,7 +248,7 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) {
@@ -267,7 +267,7 @@ public class OrderController {
     @PutMapping("orders/{id}")
     public Object orderPayed(@PathVariable("id")Integer id )
     {
-        Integer userId = Integer.valueOf(request.getHeader("userId"));
+        Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId == null){ return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(id);
         if(order == null){ return ResponseUtil.badArgumentValue(); }
