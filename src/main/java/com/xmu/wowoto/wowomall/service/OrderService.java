@@ -135,4 +135,17 @@ public interface OrderService {
      * @return
      */
      Integer updateOrder(Order order);
+
+    /**
+     * 管理员获取订单
+     * @param userId
+     * @param orderSn
+     * @param orderStatusArray
+     * @param page
+     * @param limit
+     * @return
+     */
+    public List<Order> getOrdersByStatusCodesAndOrderSn(Integer userId,String orderSn,
+                                                        List<Short> orderStatusArray,
+                                                        Integer page, Integer limit);
 }

@@ -6,6 +6,7 @@ import com.xmu.wowoto.wowomall.domain.Product;
 import com.xmu.wowoto.wowomall.mapper.OrderItemMapper;
 import com.xmu.wowoto.wowomall.mapper.OrderMapper;
 import com.xmu.wowoto.wowomall.service.GoodsService;
+import feign.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -181,5 +182,22 @@ public class OrderDao {
             orderItemMapper.updateOrderItemSelective(item);
         }
         return 1;
+    }
+
+    public List<Order> getOrdersByStatusCodesAndOrderSn(Integer userId,String orderSn,
+                                                        List<Short> orderStatusArray,
+                                                        Integer page, Integer limit)
+    {
+        page=(page-1)*limit;
+        List<Order> orders = orderMapper.getOrdersByStatusCodesAndOrderSn(userId, orderSn,orderStatusArray, page, limit);
+        for (Order order: orders) {
+            List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
+            for (OrderItem orderItem: orderItems){
+                Product product = goodsService.getProductById(orderItem.getProductId());
+                orderItem.setProduct(product);
+            }
+            order.setOrderItemList(orderItems);
+        }
+        return orders;
     }
 }

@@ -61,6 +61,9 @@ public class Log {
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 
+    public Log(){
+        super();
+    }
     public Log(HttpServletRequest request, Integer type, String actions, Integer statusCode, Integer actionId){
         this.adminId = Integer.valueOf(request.getHeader("id"));
         this.ip = request.getRemoteAddr();

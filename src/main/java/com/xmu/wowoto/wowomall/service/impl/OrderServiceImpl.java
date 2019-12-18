@@ -409,6 +409,24 @@ public class OrderServiceImpl implements OrderService {
     public Integer updateOrder(Order order){
         return orderDao.updateOrder(order);
     }
+
+    /**
+     * 管理员筛选订单
+     * @param userId
+     * @param orderSn
+     * @param orderStatusArray
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public List<Order> getOrdersByStatusCodesAndOrderSn(Integer userId,String orderSn,
+                                                        List<Short> orderStatusArray,
+                                                        Integer page, Integer limit)
+    {
+        List<Order> orders = orderDao.getOrdersByStatusCodesAndOrderSn(userId, orderSn, orderStatusArray, page, limit);
+        return orders;
+    }
 }
 
 

@@ -106,6 +106,7 @@ public class Order extends OrderPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "Order(addressObj=" + this.getAddressObj() + ", user=" + this.getUser() + ", orderItemList=" + this.getOrderItemList() + ", couponId=" + this.getCouponId() + ", paymentList=" + this.getPaymentList() + ")";
     }
