@@ -67,6 +67,9 @@ public class OrderController {
                             @RequestParam(defaultValue = "10")Integer limit)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        if (userId < 1){
+            return ResponseUtil.illegal();
+        }
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -347,17 +350,11 @@ public class OrderController {
      */
     @GetMapping("orders/grouponOrders")
     public Object getGrouponOrders(@RequestBody GrouponRulePo grouponRulePo){
-
         Integer goodsId = grouponRulePo.getGoodsId();
-
         LocalDateTime startTime = grouponRulePo.getStartTime();
         LocalDateTime endTime = grouponRulePo.getEndTime();
-
-
-
         Integer number = orderService.getGrouponOrdersNum(goodsId,startTime,
                 endTime);
-
         return ResponseUtil.ok(number);
     }
 
