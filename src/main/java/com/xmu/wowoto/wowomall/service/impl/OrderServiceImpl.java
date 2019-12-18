@@ -199,17 +199,19 @@ public class OrderServiceImpl implements OrderService {
         if(OrderItem.StatusCode.APPLY_RETURN.getValue() >= orderItem.getStatusCode()){
             orderItem.setStatusCode(OrderItem.StatusCode.RETURN_SUCCESS.getValue());
 
-            orderDao.updateOrderItem(orderItem);
             Payment payment = new Payment();
             payment.setActualPrice(orderItem.getPrice().negate());
             payment.setOrderId(orderItem.getOrderId());
             payment.setPayTime(LocalDateTime.now());
             payment.setGmtCreate(LocalDateTime.now());
 
-            //List<Payment> orderPay = paymentService.getPaymentById(order.getId());
-            //payment.setPayChannel( orderPay.get(0).getPayChannel());
+
+            List<Payment> orderPay = paymentService.getPaymentById(order.getId());
+
+            payment.setPayChannel( orderPay.get(0).getPayChannel());
             payment.setBeSuccessful(true);
-            //paymentService.createPayment(payment);
+            System.out.println(222222);
+            paymentService.createPayment(payment);
 
             //对用户 钱进行更新
             // 对价格进行更新
@@ -333,6 +335,8 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
+        System.out.println(startTime);
+        System.out.println(endTime);
         return orderDao.getGrouponOrdersNumberById(goodId, startTime, endTime);
     }
 
