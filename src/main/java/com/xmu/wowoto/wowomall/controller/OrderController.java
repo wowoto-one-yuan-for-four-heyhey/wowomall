@@ -130,26 +130,20 @@ public class OrderController {
         Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) {   return ResponseUtil.unlogin();}
         if(null == submitOrderVo) { return ResponseUtil.badArgument(); }
-
         User user = userService.getUserById(userId);
         Address address = submitOrderVo.getAddress();
-
         Order order = new Order(user, address);
-
         Integer rebate = submitOrderVo.getRebate();
         if(null != rebate && user.getRebate() >= rebate){
             order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
             userService.addRebate(userId, rebate);
         }
-
         if(null != submitOrderVo.getCouponId()){ order.setCouponId(submitOrderVo.getCouponId()); }
-
         List<CartItem> cartItems = new ArrayList<>(submitOrderVo.getCartItemIds().size());
         for(Integer cartItemId: submitOrderVo.getCartItemIds()){
             CartItem cartItem = cartService.findCartItemById(cartItemId);
             cartItems.add(cartItem);
         }
-
         order = orderService.submit(order, cartItems);
 
         return ResponseUtil.ok(order);
@@ -229,7 +223,7 @@ public class OrderController {
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@PathVariable("id")String orderId){
         // orderItem
-        Integer adminId = Integer.valueOf(request.getHeader("id"));
+        Integer adminId = Integer.valueOf(request.getHeader("userId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
@@ -252,10 +246,12 @@ public class OrderController {
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
-        Integer adminId = Integer.valueOf(request.getHeader("id"));
+        Integer adminId = Integer.valueOf(request.getHeader("adminId"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
 
         order = orderService.refundOrder(order);
         return ResponseUtil.ok(order);

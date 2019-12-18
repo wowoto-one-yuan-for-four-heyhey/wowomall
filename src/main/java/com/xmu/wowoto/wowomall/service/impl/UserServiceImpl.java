@@ -6,6 +6,7 @@ import com.xmu.wowoto.wowomall.service.UserService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @Author: Tens
@@ -40,4 +41,6 @@ public class UserServiceImpl implements UserService {
         Integer errNo = JacksonUtil.parseInteger(json,"errno");
         return errNo;
     }
+
+
 }

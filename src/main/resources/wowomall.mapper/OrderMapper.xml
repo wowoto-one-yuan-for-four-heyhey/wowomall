@@ -74,7 +74,7 @@
            address,
            gmt_create,
            gmt_modified,
-           be_deleted as is_deleted
+           is_deleted as be_deleted
     from `oomall_order`
     where is_deleted = 0 and id = #{orderId}
 </select>
@@ -149,7 +149,7 @@
             gmt_modified = now(),
         </if>
         <if test="beDeleted != null">
-            be_deleted = #{beDeleted},
+            is_deleted = #{beDeleted},
         </if>
     </set>
     where id = #{id}
