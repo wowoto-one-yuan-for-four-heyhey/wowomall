@@ -158,13 +158,14 @@ public class OrderController {
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId) {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
+        Integer userId = Integer.valueOf(request.getHeader("userId"));
         if(null == userId) { return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
-
+        if(!order.getStatusCode().equals(Order.StatusCode.NOT_PAYED.getValue())){
+            return ResponseUtil.illegal(); }
         order = orderService.cancelOrder(order);
         return ResponseUtil.ok(order);
     }
