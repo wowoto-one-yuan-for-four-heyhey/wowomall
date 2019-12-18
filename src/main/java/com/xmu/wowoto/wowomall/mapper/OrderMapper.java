@@ -1,8 +1,11 @@
 package com.xmu.wowoto.wowomall.mapper;
 
 import com.xmu.wowoto.wowomall.domain.Order;
+
+import io.lettuce.core.dynamic.annotation.Param;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,4 +72,17 @@ public interface OrderMapper {
      * @return
      */
     List<Order> getGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * 管理员查看订单
+     * @param userId
+     * @param orderSn
+     * @param orderStatusArray
+     * @param page
+     * @param limit
+     * @return
+     */
+    List<Order> getOrdersByStatusCodesAndOrderSn(Integer userId,String orderSn,
+                                                 @Param("orderStatusArray")List<Short> orderStatusArray,
+                                                Integer page, Integer limit);
 }

@@ -20,5 +20,5 @@ public interface RemoteUserService {
     String getUserById(@PathVariable("id") Integer userId);
 
     @PutMapping("user/rebate")
-    String addRebate(@RequestParam Integer userId, @RequestParam Integer rebate);
+    String updateUserRebate(@RequestParam("id") Integer userId, @RequestParam("userRebate") Integer rebate);
 }

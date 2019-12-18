@@ -152,6 +152,47 @@
     where id = #{id}
 </update>
 
+    <select id="getOrdersByStatusCodesAndOrderSn" parameterType="java.util.List" resultType="Order">
+        select id,
+        user_id,
+        order_sn,
+        status as status_code,
+        consignee,
+        mobile,
+        message,
+        goods_price,
+        freight_price,
+        coupon_price,
+        rebate_price,
+        integral_price,
+        ship_sn,
+        ship_channel,
+        ship_time,
+        confirm_time,
+        end_time,
+        pay_time,
+        parent_id,
+        address,
+        gmt_create,
+        gmt_modified,
+        is_deleted as be_deleted
+        from `oomall_order`
+        where  is_deleted = 0
+        <if test="userId>-1">
+             and user_id = #{userId}
+        </if>
+        <if test="orderStatusArray!=null and orderStatusArray.size()>0">
+            and status_code in
+            <foreach close=")" collection="orderStatusArray" item="listItem" open="(" separator=",">
+                #{listItem}
+            </foreach>
+        </if>
+        <if test="orderSn!='null'">
+            and order_sn=#{orderSn}
+        </if>
+        limit #{page}, #{limit}
+    </select>
+
 
 
 </mapper>

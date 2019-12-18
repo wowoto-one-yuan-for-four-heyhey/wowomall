@@ -48,6 +48,10 @@ public class OrderController {
     private HttpServletRequest request;
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private RemoteLogService remoteLogService;
+
+    private final static List<Short> emptyArrayList=new ArrayList<>();
 
     /**
      * 获取用户订单列表
@@ -81,17 +85,19 @@ public class OrderController {
     @GetMapping("admin/orders")
     @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
     public Object getOrders(@RequestParam(defaultValue = "-1")Integer userId,
-                            @RequestParam(defaultValue = "-1")Integer showType,
+                            @RequestParam(defaultValue = "null")String orderSn,
+                            @RequestParam(defaultValue="-1") List<Short> orderStatusArray,
                             @RequestParam(defaultValue = "1")Integer page,
                             @RequestParam(defaultValue = "10")Integer limit) {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         if(null == adminId) {
             return ResponseUtil.unlogin();
         }
-
-        List<Order> orders = orderService.getOrders(userId,showType,page,limit);
-
-        Log log = new Log(request, Log.Type.SELECT.getValue(), "get Orders", 1, -1);
+        if(orderStatusArray.size()==1 && orderStatusArray.get(0)==-1) {
+            orderStatusArray=null;
+        }
+        List<Order> orders = orderService.getOrdersByStatusCodesAndOrderSn(userId, orderSn, orderStatusArray, page, limit);
+        Log log = new Log(request, Log.Type.SELECT.getValue(), "get Orders", 1, 1);
         logService.addLog(log);
 
         return ResponseUtil.ok(orders);
@@ -139,7 +145,7 @@ public class OrderController {
         Integer rebate = submitOrderVo.getRebate();
         if(null != rebate && user.getRebate() >= rebate){
             order.setRebatePrice(BigDecimal.valueOf(submitOrderVo.getRebate() / 100.0));
-            userService.addRebate(userId, -rebate);
+            userService.updateUserRebate(userId, -rebate);
         }
 
         if(null != submitOrderVo.getCouponId()){
@@ -245,6 +251,12 @@ public class OrderController {
         if(order == null){
             return ResponseUtil.illegal();
         }
+        Log log=new Log();
+        log.setType(2);
+        log.setStatusCode(1);
+        log.setActions("管理员更改订单"+order.toString()+"状态为发货");
+        remoteLogService.addLog(log);
+
         return ResponseUtil.ok(order);
     }
 
@@ -257,13 +269,34 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
-    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId){
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
+                              @RequestParam Integer orderItemId)
+                              //@RequestBody OrderItem orderItem)
+    {
+
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+        OrderItem item = orderService.getOrderItem(orderItemId);
+        if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
+            return ResponseUtil.ok(order);
+        }
+        if(item == null){
+            return ResponseUtil.badArgumentValue();
+        }
 
-        order = orderService.refundOrder(order);
+        OrderItem reOrderItem = orderService.refundOrderItem(item,order);
+        order = orderService.refundOrder(order,reOrderItem);
+        Log log=new Log();
+        log.setType(2);
+        log.setStatusCode(1);
+        log.setActionId(1);
+        log.setActions("管理员更改订单"+order.getId()+"状态为退款");
+
+        remoteLogService.addLog(log);
         return ResponseUtil.ok(order);
     }
 
@@ -286,6 +319,7 @@ public class OrderController {
         }
         Integer payStatus=result.get("order");
         if(payStatus > -1){
+
             return ResponseUtil.ok(result);
         }
         else{
@@ -370,6 +404,11 @@ public class OrderController {
         return ResponseUtil.ok();
     }
 
+    /**
+     * 预售取消退款
+     * @param presaleRule
+     * @return
+     */
     @PostMapping("orders/presaleRule/refund")
     public Object presaleRefund(@RequestBody PresaleRule presaleRule){
         Integer goodsId = presaleRule.getGoodsId();
