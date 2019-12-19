@@ -71,11 +71,11 @@ public class ResponseUtil {
     }
 
     public static Object badArgumentValue() {
-        return fail(402, "参数值不对");
+        return fail(580, "参数值不合法");
     }
 
     public static Object unlogin() {
-        return fail(501, "请登录");
+        return fail(660, "请登录");
     }
 
     public static Object serious() {

@@ -161,7 +161,8 @@ public class OrderDao {
      * @return
      */
     public List<OrderItem> getGrouponOrderItems(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime){
-          return orderItemMapper.getOrderItemByTimeLimit(goodsId,startTime,endTime);
+          List<OrderItem> grouponItemlist=orderItemMapper.getOrderItemByTimeLimit(goodsId,startTime,endTime);
+          return grouponItemlist;
     }
 
     /**

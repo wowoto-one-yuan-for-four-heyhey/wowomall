@@ -63,16 +63,16 @@ public class OrderController {
      */
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
-    public Object getOrders(@RequestParam(defaultValue = "-1")Integer showType,
+    public Object getOrders(@RequestParam (value="showType",required=false) Integer showType,
                             @RequestParam(defaultValue = "1")Integer page,
                             @RequestParam(defaultValue = "10")Integer limit)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if (userId < 1){
-            return ResponseUtil.illegal();
-        }
         if(null == userId) {
             return ResponseUtil.unlogin();
+        }
+        if(showType==null){
+            showType=-1;
         }
         List<Order> orders = orderService.getOrders(userId, showType, page, limit);
         return ResponseUtil.ok(orders);
@@ -88,7 +88,7 @@ public class OrderController {
      */
     @GetMapping("admin/orders")
     @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
-    public Object getOrders(@RequestParam(defaultValue = "-1")Integer userId,
+    public Object adminGetOrders(@RequestParam(value="userId",required=false)Integer userId,
                             @RequestParam(defaultValue = "null")String orderSn,
                             @RequestParam(defaultValue="-1") List<Short> orderStatusArray,
                             @RequestParam(defaultValue = "1")Integer page,
@@ -97,9 +97,14 @@ public class OrderController {
         if(null == adminId ) {
             return ResponseUtil.unlogin();
         }
-        if(adminId < 1){
-            return ResponseUtil.illegal();
+        if((userId!=null&&userId<0)||page<1||limit<0){
+            return ResponseUtil.badArgumentValue();
         }
+        if(null==userId){
+            userId=-1;
+        }
+
+
         if(orderStatusArray.size()==1 && orderStatusArray.get(0)==-1) {
             orderStatusArray=null;
         }
@@ -126,7 +131,7 @@ public class OrderController {
         Order order = orderService.getOrder(orderId);
 
         if(order == null) { return ResponseUtil.badArgument(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+        if(!order.getUserId().equals(userId)) { return ResponseUtil.fail(604,"订"); }
 
         return ResponseUtil.ok(order);
     }
@@ -180,10 +185,14 @@ public class OrderController {
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
     public Object cancelOrder( @PathVariable("id")String orderId) {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(null == userId) { return ResponseUtil.unlogin(); }
+        if(null == userId) {
+            return ResponseUtil.unlogin();
+        }
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
-        if(order == null) { return ResponseUtil.badArgumentValue(); }
+        if(order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
         if(!order.getStatusCode().equals(Order.StatusCode.NOT_PAYED.getValue())){
             return ResponseUtil.illegal(); }
@@ -258,6 +267,7 @@ public class OrderController {
         log.setStatusCode(1);
         log.setActionId(order.getId());
         log.setActions("管理员更改订单"+order.toString()+"状态为发货");
+        log.setActionId(order.getId());
         remoteLogService.addLog(log);
 
         return ResponseUtil.ok(order);
@@ -310,7 +320,7 @@ public class OrderController {
      * @param id 订单ID
      * @return 是否成功发起支付
      */
-    @PutMapping("orders/{id}")
+    @PutMapping("orders/{id}/paymentStatus")
     public Object orderPayed(@PathVariable("id")Integer id )
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
@@ -325,7 +335,7 @@ public class OrderController {
         Integer payStatus=result.get("order");
         if(payStatus > -1){
 
-            return ResponseUtil.ok(result);
+            return ResponseUtil.ok(1);
         }
         else{
             return ResponseUtil.fail();

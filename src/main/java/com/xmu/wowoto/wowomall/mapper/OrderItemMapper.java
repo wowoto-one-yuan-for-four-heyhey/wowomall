@@ -49,7 +49,7 @@ public interface OrderItemMapper {
     List<OrderItem> getOrderItemByStatus(Integer status, LocalDateTime start, LocalDateTime end);
 
     /**
-     * 找出固定时间范围内的订单
+     * 找出固定时间范围内的分享订单
      * @param start
      * @param end
      * @return
@@ -60,10 +60,10 @@ public interface OrderItemMapper {
 
     /**
      * 查询时间段内订单
-     * @param goodId
+     * @param goodsId
      * @param startTime
      * @param endTime
      * @return
      */
-    List<OrderItem> getOrderItemByTimeLimit(Integer goodId, LocalDateTime startTime, LocalDateTime endTime);
+    List<OrderItem> getOrderItemByTimeLimit(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime);
 }
