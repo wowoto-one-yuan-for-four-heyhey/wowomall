@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.controller.vo.SubmitOrderVo;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.domain.Po.GrouponRulePo;
 import com.xmu.wowoto.wowomall.service.*;
+import com.xmu.wowoto.wowomall.util.ResponseCode;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +69,9 @@ public class OrderController {
                             @RequestParam(defaultValue = "10")Integer limit)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
+        if(userId < 1){
+            return ResponseUtil.badArgumentValue();
+        }
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -103,8 +107,6 @@ public class OrderController {
         if(null==userId){
             userId=-1;
         }
-
-
         if(orderStatusArray.size()==1 && orderStatusArray.get(0)==-1) {
             orderStatusArray=null;
         }
@@ -131,8 +133,9 @@ public class OrderController {
         Order order = orderService.getOrder(orderId);
 
         if(order == null) { return ResponseUtil.badArgument(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.fail(604,"订"); }
-
+        if(!order.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                    ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
         return ResponseUtil.ok(order);
     }
 
@@ -215,7 +218,9 @@ public class OrderController {
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+        if(!order.getUserId().equals(userId)) { return
+                ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
         order = orderService.deleteOrder(order);
 
         return ResponseUtil.ok(order);
@@ -234,7 +239,9 @@ public class OrderController {
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+        if(!order.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                    ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
         if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
 
         order = orderService.confirm(order);
@@ -256,7 +263,9 @@ public class OrderController {
         Order order = orderService.getOrder(Integer.parseInt(orderId));
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
-        if(!order.getUserId().equals(adminId)) { return ResponseUtil.unauthz(); }
+        if(!order.getUserId().equals(adminId)) { return
+                ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
 
         order = orderService.shipOrder(order);
         if(order == null){
@@ -297,7 +306,8 @@ public class OrderController {
         }
         OrderItem item = orderService.getOrderItem(orderItem.getId());
         if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
-            return ResponseUtil.illegal();
+            return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
+                    ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
         }
         if(item == null){
             return ResponseUtil.badArgumentValue();
@@ -338,7 +348,8 @@ public class OrderController {
             return ResponseUtil.ok(1);
         }
         else{
-            return ResponseUtil.fail();
+            return ResponseUtil.fail(ResponseCode.ORDER_PAIMENT_FAILED.getCode(),
+                    ResponseCode.ORDER_PAIMENT_FAILED.getMessage());
         }
     }
 
