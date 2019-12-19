@@ -1,6 +1,5 @@
 package com.xmu.wowoto.wowomall.util;
 
-import com.xmu.wowoto.wowomall.exception.PriceError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -336,8 +336,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Integer getGrouponOrdersNum(Integer goodId, LocalDateTime startTime, LocalDateTime endTime) {
-        System.out.println(startTime);
-        System.out.println(endTime);
+
         return orderDao.getGrouponOrdersNumberById(goodId, startTime, endTime);
     }
 
@@ -363,7 +362,7 @@ public class OrderServiceImpl implements OrderService {
             payment.setBeSuccessful(true);
             payment.setPayTime(LocalDateTime.now());
             payment.setOrderId(order.getId());
-            paymentService.createPayment(payment);
+            //paymentService.createPayment(payment);
             payments.add(payment);
         }
         return payments;
