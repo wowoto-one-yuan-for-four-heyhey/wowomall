@@ -198,7 +198,8 @@ public class OrderController {
         }
         if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
         if(!order.getStatusCode().equals(Order.StatusCode.NOT_PAYED.getValue())){
-            return ResponseUtil.illegal(); }
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                            ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
         order = orderService.cancelOrder(order);
         return ResponseUtil.ok(order);
     }
@@ -242,7 +243,9 @@ public class OrderController {
         if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
                     ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
-        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){ return ResponseUtil.illegal(); }
+        if(!order.getStatusCode().equals(Order.StatusCode.SHIPPED)){
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
 
         order = orderService.confirm(order);
 
@@ -266,7 +269,10 @@ public class OrderController {
         if(!order.getUserId().equals(adminId)) { return
                 ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
                 ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
-
+        if(!order.getStatusCode().equals(Order.StatusCode.PAYED)){
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+                    ResponseCode.ORDER_INVAILD_OPERATION.getMessage());
+        }
         order = orderService.shipOrder(order);
         if(order == null){
             return ResponseUtil.illegal();
@@ -315,6 +321,10 @@ public class OrderController {
 
         OrderItem reOrderItem = orderService.refundOrderItem(item,order);
         order = orderService.refundOrder(order,reOrderItem);
+        if(order == null){
+            return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
+                    ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
+        }
         Log log=new Log();
         log.setType(2);
         log.setStatusCode(1);

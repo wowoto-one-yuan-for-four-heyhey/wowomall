@@ -210,7 +210,7 @@ public class OrderServiceImpl implements OrderService {
 
             payment.setPayChannel( orderPay.get(0).getPayChannel());
             payment.setBeSuccessful(true);
-            System.out.println(222222);
+
             paymentService.createPayment(payment);
 
             //对用户 钱进行更新
