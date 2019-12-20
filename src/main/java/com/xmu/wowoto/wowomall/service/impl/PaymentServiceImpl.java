@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,7 +44,12 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> getPaymentById(Integer orderId)
     {
         String json= remotePaymentService.getPaymentsById(orderId);
-        List<Payment> list= JacksonUtil.parseObject(json,"data",List.class);
-        return list;
+        List<LinkedHashMap> pays = JacksonUtil.parseObjectList(json,"data",LinkedHashMap.class);
+        List<Payment> payments = new LinkedList<>();
+        for(LinkedHashMap pay : pays) {
+            payments.add(JacksonUtil.parseObject(JacksonUtil.toJson(pay),Payment.class));
+        }
+
+        return payments;
     }
 }

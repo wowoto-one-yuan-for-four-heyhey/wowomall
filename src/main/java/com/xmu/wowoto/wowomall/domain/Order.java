@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.util.Common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,6 +214,9 @@ public class Order extends OrderPo {
             if(this.getRebatePrice() != null)
                 price = price.subtract(this.getRebatePrice());
             payment.setActualPrice(price);
+            payment.setEndTime(LocalDateTime.now().plusMinutes(30));
+            payment.setBeginTime(LocalDateTime.now());
+            payment.setPayChannel(0);
             this.paymentList.add(payment);
         }
     }

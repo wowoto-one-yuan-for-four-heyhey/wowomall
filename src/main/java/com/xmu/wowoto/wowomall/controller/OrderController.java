@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
@@ -328,11 +329,39 @@ public class OrderController {
 
      */
     @PostMapping("orders/{id}/refund")
-    @ApiOperation("更改订单状态为退款(管理员操作)")
+    @ApiOperation("更改订单状态为退款")
     public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId,
                               @RequestBody OrderItem orderItem)
     {
+        Integer userId = Integer.valueOf(request.getHeader("id"));
+        if(userId == 0){
+            return ResponseUtil.unlogin();
+        }
+        Order order = orderService.getOrder(orderId);
 
+        if(order == null) {
+            return ResponseUtil.badArgumentValue();
+        }
+        OrderItem item = orderService.getOrderItem(orderItem.getId());
+
+
+        return ResponseUtil.ok();
+    }
+
+
+
+    /**
+     * 更改订单状态为退款(管理员操作)
+     *
+     * @param orderId   订单ID
+     * @return 更改列表
+
+     */
+    @PostMapping("admin/orders/{id}/refund")
+    @ApiOperation("更改订单状态为退款(管理员操作)")
+    public Object adminRefundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId,
+                              @RequestBody OrderItem orderItem)
+    {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         if(adminId == 0){
             return ResponseUtil.unlogin();
@@ -439,9 +468,11 @@ public class OrderController {
             return ResponseUtil.badArgumentValue();
         }
         if(list.size() == 1){
-           paymentService.payPayment(list.get(0).getId());
+
+            paymentService.payPayment(Integer.valueOf(list.get(0).getId()));
         }
         else{
+        /*
            if(list.get(0).getBeginTime().isBefore(list.get(1).getBeginTime())) {
                if(!list.get(0).getBeSuccessful()){
                    paymentService.payPayment(list.get(0).getId());
@@ -455,6 +486,8 @@ public class OrderController {
                    }
                }
            }
+
+         */
         }
         return ResponseUtil.ok();
     }

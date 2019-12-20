@@ -81,10 +81,14 @@ public class OrderServiceImpl implements OrderService {
             order = discountService.caculatePrice(order);
 
             //计算运费
-//            order.setFreightPrice(freightService.caculateFreight(order));
+            //order.setFreightPrice(freightService.caculateFreight(order));
 
             //物流单号
-//            order.setOrderSn(logisticsService.getShipSn());
+            order.setOrderSn(logisticsService.getShipSn());
+
+
+            //添加订单
+            newOrder = orderDao.addOrder(order);
 
             //订单最终计算
             order.cacuIntegral();
@@ -92,8 +96,7 @@ public class OrderServiceImpl implements OrderService {
             //支付最终计算
             order.cacuPayment();
 
-            //添加订单
-            newOrder = orderDao.addOrder(order);
+
 
             //添加payment
             for(Payment payment: order.getPaymentList()){
@@ -212,7 +215,7 @@ public class OrderServiceImpl implements OrderService {
             List<Payment> orderPay = paymentService.getPaymentById(order.getId());
 
             payment.setPayChannel( orderPay.get(0).getPayChannel());
-            payment.setBeSuccessful(true);
+            //payment.setBeSuccessful(true);
 
             paymentService.createPayment(payment);
 
