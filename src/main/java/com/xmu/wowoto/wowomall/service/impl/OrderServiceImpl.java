@@ -168,7 +168,6 @@ public class OrderServiceImpl implements OrderService {
         payment.setStatusCode(1);
 
         Payment newPayment = paymentService.createPayment(payment);
-        paymentService.payPayment(newPayment.getId());
 
         BigDecimal rebatePrice = order.getRebatePrice();
         BigDecimal orderItemPrice = orderItem.getPrice();
@@ -230,6 +229,9 @@ public class OrderServiceImpl implements OrderService {
         order.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
         order.setEndTime(LocalDateTime.now());
         order.setGmtModified(LocalDateTime.now());
+        for (OrderItem orderItem: order.getOrderItemList()) {
+            goodsService.restoreStock(orderItem);
+        }
         orderDao.updateOrder(order);
         return order;
     }

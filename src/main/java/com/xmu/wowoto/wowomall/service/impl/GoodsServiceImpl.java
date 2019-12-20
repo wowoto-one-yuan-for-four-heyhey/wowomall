@@ -1,6 +1,7 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
 import com.xmu.wowoto.wowomall.domain.CartItem;
+import com.xmu.wowoto.wowomall.domain.OrderItem;
 import com.xmu.wowoto.wowomall.domain.Product;
 import com.xmu.wowoto.wowomall.service.GoodsService;
 import com.xmu.wowoto.wowomall.service.RemoteGoodsService;
@@ -63,6 +64,17 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
 
+    }
+
+    @Override
+    public boolean restoreStock(OrderItem orderItem) {
+        Integer productId = orderItem.getProductId();
+        Product product = this.getProductById(productId);
+        Integer stock = product.getSafetyStock();
+        stock += orderItem.getNumber();
+        product.setSafetyStock(stock);
+        Product newProduct = this.updateProductById(productId, product);
+        return true;
     }
 
     public boolean supplyStock(Integer productId, String key){
