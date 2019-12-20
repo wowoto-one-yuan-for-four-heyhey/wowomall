@@ -108,7 +108,7 @@ public class OrderDao {
         for(OrderItem item:order.getOrderItemList()){
             orderItemMapper.updateOrderItemSelective(item);
         }
-        Integer result= orderMapper.updateOrderSelective(order);
+        Integer result = orderMapper.updateOrderSelective(order);
         return result;
     }
 

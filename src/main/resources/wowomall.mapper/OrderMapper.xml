@@ -48,7 +48,7 @@
         from `oomall_order`,`oomall_order_item`
         where ( pay_time between #{startTime} and #{endTime} ) and
         `oomall_order`.id = `oomall_order_item`.order_id and `oomall_order`.is_deleted = 0
-        and `oomall_order`.status = #{statusCode} and `oomall_order_item`.goods_id = #{goodId}
+        and `oomall_order`.status = #{statusCode} and `oomall_order_item`.goods_id = #{goodId} and `oomall_order_item`.item_type = 2
 </select>
 
 <select id="getOrderByOrderId" parameterType="Integer" resultType="Order">
@@ -142,9 +142,7 @@
         <if test="gmtCreate != null">
             gmt_create = #{gmtCreate},
         </if>
-        <if test="gmtModified != null">
             gmt_modified = now(),
-        </if>
         <if test="beDeleted != null">
             is_deleted = #{beDeleted},
         </if>

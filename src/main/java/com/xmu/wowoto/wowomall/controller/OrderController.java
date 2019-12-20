@@ -377,7 +377,7 @@ public class OrderController {
         }
         if(item.getStatusCode() == null||item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
             return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
-                    ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
+                    ORDER_RETURN_FAILED.getMessage());
         }
 
 
@@ -482,7 +482,7 @@ public class OrderController {
      */
     @PostMapping("orders/grouponOrders/refund")
     public Object grouponRefund(@RequestBody GrouponRulePo grouponRulePo, @RequestParam Double rate) {
-        Integer goodsId = grouponRulePo.getId();
+        Integer goodsId = grouponRulePo.getGoodsId();
         if (null == goodsId) { return ResponseUtil.badArgumentValue(); }
         List<Payment> payments = orderService.refundGrouponOrders(grouponRulePo.getGoodsId(),
                 grouponRulePo.getStartTime(), grouponRulePo.getEndTime(), rate);

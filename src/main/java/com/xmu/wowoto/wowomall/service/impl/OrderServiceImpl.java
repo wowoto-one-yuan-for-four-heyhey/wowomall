@@ -177,9 +177,12 @@ public class OrderServiceImpl implements OrderService {
             return null;
             //异常抛错
         }
-        BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
+        if(rebatePrice != null) {
+            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
+            userService.updateUserRebate(order.getUserId(),rebate.intValue());
+        }
 
-        userService.updateUserRebate(order.getUserId(),rebate.intValue());
+        orderDao.updateOrderItem(orderItem);
 
         //对用户 钱进行更新
         // 对价格进行更新

@@ -8,7 +8,7 @@
         )
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.orderId}, #{item.itemType}, #{item.statusCode}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), #{item.gmtModified}, 0)
+            (#{item.orderId}, #{item.itemType}, #{item.statusCode}, #{item.number}, #{item.price}, #{item.dealPrice}, #{item.productId}, #{item.goodsId}, #{item.nameWithSpecifications}, now(), now(), 0)
         </foreach>
     </insert>
 
@@ -63,9 +63,7 @@
             <if test="gmtCreate != null">
                 gmt_create = #{gmtCreate},
             </if>
-            <if test="gmtModified != null">
                 gmt_modified = now(),
-            </if>
             <if test="beDeleted != null">
                 is_deleted = #{beDeleted},
             </if>
