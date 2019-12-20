@@ -74,11 +74,12 @@ public class OrderServiceImpl implements OrderService {
         Order newOrder = null;
         if(this.createOrderItemFromCartItem(order, cartItems)){
             cartService.clearCartItem(cartItems);
-
+            order.setStatusCode(Order.StatusCode.NOT_PAYED.getValue());
             order.cacuGoodsPrice();
 
             //计算优惠促销价格
             order = discountService.caculatePrice(order);
+
 
             //计算运费
             //order.setFreightPrice(freightService.caculateFreight(order));
@@ -150,20 +151,23 @@ public class OrderServiceImpl implements OrderService {
     public OrderItem refundOrderItem(OrderItem orderItem, Order order){
         orderItem.setStatusCode(OrderItem.StatusCode.RETURN_SUCCESS.getValue());
 
+
         Payment payment = new Payment();
         payment.setActualPrice(orderItem.getPrice().negate());
         payment.setOrderId(orderItem.getOrderId());
         payment.setPayTime(LocalDateTime.now());
         payment.setGmtCreate(LocalDateTime.now());
+        payment.setBeginTime(LocalDateTime.now());
+        payment.setGmtModified(LocalDateTime.now());
+        payment.setBeDeleted(false);
 
         List<Payment> orderPay = paymentService.getPaymentByOrderId(order.getId());
 
-
+        payment.setEndTime(LocalDateTime.now().plusMinutes(30));
         payment.setPayChannel( orderPay.get(0).getPayChannel());
         payment.setStatusCode(1);
 
         Payment newPayment = paymentService.createPayment(payment);
-
         paymentService.payPayment(newPayment.getId());
 
         BigDecimal rebatePrice = order.getRebatePrice();

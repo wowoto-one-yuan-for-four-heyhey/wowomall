@@ -217,6 +217,7 @@ public class Order extends OrderPo {
             payment.setEndTime(LocalDateTime.now().plusMinutes(30));
             payment.setBeginTime(LocalDateTime.now());
             payment.setPayChannel(0);
+
             this.paymentList.add(payment);
         }
     }

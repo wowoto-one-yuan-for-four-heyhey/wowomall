@@ -375,7 +375,7 @@ public class OrderController {
         if(item == null){
             return ResponseUtil.badArgumentValue();
         }
-        if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
+        if(item.getStatusCode() == null||item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
             return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
                     ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
         }
