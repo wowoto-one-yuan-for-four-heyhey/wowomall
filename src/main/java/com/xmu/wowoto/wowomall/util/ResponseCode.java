@@ -6,7 +6,7 @@ package com.xmu.wowoto.wowomall.util;
  * @date 12/11/2019
  */
 public enum ResponseCode {
-    ORDER_INVAILD(600,"该订单时无效订单"),
+    ORDER_INVAILD(600,"该订单是无效订单"),
     ORDER_PAIMENT_FAILED(601,"订单支付失败"),
     ORDER_SUBMIT_FAILED(602,"订单提交失败"),
     ORDER_COMMENTED(603,"订单已被评论"),
