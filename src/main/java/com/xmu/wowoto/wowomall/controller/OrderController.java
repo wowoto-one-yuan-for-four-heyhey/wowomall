@@ -64,9 +64,9 @@ public class OrderController {
      */
     @GetMapping("orders")
     @ApiOperation(value = "用户获取订单列表/list", notes = "用户获取订单列表")
-    public Object getOrders(@RequestParam (value="showType",required=false) Integer showType,
-                            @RequestParam(defaultValue = "1")Integer page,
-                            @RequestParam(defaultValue = "10")Integer limit)
+    public Object getOrders(@RequestParam(defaultValue = "1")Integer page,
+                            @RequestParam(defaultValue = "10")Integer limit,
+                            @RequestParam (value="showType",required=false) Integer showType)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId < 1){
@@ -93,10 +93,11 @@ public class OrderController {
     @GetMapping("admin/orders")
     @ApiOperation(value = "管理员获取订单列表/list", notes = "管理员获取订单列表")
     public Object adminGetOrders(@RequestParam(value="userId",required=false)Integer userId,
+                                 @RequestParam(defaultValue = "1")Integer page,
+                                 @RequestParam(defaultValue = "10")Integer limit,
                             @RequestParam(defaultValue = "null")String orderSn,
-                            @RequestParam(defaultValue="-1") List<Short> orderStatusArray,
-                            @RequestParam(defaultValue = "1")Integer page,
-                            @RequestParam(defaultValue = "10")Integer limit) {
+                            @RequestParam(defaultValue="-1") List<Short> orderStatusArray
+                            ) {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         if(null == adminId ) {
             return ResponseUtil.unlogin();
@@ -115,6 +116,23 @@ public class OrderController {
         logService.addLog(log);
 
         return ResponseUtil.ok(orders);
+    }
+
+    /**
+     * 获取特定订单详情
+     * @param orderId 订单ID
+     * @return 订单详细
+     */
+    @GetMapping("admin/orders/{id}")
+    public Object adminOrderDetail(@NotNull @PathVariable("id")Integer orderId)
+    {
+        Integer adminId = Integer.valueOf(request.getHeader("id"));
+        if(null == adminId ) {
+            return ResponseUtil.unlogin();
+        }
+        Order order = orderService.getOrder(orderId);
+        if(order == null) { return ResponseUtil.badArgument(); }
+        return ResponseUtil.ok(order);
     }
 
 
@@ -186,13 +204,12 @@ public class OrderController {
      */
     @PutMapping("orders/{id}/cancel")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object cancelOrder( @PathVariable("id")String orderId) {
+    public Object cancelOrder( @PathVariable("id")Integer orderId) {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
-
+        Order order = orderService.getOrder(orderId);
         if(order == null) {
             return ResponseUtil.badArgumentValue();
         }
@@ -212,19 +229,18 @@ public class OrderController {
      */
     @DeleteMapping("orders/{id}")
     @ApiOperation(value = "取消订单操作结果/cancel", notes = "取消订单操作结果")
-    public Object deleteOrder(@PathVariable("id")String orderId) {
+    public Object deleteOrder(@PathVariable("id")Integer orderId) {
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(null == userId) { return ResponseUtil.unlogin(); }
 
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(orderId);
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) { return
                 ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
                 ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
         order = orderService.deleteOrder(order);
-
-        return ResponseUtil.ok(order);
+        return ResponseUtil.ok();
     }
 
     /**
@@ -235,9 +251,9 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/confirm")
     @ApiOperation(value = "确认收货订单操作结果/confirm")
-    public Object confirmOrder( @PathVariable("id")String orderId ){
+    public Object confirmOrder( @PathVariable("id")Integer orderId ){
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(orderId);
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(userId)) {
@@ -260,10 +276,10 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/ship")
     @ApiOperation("更改订单状态为发货(管理员操作)")
-    public Object shipOrder(@PathVariable("id")String orderId){
+    public Object shipOrder(@PathVariable("id")Integer orderId){
         // orderItem
         Integer adminId = Integer.valueOf(request.getHeader("id"));
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(orderId);
 
         if(order == null) { return ResponseUtil.badArgumentValue(); }
         if(!order.getUserId().equals(adminId)) { return
@@ -297,7 +313,7 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款(管理员操作)")
-    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")String orderId,
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId,
                               @RequestBody OrderItem orderItem)
     {
 
@@ -305,7 +321,7 @@ public class OrderController {
         if(adminId == 0){
             return ResponseUtil.unlogin();
         }
-        Order order = orderService.getOrder(Integer.parseInt(orderId));
+        Order order = orderService.getOrder(orderId);
 
         if(order == null) {
             return ResponseUtil.badArgumentValue();
@@ -332,7 +348,7 @@ public class OrderController {
         log.setActions("管理员更改订单"+order.getId()+"状态为退款");
 
         remoteLogService.addLog(log);
-        return ResponseUtil.ok(order);
+        return ResponseUtil.ok(reOrderItem);
     }
 
     /**
@@ -396,7 +412,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @PostMapping("orders/{id}/pay")
+    @PostMapping("orders/{id}/payment")
     public Object payOrder(@PathVariable Integer id){
         Integer userId = Integer.valueOf(request.getHeader("id"));
         if(userId == null){
@@ -424,7 +440,7 @@ public class OrderController {
                }
            }
         }
-        return null;
+        return ResponseUtil.ok();
     }
 
     /**
