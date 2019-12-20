@@ -36,12 +36,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     /**
-     * 根据ID拿到payment
+     * 根据OrderID拿到payment
      * @param orderId
      * @return
      */
     @Override
-    public List<Payment> getPaymentById(Integer orderId)
+    public List<Payment> getPaymentByOrderId(Integer orderId)
     {
         String json= remotePaymentService.getPaymentsById(orderId);
         List<LinkedHashMap> pays = JacksonUtil.parseObjectList(json,"data",LinkedHashMap.class);

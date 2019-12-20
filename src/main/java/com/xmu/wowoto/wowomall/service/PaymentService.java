@@ -25,8 +25,10 @@ public interface PaymentService {
      * @param orderId
      * @return
      */
-    List<Payment> getPaymentById(Integer orderId);
+    List<Payment> getPaymentByOrderId(Integer orderId);
 
     Payment payPayment(Integer id);
+
+
 
 }

@@ -148,4 +148,18 @@ public interface OrderService {
     public List<Order> getOrdersByStatusCodesAndOrderSn(Integer userId,String orderSn,
                                                         List<Short> orderStatusArray,
                                                         Integer page, Integer limit);
+
+    /**
+     * 判断一个payment是否可支付
+     * @param payment
+     * @return
+     */
+    boolean judgePaymentAccessible(Payment payment);
+
+    /**
+     * 取消超时订单
+     * @param order
+     * @return
+     */
+    Order autoCancelOrder(Order order);
 }

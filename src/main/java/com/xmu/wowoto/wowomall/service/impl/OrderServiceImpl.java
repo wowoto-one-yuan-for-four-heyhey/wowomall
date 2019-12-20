@@ -212,10 +212,10 @@ public class OrderServiceImpl implements OrderService {
             payment.setGmtCreate(LocalDateTime.now());
 
 
-            List<Payment> orderPay = paymentService.getPaymentById(order.getId());
+            List<Payment> orderPay = paymentService.getPaymentByOrderId(order.getId());
 
             payment.setPayChannel( orderPay.get(0).getPayChannel());
-            //payment.setBeSuccessful(true);
+            payment.setStatusCode(1);
 
             paymentService.createPayment(payment);
 
@@ -266,6 +266,7 @@ public class OrderServiceImpl implements OrderService {
     public Order cancelOrder(Order order){
         order.setStatusCode(Order.StatusCode.NOT_PAYED_CANCELED.getValue());
         order.setEndTime(LocalDateTime.now());
+        order.setGmtModified(LocalDateTime.now());
         orderDao.updateOrder(order);
         return order;
     }
@@ -379,7 +380,7 @@ public class OrderServiceImpl implements OrderService {
         List<Payment> payments = new ArrayList<>();
         for (OrderItem orderItem: orderItems){
             Order order = orderDao.getOrderByOrderId(orderItem.getOrderId());
-            order.setPaymentList(paymentService.getPaymentById(order.getId()));
+            order.setPaymentList(paymentService.getPaymentByOrderId(order.getId()));
             OrderItem item = order.getOrderItemList().get(0);
 
             if(order.getPaymentList().size() <= 1){
@@ -437,6 +438,40 @@ public class OrderServiceImpl implements OrderService {
     {
         List<Order> orders = orderDao.getOrdersByStatusCodesAndOrderSn(userId, orderSn, orderStatusArray, page, limit);
         return orders;
+    }
+
+    /**
+     * 判断一个payment是否可支付
+     * @param payment
+     * @return
+     */
+    @Override
+    public boolean judgePaymentAccessible(Payment payment){
+        LocalDateTime start= payment.getBeginTime();
+        LocalDateTime end=payment.getEndTime();
+        if(LocalDateTime.now().isAfter(start) && LocalDateTime.now().isBefore(end)){
+            if(payment.getStatusCode().equals(0)){
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 取消超时订单
+     * @param order
+     * @return
+     */
+    @Override
+    public Order autoCancelOrder(Order order){
+        order.setStatusCode(Order.StatusCode.NOT_PAYED_SYSTEM_CANCELED.getValue());
+        order.setEndTime(LocalDateTime.now());
+        order.setGmtModified(LocalDateTime.now());
+        orderDao.updateOrder(order);
+        return order;
     }
 }
 

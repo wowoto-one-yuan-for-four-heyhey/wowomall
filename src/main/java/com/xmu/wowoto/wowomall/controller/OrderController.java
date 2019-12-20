@@ -330,7 +330,7 @@ public class OrderController {
      */
     @PostMapping("orders/{id}/refund")
     @ApiOperation("更改订单状态为退款")
-    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true)@PathVariable("id")Integer orderId,
+    public Object refundOrder(@ApiParam(name="orderId",value="订单id",required=true) @PathVariable("id")Integer orderId,
                               @RequestBody OrderItem orderItem)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
@@ -463,31 +463,19 @@ public class OrderController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        List<Payment> list = paymentService.getPaymentById(id);
-        if(list == null){
-            return ResponseUtil.badArgumentValue();
+        List<Payment> list = paymentService.getPaymentByOrderId(id);
+        if(list==null){
+            return ResponseUtil.fail(ORDER_PAIMENT_FAILED.getCode(),ORDER_PAIMENT_FAILED.getMessage());
         }
-        if(list.size() == 1){
-
-            paymentService.payPayment(Integer.valueOf(list.get(0).getId()));
+        Integer flag=0;
+        for(Payment payment :list){
+            if(orderService.judgePaymentAccessible(payment)){
+                paymentService.payPayment(payment.getId());
+                flag=1;
+            }
         }
-        else{
-        /*
-           if(list.get(0).getBeginTime().isBefore(list.get(1).getBeginTime())) {
-               if(!list.get(0).getBeSuccessful()){
-                   paymentService.payPayment(list.get(0).getId());
-               }
-           }
-           else{
-               if(!list.get(1).getBeSuccessful()){
-                   if(LocalDateTime.now().isAfter(list.get(1).getBeginTime()) &&
-                       LocalDateTime.now().isAfter(list.get(1).getEndTime())) {
-                       paymentService.payPayment(list.get(1).getId());
-                   }
-               }
-           }
-
-         */
+        if(flag==0){
+            return ResponseUtil.fail(ORDER_PAIMENT_FAILED.getCode(),ORDER_PAIMENT_FAILED.getMessage());
         }
         return ResponseUtil.ok();
     }
@@ -529,5 +517,20 @@ public class OrderController {
             return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
                     ResponseCode.ORDER_RETURN_FAILED.getMessage());
         }
+    }
+
+    /***
+     * 系统自动取消订单
+     * @param id
+     * @return
+     */
+    @PutMapping("orders/{id}/autoCancellation")
+    public Object autoCancel(@PathVariable Integer id){
+        Order order= orderService.getOrder(id);
+        if(order==null){
+            return ResponseUtil.fail(ORDER_INVAILD.getCode(),ORDER_INVAILD.getMessage());
+        }
+        Order result= orderService.autoCancelOrder(order);
+        return ResponseUtil.ok(result);
     }
 }
