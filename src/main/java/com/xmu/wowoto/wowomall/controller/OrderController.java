@@ -466,8 +466,14 @@ public class OrderController {
     public Object grouponRefund(@RequestBody GrouponRulePo grouponRulePo, @RequestParam Double rate) {
         Integer goodsId = grouponRulePo.getId();
         if (null == goodsId) { return ResponseUtil.badArgumentValue(); }
-        orderService.refundGrouponOrders(grouponRulePo.getGoodsId(), grouponRulePo.getStartTime(), grouponRulePo.getEndTime(), rate);
-        return ResponseUtil.ok();
+        List<Payment> payments = orderService.refundGrouponOrders(grouponRulePo.getGoodsId(),
+                grouponRulePo.getStartTime(), grouponRulePo.getEndTime(), rate);
+        if(payments.size() > 0){
+                return ResponseUtil.ok();
+        }else {
+            return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
+                    ResponseCode.ORDER_RETURN_FAILED.getMessage());
+        }
     }
 
     /**
@@ -479,7 +485,13 @@ public class OrderController {
     public Object presaleRefund(@RequestBody PresaleRule presaleRule){
         Integer goodsId = presaleRule.getGoodsId();
         if(null == goodsId){ return ResponseUtil.badArgument(); }
-        orderService.refundPresaleOrders(presaleRule.getGoodsId(), presaleRule.getStartTime(), presaleRule.getEndTime());
-        return ResponseUtil.ok();
+        List<Payment> payments = orderService.refundPresaleOrders(presaleRule.getGoodsId(),
+                presaleRule.getStartTime(), presaleRule.getEndTime());
+        if(payments.size() > 0) {
+            return ResponseUtil.ok();
+        }else {
+            return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
+                    ResponseCode.ORDER_RETURN_FAILED.getMessage());
+        }
     }
 }
