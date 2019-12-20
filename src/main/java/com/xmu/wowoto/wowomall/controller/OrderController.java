@@ -291,7 +291,7 @@ public class OrderController {
      * @param orderId   订单ID
      * @return 更改列表
      */
-    @PostMapping("orders/{id}/ship")
+    @PutMapping("orders/{id}/ship")
     @ApiOperation("更改订单状态为发货(管理员操作)")
     public Object shipOrder(@PathVariable("id")Integer orderId){
         // orderItem

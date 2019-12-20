@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.Order;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * @Author: fringe
@@ -19,7 +20,7 @@ public interface RemoteShareService {
      * @param order
      * @return
      */
-    @GetMapping(value="")
+    @PostMapping(value="/rebate")
     String getRebate(Order order);
 
 }

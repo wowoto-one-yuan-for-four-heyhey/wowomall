@@ -29,7 +29,7 @@ public class TimerService {
     @Autowired
     UserService userService;
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 49 3 * * ?")
     public void cacuRebate(){
         List<OrderItem> list= orderDao.getRebatingOrderItems();
         for(OrderItem item: list){
@@ -38,6 +38,7 @@ public class TimerService {
             rebateList.add(item);
             order.setOrderItemList(rebateList);
             Map<Integer,Integer> result = shareService.getRebate(order);
+            System.out.println(result);
             if(result.size()==0){
                 continue;
             }

@@ -42,8 +42,17 @@ eureka:
       defaultZone: http://148.70.28.112:8761/eureka
   instance:
     prefer-ip-address: true
-    ip-address: 172.20.10.2
+    ip-address: 192.168.43.151
     non-secure-port: 30020
 
 wowomall:
   preDeductStock: 5
+
+rocketmq:
+  # 生产者配置
+  producer:
+    groupName: OrderProducer
+    namesrvAddr: 120.27.244.59:9876
+  consumer:
+    groupName: OrderConsumer
+    namesrvAddr: 120.27.244.59:9876
