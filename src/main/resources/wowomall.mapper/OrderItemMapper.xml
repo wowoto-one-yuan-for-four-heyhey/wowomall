@@ -128,7 +128,7 @@
               and item_type &gt; 0 and item_type &lt; 5
     </select>
 
-    <select id="getOrderItemByTimeLimit" resultType="OrderItem">
+    <select id="getPresaleOrderItems" resultType="OrderItem">
         select id,
                order_id,
                item_type,
@@ -143,8 +143,29 @@
                gmt_create,
                gmt_modified
         from oomall_order_item
-        where gmt_create between #{startTime}
-              and #{endTime}
+        where gmt_create between #{startTime} and #{endTime}
+              and item_type = 1
+              and item_type &gt; 0 and item_type &lt; 5
+              and goods_id=#{goodsId}
+    </select>
+
+    <select id="getGrouponOrderItems" resultType="OrderItem">
+        select id,
+               order_id,
+               item_type,
+               status as status_code,
+               `number`,
+               price,
+               deal_price,
+               product_id,
+               goods_id,
+               name_with_specifications,
+               pic_url,
+               gmt_create,
+               gmt_modified
+        from oomall_order_item
+        where gmt_create between #{startTime} and #{endTime}
+              and item_type = 2
               and item_type &gt; 0 and item_type &lt; 5
               and goods_id=#{goodsId}
     </select>

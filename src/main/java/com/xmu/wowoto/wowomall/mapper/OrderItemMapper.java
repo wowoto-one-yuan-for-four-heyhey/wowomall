@@ -65,5 +65,15 @@ public interface OrderItemMapper {
      * @param endTime
      * @return
      */
-    List<OrderItem> getOrderItemByTimeLimit(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime);
+    List<OrderItem> getGrouponOrderItems(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * 查询时间段内订单
+     * @param goodsId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    List<OrderItem> getPresaleOrderItems(Integer goodsId, LocalDateTime startTime, LocalDateTime endTime);
+
 }

@@ -358,7 +358,7 @@ public class OrderServiceImpl implements OrderService {
             Payment payment1 = order.getPaymentList().get(0);
             Payment payment2 = order.getPaymentList().get(1);
             
-            if(payment1.getStatusCode() == 0){
+            if(payment1.getStatusCode().equals(0)){
                 Payment refundPayment = new Payment();
                 refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment1.getActualPrice()));
                 refundPayment.setStatusCode(1);
@@ -367,7 +367,7 @@ public class OrderServiceImpl implements OrderService {
                 paymentService.createPayment(refundPayment);
                 payments.add(refundPayment);
             }
-            if(payment2.getStatusCode() == 0){
+            if(payment2.getStatusCode().equals(0)){
                 Payment refundPayment = new Payment();
                 refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment2.getActualPrice()));
                 refundPayment.setStatusCode(1);
