@@ -6,6 +6,7 @@ import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.domain.Po.GrouponRulePo;
 import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseCode;
+import com.xmu.wowoto.wowomall.util.ResponseCode.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -23,6 +25,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.xmu.wowoto.wowomall.util.ResponseCode.*;
+
 /**
  *
  * @author wowoto
@@ -69,9 +74,6 @@ public class OrderController {
                             @RequestParam (value="showType",required=false) Integer showType)
     {
         Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(userId < 1){
-            return ResponseUtil.badArgumentValue();
-        }
         if(null == userId) {
             return ResponseUtil.unlogin();
         }
@@ -119,7 +121,7 @@ public class OrderController {
     }
 
     /**
-     * 获取特定订单详情
+     * 管理员获取特定订单详情
      * @param orderId 订单ID
      * @return 订单详细
      */
@@ -150,10 +152,17 @@ public class OrderController {
 
         Order order = orderService.getOrder(orderId);
 
-        if(order == null) { return ResponseUtil.badArgument(); }
+        if(order == null) {
+            return ResponseUtil.fail(ORDER_INVAILD.getCode(),ORDER_INVAILD.getMessage());
+        }
         if(!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
                     ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
+
+        if(!order.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ORDER_INVAILD_OPERATION.getCode(),ORDER_INVAILD_OPERATION.getMessage());
+        }
+
         return ResponseUtil.ok(order);
     }
 
@@ -352,7 +361,7 @@ public class OrderController {
     }
 
     /**
-     * 提供接口给payment回调，修改该订单为付款完成
+     * 提供接口给payment回调，修改订单为付款或者退款
      * @param id 订单ID
      * @return 是否成功发起支付
      */
@@ -365,6 +374,7 @@ public class OrderController {
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 
         HashMap<String,Integer> result=orderService.payOrder(order);
+
         if(result.containsKey("orderItem")){
             return ResponseUtil.fail();
         }
@@ -387,7 +397,9 @@ public class OrderController {
     @GetMapping("orderItem/{orderItemId}/goodsType")
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
         OrderItem orderItem = orderService.getOrderItem(orderItemId);
-        if(orderItem == null){ return ResponseUtil.badArgumentValue(); }
+        if(orderItem == null){
+            return ResponseUtil.badArgumentValue();
+        }
         Integer goodsType = orderItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
@@ -419,6 +431,7 @@ public class OrderController {
             return ResponseUtil.unlogin();
         }
         List<Payment> list = paymentService.getPaymentById(id);
+
         if(list == null){
             return ResponseUtil.badArgumentValue();
         }
