@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 @ResponseBody
 public class GlobalException {
-    @ExceptionHandler
-    public Object runtimeExceptionHandler(RuntimeException ex){
+
+    public Object runtimeExceptionHandler(Exception ex){
         return ResponseUtil.serious();
     }
 }

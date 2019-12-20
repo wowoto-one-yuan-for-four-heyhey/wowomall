@@ -20,7 +20,7 @@ import java.util.List;
 @FeignClient("discountService")
 public interface RemoteDiscountService {
 
-    @PostMapping(value = "/discounts/order")
+    @PostMapping(value = "/discount/orders")
     String caculatePrice(Order order);
 
 }

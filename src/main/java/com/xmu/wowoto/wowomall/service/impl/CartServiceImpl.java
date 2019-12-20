@@ -4,6 +4,7 @@ import com.xmu.wowoto.wowomall.domain.CartItem;
 import com.xmu.wowoto.wowomall.service.CartService;
 import com.xmu.wowoto.wowomall.service.RemoteCartService;
 import com.xmu.wowoto.wowomall.util.JacksonUtil;
+import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem findCartItemById(Integer id){
         String json = remoteCartService.findCartItemById(id);
+        if(!JacksonUtil.parseInteger(json, "errno").equals(200))
+            return null;
         return JacksonUtil.parseObject(json, "data", CartItem.class);
     }
 

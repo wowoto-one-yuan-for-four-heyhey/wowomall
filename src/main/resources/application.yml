@@ -3,5 +3,5 @@ spring:
     active: dev
 
 ribbon:
-  ConnectTimeout: 50000
-  ReadTimeout: 50000
+  ReadTimeout: 100000
+  ConnectTimeout: 100000

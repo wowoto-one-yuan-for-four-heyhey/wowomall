@@ -5,6 +5,7 @@ import com.xmu.wowoto.wowomall.util.Common;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -137,7 +138,7 @@ public class Order extends OrderPo {
         this.setUser(user);
         this.setUserId(user.getId());
         this.setAddressObj(address);
-        this.setAddress(address);
+        this.setAddressString(address);
         this.setMobile(address.getMobile());
         this.setConsignee(address.getConsignee());
         this.setOrderSn("P" + Common.getRandomNum(1));
@@ -147,16 +148,22 @@ public class Order extends OrderPo {
     /**
      * 把addressObj存成address
      */
-    public void setAddress(Address address){
+    public void setAddressString(Address address){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(address.getProvince());
-        stringBuilder.append(address.getCounty());
-        stringBuilder.append(address.getCity());
-        stringBuilder.append(address.getAddressDetail());
+        if(address.getProvince() != null)
+            stringBuilder.append(address.getProvince());
+        if(address.getCounty() != null)
+            stringBuilder.append(address.getCounty());
+        if(address.getCity() != null)
+            stringBuilder.append(address.getCity());
+        if(address.getAddressDetail() != null)
+            stringBuilder.append(address.getAddressDetail());
         stringBuilder.append(" ");
-        stringBuilder.append(address.getConsignee());
+        if(address.getConsignee() != null)
+            stringBuilder.append(address.getConsignee());
         stringBuilder.append(" ");
-        stringBuilder.append(address.getPostalCode());
+        if(address.getPostalCode() != null)
+            stringBuilder.append(address.getPostalCode());
         this.setAddress(stringBuilder.toString());
     }
 
@@ -175,30 +182,38 @@ public class Order extends OrderPo {
 
     public void cacuIntegral(){
         BigDecimal integral = BigDecimal.ZERO;
-        integral.add(this.getGoodsPrice());
+        integral = integral.add(this.getGoodsPrice());
         if(this.getFreightPrice() != null)
-            integral.add(this.getFreightPrice());
+            integral = integral.add(this.getFreightPrice());
         if(this.getCouponPrice() != null)
-            integral.subtract(this.getCouponPrice());
+            integral = integral.subtract(this.getCouponPrice());
         if(this.getRebatePrice() != null)
-            integral.subtract(this.getRebatePrice());
+            integral = integral.subtract(this.getRebatePrice());
         this.setIntegralPrice(integral);
 
-        this.distributePrice();
+        if(this.getRebatePrice() != null && this.getRebatePrice().compareTo(BigDecimal.ZERO) != 0)
+            this.distributePrice();
     }
 
     public void cacuPayment(){
-        if(this.paymentList.size() > 1){
+        if(this.paymentList != null){
             //预售订单
             BigDecimal deposit = this.paymentList.get(0).getActualPrice();
-            deposit.add(this.getFreightPrice());
+            deposit = deposit.add(this.getFreightPrice());
             this.paymentList.get(0).setActualPrice(deposit);
         }else {
             //团购、普通订单
-            BigDecimal price = this.getPaymentList().get(0).getActualPrice();
-            price.add(this.getFreightPrice());
-            price.subtract(this.getRebatePrice());
-            this.paymentList.get(0).setActualPrice(price);
+            this.paymentList = new ArrayList<>();
+            Payment payment = new Payment(this);
+            BigDecimal price = this.getGoodsPrice();
+            if(this.getFreightPrice() != null)
+                price = price.add(this.getFreightPrice());
+            if (this.getCouponPrice() != null)
+                price = price.subtract(this.getCouponPrice());
+            if(this.getRebatePrice() != null)
+                price = price.subtract(this.getRebatePrice());
+            payment.setActualPrice(price);
+            this.paymentList.add(payment);
         }
     }
 

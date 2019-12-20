@@ -7,6 +7,7 @@ import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -68,6 +69,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order submit(Order order, List<CartItem> cartItems){
         Order newOrder = null;
         if(this.createOrderItemFromCartItem(order, cartItems)){
@@ -79,10 +81,10 @@ public class OrderServiceImpl implements OrderService {
             order = discountService.caculatePrice(order);
 
             //计算运费
-            order.setFreightPrice(freightService.caculateFreight(order));
+//            order.setFreightPrice(freightService.caculateFreight(order));
 
             //物流单号
-            order.setOrderSn(logisticsService.getShipSn());
+//            order.setOrderSn(logisticsService.getShipSn());
 
             //订单最终计算
             order.cacuIntegral();
@@ -359,7 +361,7 @@ public class OrderServiceImpl implements OrderService {
             //然后去新增一条payment
             Payment payment = new Payment();
             payment.setActualPrice(decimal.subtract(aa));
-            payment.setBeSuccessful(true);
+            payment.setStatusCode(0);
             payment.setPayTime(LocalDateTime.now());
             payment.setOrderId(order.getId());
             //paymentService.createPayment(payment);
@@ -384,19 +386,19 @@ public class OrderServiceImpl implements OrderService {
             Payment payment1 = order.getPaymentList().get(0);
             Payment payment2 = order.getPaymentList().get(1);
             
-            if(payment1.getBeSuccessful()){
+            if(payment1.getStatusCode() == 0){
                 Payment refundPayment = new Payment();
                 refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment1.getActualPrice()));
-                refundPayment.setBeSuccessful(true);
+                refundPayment.setStatusCode(1);
                 refundPayment.setPayTime(LocalDateTime.now());
                 refundPayment.setOrderId(order.getId());
                 paymentService.createPayment(refundPayment);
                 payments.add(refundPayment);
             }
-            if(payment2.getBeSuccessful()){
+            if(payment2.getStatusCode() == 0){
                 Payment refundPayment = new Payment();
                 refundPayment.setActualPrice(BigDecimal.ZERO.subtract(payment2.getActualPrice()));
-                refundPayment.setBeSuccessful(true);
+                refundPayment.setStatusCode(1);
                 refundPayment.setPayTime(LocalDateTime.now());
                 refundPayment.setOrderId(order.getId());
                 paymentService.createPayment(refundPayment);

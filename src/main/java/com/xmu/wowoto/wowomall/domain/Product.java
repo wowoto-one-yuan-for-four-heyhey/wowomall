@@ -17,13 +17,13 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class Product extends ProductPo {
-    private GoodsPo goodsPo;
+    private Goods goods;
 
-    public GoodsPo getGoodsPo() {
-        return goodsPo;
+    public Goods getGoods() {
+        return goods;
     }
 
-    public void setGoodsPo(GoodsPo goodsPo) {
-        this.goodsPo = goodsPo;
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 }

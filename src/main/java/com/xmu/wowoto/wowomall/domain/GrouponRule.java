@@ -24,7 +24,40 @@ public class GrouponRule extends GrouponRulePo {
     private class Strategy{
         private Integer lowerBound;
         private Integer upperBound;
+
+        public Integer getLowerBound() {
+            return lowerBound;
+        }
+
+        public void setLowerBound(Integer lowerBound) {
+            this.lowerBound = lowerBound;
+        }
+
+        public Integer getUpperBound() {
+            return upperBound;
+        }
+
+        public void setUpperBound(Integer upperBound) {
+            this.upperBound = upperBound;
+        }
+
+        public BigDecimal getDiscountRate() {
+            return discountRate;
+        }
+
+        public void setDiscountRate(BigDecimal discountRate) {
+            this.discountRate = discountRate;
+        }
+
         private BigDecimal discountRate;
     }
     private List<Strategy> strategyList;
+
+    public List<Strategy> getStrategyList() {
+        return strategyList;
+    }
+
+    public void setStrategyList(List<Strategy> strategyList) {
+        this.strategyList = strategyList;
+    }
 }

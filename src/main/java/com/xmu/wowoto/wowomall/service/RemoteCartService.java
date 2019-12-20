@@ -3,10 +3,7 @@ package com.xmu.wowoto.wowomall.service;
 import com.xmu.wowoto.wowomall.domain.CartItem;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,6 +28,6 @@ public interface RemoteCartService {
      * 清空购物车里的指定项目
      * @param cartItems 待清空的项目
      */
-    @PostMapping(value = "cartItems")
+    @DeleteMapping(value = "cartItems")
     String clearCartItem(@RequestBody List<CartItem> cartItems);
 }

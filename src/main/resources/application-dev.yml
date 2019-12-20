@@ -9,6 +9,11 @@ spring:
     password: zqhlovekly
 
     driver-class-name: com.mysql.jdbc.Driver
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+
   redis:
     host: 106.15.92.198
     port: 6379

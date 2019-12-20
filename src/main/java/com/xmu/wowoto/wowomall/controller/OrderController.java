@@ -363,8 +363,8 @@ public class OrderController {
         log.setActionId(order.getId());
         log.setActions("管理员更改订单"+order.getId()+"状态为退款");
 
-        remoteLogService.addLog(log);
-        return ResponseUtil.ok(reOrderItem);
+        logService.addLog(log);
+        return ResponseUtil.ok(order);
     }
 
     /**
@@ -381,7 +381,6 @@ public class OrderController {
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 
         HashMap<String,Integer> result=orderService.payOrder(order);
-
         if(result.containsKey("orderItem")){
             return ResponseUtil.fail();
         }
@@ -404,9 +403,7 @@ public class OrderController {
     @GetMapping("orderItem/{orderItemId}/goodsType")
     public Object findOrderItemType(@PathVariable("orderItemId") Integer orderItemId ){
         OrderItem orderItem = orderService.getOrderItem(orderItemId);
-        if(orderItem == null){
-            return ResponseUtil.badArgumentValue();
-        }
+        if(orderItem == null){ return ResponseUtil.badArgumentValue(); }
         Integer goodsType = orderItem.getItemType();
         return ResponseUtil.ok(goodsType);
     }
@@ -438,7 +435,6 @@ public class OrderController {
             return ResponseUtil.unlogin();
         }
         List<Payment> list = paymentService.getPaymentById(id);
-
         if(list == null){
             return ResponseUtil.badArgumentValue();
         }
