@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
 
             //计算运费
-            //order.setFreightPrice(freightService.caculateFreight(order));
+            order.setFreightPrice(freightService.caculateFreight(order));
 
             //物流单号
             order.setOrderSn(logisticsService.getShipSn());
