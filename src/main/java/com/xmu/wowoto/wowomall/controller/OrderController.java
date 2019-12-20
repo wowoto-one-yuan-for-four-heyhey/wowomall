@@ -134,6 +134,10 @@ public class OrderController {
         }
         Order order = orderService.getOrder(orderId);
         if(order == null) { return ResponseUtil.badArgument(); }
+        Log log = new Log(request, Log.Type.SELECT.getValue(),
+                "get OrdersId"+order.getId(), 1,
+                        order.getId());
+        logService.addLog(log);
         return ResponseUtil.ok(order);
     }
 
