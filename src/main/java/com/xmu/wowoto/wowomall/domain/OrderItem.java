@@ -16,6 +16,7 @@ public class OrderItem extends OrderItemPo {
         return this.product;
     }
 
+
     public void setProduct(Product product) {
         this.product = product;
     }
