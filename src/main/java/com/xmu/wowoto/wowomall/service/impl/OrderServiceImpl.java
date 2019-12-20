@@ -87,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
             //物流单号
             order.setOrderSn(logisticsService.getShipSn());
 
-
             //添加订单
             newOrder = orderDao.addOrder(order);
 
