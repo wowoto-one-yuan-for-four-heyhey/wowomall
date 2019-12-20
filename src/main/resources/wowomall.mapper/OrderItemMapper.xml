@@ -130,7 +130,7 @@
               and item_type &gt; 0 and item_type &lt; 5
     </select>
 
-    <select id="getOrderItemByGrouponLimit" resultType="OrderItem">
+    <select id="getOrderItemByTimeLimit" resultType="OrderItem">
         select id,
                order_id,
                item_type,
