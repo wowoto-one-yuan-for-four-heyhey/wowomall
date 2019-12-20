@@ -372,28 +372,24 @@ public class OrderController {
             return ResponseUtil.badArgumentValue();
         }
         OrderItem item = orderService.getOrderItem(orderItem.getId());
+        if(item == null){
+            return ResponseUtil.badArgumentValue();
+        }
         if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS.getValue())){
             return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
                     ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
         }
-        if(item == null){
-            return ResponseUtil.badArgumentValue();
-        }
+
 
         OrderItem reOrderItem = orderService.refundOrderItem(item,order);
-        order = orderService.refundOrder(order,reOrderItem);
-        if(order == null){
-            return ResponseUtil.fail(ResponseCode.ORDER_RETURN_FAILED.getCode(),
-                    ResponseCode.ORDER_EXCHANGE_FAILED.getMessage());
-        }
         Log log=new Log();
         log.setType(2);
         log.setStatusCode(1);
-        log.setActionId(order.getId());
+        log.setActionId(orderItem.getId());
         log.setActions("管理员更改订单"+order.getId()+"状态为退款");
 
         logService.addLog(log);
-        return ResponseUtil.ok(order);
+        return ResponseUtil.ok(reOrderItem);
     }
 
     /**
@@ -404,8 +400,6 @@ public class OrderController {
     @PutMapping("orders/{id}/paymentStatus")
     public Object orderPayed(@PathVariable("id")Integer id )
     {
-        Integer userId = Integer.valueOf(request.getHeader("id"));
-        if(userId == null){ return ResponseUtil.unlogin(); }
         Order order = orderService.getOrder(id);
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 

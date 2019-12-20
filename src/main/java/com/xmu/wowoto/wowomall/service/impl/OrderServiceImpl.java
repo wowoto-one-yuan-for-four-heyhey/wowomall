@@ -139,60 +139,6 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    /**
-     * 更改订单状态为退款(管理员操作)
-     *
-     * @param order
-     * @return 订单列表
-     */
-    @Override
-    public Order refundOrder(Order order,OrderItem orderItem){
-        if(Order.StatusCode.PAYED_CANCELED.getValue() >= order.getStatusCode()){
-            order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
-            List<OrderItem> orderItems= order.getOrderItemList();
-            List<OrderItem> items = new LinkedList<OrderItem>();
-            Integer beDelete = 0;
-            for(OrderItem item : orderItems){
-                Integer itemId = item.getId();
-                if(itemId.equals(orderItem.getId())){
-                    items.add(orderItem);
-                    beDelete++;
-                }else {
-                    items.add(item);
-                    if(item.getStatusCode().equals(OrderItem.StatusCode.RETURN_SUCCESS)){
-                        beDelete ++;
-                    }
-                }
-            }
-            if(items.size() == beDelete){
-                order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
-            }
-            order.setOrderItemList(items);
-            BigDecimal rebatePrice = order.getRebatePrice();
-            BigDecimal orderItemPrice = orderItem.getPrice();
-            BigDecimal goodsPrice = order.getGoodsPrice();
-
-            if(goodsPrice.equals(0)){
-                return null;
-                //异常抛错
-            }
-            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
-
-
-            userService.updateUserRebate(order.getUserId(),rebate.intValue());
-
-            if(order.getOrderItemList().size() == beDelete){
-                order.setStatusCode(Order.StatusCode.PAYED_CANCELED.getValue());
-            }
-            order.setGmtModified(LocalDateTime.now());
-            orderDao.updateOrder(order);
-            //对用户 钱进行更新
-            // 对价格进行更新
-
-            //return ResponseUtil.ok(updateNum);
-        }
-        return order;
-    }
 
     /**
      * 更改订单状态为退款(管理员操作)
@@ -202,28 +148,41 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderItem refundOrderItem(OrderItem orderItem, Order order){
-        if(OrderItem.StatusCode.APPLY_RETURN.getValue() >= orderItem.getStatusCode()){
-            orderItem.setStatusCode(OrderItem.StatusCode.RETURN_SUCCESS.getValue());
+        orderItem.setStatusCode(OrderItem.StatusCode.RETURN_SUCCESS.getValue());
 
-            Payment payment = new Payment();
-            payment.setActualPrice(orderItem.getPrice().negate());
-            payment.setOrderId(orderItem.getOrderId());
-            payment.setPayTime(LocalDateTime.now());
-            payment.setGmtCreate(LocalDateTime.now());
+        Payment payment = new Payment();
+        payment.setActualPrice(orderItem.getPrice().negate());
+        payment.setOrderId(orderItem.getOrderId());
+        payment.setPayTime(LocalDateTime.now());
+        payment.setGmtCreate(LocalDateTime.now());
+
+        List<Payment> orderPay = paymentService.getPaymentByOrderId(order.getId());
 
 
-            List<Payment> orderPay = paymentService.getPaymentByOrderId(order.getId());
+        payment.setPayChannel( orderPay.get(0).getPayChannel());
+        payment.setStatusCode(1);
 
-            payment.setPayChannel( orderPay.get(0).getPayChannel());
-            payment.setStatusCode(1);
+        Payment newPayment = paymentService.createPayment(payment);
 
-            paymentService.createPayment(payment);
+        paymentService.payPayment(newPayment.getId());
 
-            //对用户 钱进行更新
-            // 对价格进行更新
+        BigDecimal rebatePrice = order.getRebatePrice();
+        BigDecimal orderItemPrice = orderItem.getPrice();
+        BigDecimal goodsPrice = order.getGoodsPrice();
+
+        if(goodsPrice.equals(0)){
+            return null;
+            //异常抛错
+        }
+        BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
+
+        userService.updateUserRebate(order.getUserId(),rebate.intValue());
+
+        //对用户 钱进行更新
+        // 对价格进行更新
 
             //return ResponseUtil.ok(updateNum);
-        }
+
         return orderItem;
     }
 
@@ -368,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
             payment.setStatusCode(0);
             payment.setPayTime(LocalDateTime.now());
             payment.setOrderId(order.getId());
-            //paymentService.createPayment(payment);
+            paymentService.createPayment(payment);
             payments.add(payment);
         }
         return payments;

@@ -30,7 +30,7 @@
         where order_id = #{orderId} and is_deleted = 0
     </select>
 
-    <select id="updateOrderItemSelective" parameterType="OrderItem" resultType="Integer">
+    <update id="updateOrderItemSelective" parameterType="OrderItem" >
         update oomall_order_item
         <set>
             <if test="orderId != null">
@@ -71,7 +71,7 @@
             </if>
         </set>
         where id = #{id}
-    </select>
+    </update>
 
     <select id="getOrderItemById" parameterType="Integer" resultType="OrderItem">
                select id,

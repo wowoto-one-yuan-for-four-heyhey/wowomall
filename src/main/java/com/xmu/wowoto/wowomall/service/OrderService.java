@@ -69,13 +69,7 @@ public interface OrderService {
      */
     Order deleteOrder(Order order);
 
-    /**
-     * 订单修改订单状态为退款(管理员操作)
-     *
-     * @param order 订单ID
-     * @return 订单详细
-     */
-    Order refundOrder(Order order,OrderItem orderItem);
+
 
 
     OrderItem refundOrderItem(OrderItem orderItem, Order order);
