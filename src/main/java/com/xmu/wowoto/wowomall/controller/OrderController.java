@@ -232,10 +232,13 @@ public class OrderController {
         if(order == null) {
             return ResponseUtil.badArgumentValue();
         }
-        if(!order.getUserId().equals(userId)) { return ResponseUtil.unauthz(); }
+        if(!order.getUserId().equals(userId)) {
+            return ResponseUtil.fail(ResponseCode.ORDER_STATUS_CHANGE_FAILED.getCode(),
+                ResponseCode.ORDER_STATUS_CHANGE_FAILED.getMessage());
+        }
         if(!order.getStatusCode().equals(Order.StatusCode.NOT_PAYED.getValue())){
-            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
-                            ResponseCode.ORDER_INVAILD_OPERATION.getMessage());}
+            return ResponseUtil.fail(ResponseCode.ORDER_STATUS_CHANGE_FAILED.getCode(),
+                            ResponseCode.ORDER_STATUS_CHANGE_FAILED.getMessage());}
         order = orderService.cancelOrder(order);
         return ResponseUtil.ok(order);
     }
