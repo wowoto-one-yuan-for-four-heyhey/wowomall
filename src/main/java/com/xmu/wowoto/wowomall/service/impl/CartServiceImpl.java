@@ -45,6 +45,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean clearCartItem(List<CartItem> cartItems){
         String json = remoteCartService.clearCartItem(cartItems);
-        return JacksonUtil.parseInteger(json, "errno") == 1;
+        return JacksonUtil.parseInteger(json, "errno").equals(200);
+    }
+
+    @Override
+    public boolean deleteCartItem(Integer cartItemId) {
+        String json = remoteCartService.deleteCartItem(cartItemId);
+        return JacksonUtil.parseInteger(json, "errno").equals(200);
     }
 }

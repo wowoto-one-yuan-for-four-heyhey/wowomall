@@ -95,9 +95,7 @@ public class OrderServiceImpl implements OrderService {
 
             //支付最终计算
             order.cacuPayment();
-
-
-
+            
             //添加payment
             for(Payment payment: order.getPaymentList()){
                 paymentService.createPayment(payment);

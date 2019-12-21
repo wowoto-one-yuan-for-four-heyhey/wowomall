@@ -56,8 +56,6 @@ public interface OrderItemMapper {
      */
     List<OrderItem> getOrderItemByShareTimeLimit(LocalDateTime start, LocalDateTime end);
 
-    Integer updateOrderItemById(Integer id);
-
     /**
      * 查询时间段内订单
      * @param goodsId
