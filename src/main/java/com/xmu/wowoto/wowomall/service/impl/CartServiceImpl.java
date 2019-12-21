@@ -33,7 +33,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem findCartItemById(Integer id){
         String json = remoteCartService.findCartItemById(id);
-        if(!JacksonUtil.parseInteger(json, "errno").equals(200))
+        if(!JacksonUtil.parseInteger(json, "errno").equals(0))
             return null;
         return JacksonUtil.parseObject(json, "data", CartItem.class);
     }
@@ -45,12 +45,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean clearCartItem(List<CartItem> cartItems){
         String json = remoteCartService.clearCartItem(cartItems);
-        return JacksonUtil.parseInteger(json, "errno").equals(200);
+        return JacksonUtil.parseInteger(json, "errno").equals(0);
     }
 
     @Override
     public boolean deleteCartItem(Integer cartItemId) {
         String json = remoteCartService.deleteCartItem(cartItemId);
-        return JacksonUtil.parseInteger(json, "errno").equals(200);
+        return JacksonUtil.parseInteger(json, "errno").equals(0);
     }
 }
