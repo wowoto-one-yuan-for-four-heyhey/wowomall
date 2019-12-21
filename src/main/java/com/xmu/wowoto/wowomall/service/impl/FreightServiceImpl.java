@@ -16,6 +16,7 @@ import java.math.BigDecimal;
  */
 @Service
 public class FreightServiceImpl implements FreightService {
+
     @Autowired
     RemoteFreightService remoteFreightService;
 

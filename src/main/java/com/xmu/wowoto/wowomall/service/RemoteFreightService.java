@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 
@@ -18,5 +19,5 @@ import java.math.BigDecimal;
 public interface RemoteFreightService {
 
     @GetMapping("/freightPrice")
-    String caculateFreight(Order order);
+    String caculateFreight(@RequestBody Order order);
 }

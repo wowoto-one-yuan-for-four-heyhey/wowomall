@@ -210,6 +210,8 @@ public class OrderController {
 
         order = orderService.submit(order, cartItems);
 
+        if(null == order)
+            ResponseUtil.fail(ORDER_SUBMIT_FAILED.getCode(), ORDER_SUBMIT_FAILED.getMessage());
         return ResponseUtil.ok(order);
     }
 
