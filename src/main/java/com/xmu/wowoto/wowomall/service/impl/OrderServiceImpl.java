@@ -85,11 +85,17 @@ public class OrderServiceImpl implements OrderService {
             //计算优惠促销价格
             order = discountService.caculatePrice(order);
 
+            logger.debug("discount done");
+
             //计算运费
             order.setFreightPrice(freightService.caculateFreight(order));
 
+            logger.debug("freight done");
+
             //物流单号
             order.setOrderSn(logisticsService.getShipSn());
+
+            logger.debug("logistics done");
 
             //添加订单
             newOrder = orderDao.addOrder(order);
@@ -104,6 +110,8 @@ public class OrderServiceImpl implements OrderService {
             for(Payment payment: newOrder.getPaymentList()){
                 paymentService.createPayment(payment);
             }
+
+            logger.debug("payment done");
         }
 
         return newOrder;
