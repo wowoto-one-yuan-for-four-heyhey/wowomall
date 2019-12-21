@@ -113,7 +113,6 @@ public class OrderServiceImpl implements OrderService {
 
             logger.debug("payment done");
         }
-
         return newOrder;
     }
 
