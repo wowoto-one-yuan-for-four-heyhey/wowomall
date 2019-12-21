@@ -1,10 +1,13 @@
 package com.xmu.wowoto.wowomall.service.impl;
 
+import com.xmu.wowoto.wowomall.controller.OrderController;
 import com.xmu.wowoto.wowomall.dao.OrderDao;
 import com.xmu.wowoto.wowomall.domain.*;
 import com.xmu.wowoto.wowomall.exception.PriceError;
 import com.xmu.wowoto.wowomall.service.*;
 import com.xmu.wowoto.wowomall.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,8 @@ import java.util.*;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     private GoodsService goodsService;
@@ -80,7 +85,6 @@ public class OrderServiceImpl implements OrderService {
             //计算优惠促销价格
             order = discountService.caculatePrice(order);
 
-
             //计算运费
             order.setFreightPrice(freightService.caculateFreight(order));
 
@@ -91,13 +95,13 @@ public class OrderServiceImpl implements OrderService {
             newOrder = orderDao.addOrder(order);
 
             //订单最终计算
-            order.cacuIntegral();
+            newOrder.cacuIntegral();
 
             //支付最终计算
-            order.cacuPayment();
+            newOrder.cacuPayment();
             
             //添加payment
-            for(Payment payment: order.getPaymentList()){
+            for(Payment payment: newOrder.getPaymentList()){
                 paymentService.createPayment(payment);
             }
         }
