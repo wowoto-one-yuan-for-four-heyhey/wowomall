@@ -187,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
         }
         if(rebatePrice != null) {
 
-            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divideToIntegralValue(goodsPrice, 3);
+            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
             userService.updateUserRebate(order.getUserId(),rebate.intValue());
         }
 
