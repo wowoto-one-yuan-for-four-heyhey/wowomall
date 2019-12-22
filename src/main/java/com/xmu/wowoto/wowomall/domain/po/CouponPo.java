@@ -157,52 +157,7 @@ public class CouponPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof CouponPo)){ return false;}
-        final CouponPo other = (CouponPo) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object thisid = this.getId();
-        final Object otherid = other.getId();
-        if (thisid == null ? otherid != null : !thisid.equals(otherid)) {return false;}
-        final Object thisuserId = this.getUserId();
-        final Object otheruserId = other.getUserId();
-        if (thisuserId == null ? otheruserId != null : !thisuserId.equals(otheruserId)){ return false;}
-        final Object thiscouponRuleId = this.getCouponRuleId();
-        final Object othercouponRuleId = other.getCouponRuleId();
-        if (thiscouponRuleId == null ? othercouponRuleId != null : !thiscouponRuleId.equals(othercouponRuleId))
-        {  return false;}
-        final Object thiscouponSn = this.getCouponSn();
-        final Object othercouponSn = other.getCouponSn();
-        if (thiscouponSn == null ? othercouponSn != null : !thiscouponSn.equals(othercouponSn)){ return false;}
-        final Object thisbeginTime = this.getBeginTime();
-        final Object otherbeginTime = other.getBeginTime();
-        if (thisbeginTime == null ? otherbeginTime != null : !thisbeginTime.equals(otherbeginTime)){ return false;}
-        final Object thisendTime = this.getEndTime();
-        final Object otherendTime = other.getEndTime();
-        if (thisendTime == null ? otherendTime != null : !thisendTime.equals(otherendTime)){ return false;}
-        final Object thisusedTime = this.getUsedTime();
-        final Object otherusedTime = other.getUsedTime();
-        if (thisusedTime == null ? otherusedTime != null : !thisusedTime.equals(otherusedTime)) {return false;}
-        final Object thisname = this.getName();
-        final Object othername = other.getName();
-        if (thisname == null ? othername != null : !thisname.equals(othername)){ return false;}
-        final Object thispicUrl = this.getPicUrl();
-        final Object otherpicUrl = other.getPicUrl();
-        if (thispicUrl == null ? otherpicUrl != null : !thispicUrl.equals(otherpicUrl)){ return false;}
-        final Object thisstatusCode = this.getStatusCode();
-        final Object otherstatusCode = other.getStatusCode();
-        if (thisstatusCode == null ? otherstatusCode != null : !thisstatusCode.equals(otherstatusCode))
-        {   return false;}
-        final Object thisgmtCreate = this.getGmtCreate();
-        final Object othergmtCreate = other.getGmtCreate();
-        if (thisgmtCreate == null ? othergmtCreate != null : !thisgmtCreate.equals(othergmtCreate)){ return false;}
-        final Object thisgmtModified = this.getGmtModified();
-        final Object othergmtModified = other.getGmtModified();
-        if (thisgmtModified == null ? othergmtModified != null : !thisgmtModified.equals(othergmtModified))
-        {  return false;}
-        final Object thisbeDeleted = this.getBeDeleted();
-        final Object otherbeDeleted = other.getBeDeleted();
-        if (thisbeDeleted == null ? otherbeDeleted != null : !thisbeDeleted.equals(otherbeDeleted)){ return false;}
+
         return true;
     }
 

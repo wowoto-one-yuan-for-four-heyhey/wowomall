@@ -257,78 +257,6 @@ public class GoodsPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof GoodsPo)) {return false;}
-        final GoodsPo other = (GoodsPo) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {return false;}
-        final Object this$goodsSn = this.getGoodsSn();
-        final Object other$goodsSn = other.getGoodsSn();
-        if (this$goodsSn == null ? other$goodsSn != null : !this$goodsSn.equals(other$goodsSn)) {return false;}
-        final Object this$shortName = this.getShortName();
-        final Object other$shortName = other.getShortName();
-        if (this$shortName == null ? other$shortName != null : !this$shortName.equals(other$shortName)) {return false;}
-        final Object this$description = this.getDescription();
-        final Object other$description = other.getDescription();
-        if (this$description == null ? other$description != null : !this$description.equals(other$description))
-        { return false;}
-        final Object this$brief = this.getBrief();
-        final Object other$brief = other.getBrief();
-        if (this$brief == null ? other$brief != null : !this$brief.equals(other$brief)){ return false;}
-        final Object this$picUrl = this.getPicUrl();
-        final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) {return false;}
-        final Object this$detail = this.getDetail();
-        final Object other$detail = other.getDetail();
-        if (this$detail == null ? other$detail != null : !this$detail.equals(other$detail)) {return false;}
-        final Object this$statusCode = this.getStatusCode();
-        final Object other$statusCode = other.getStatusCode();
-        if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-        {  return false;}
-        final Object this$shareUrl = this.getShareUrl();
-        final Object other$shareUrl = other.getShareUrl();
-        if (this$shareUrl == null ? other$shareUrl != null : !this$shareUrl.equals(other$shareUrl)){ return false;}
-        final Object this$gallery = this.getGallery();
-        final Object other$gallery = other.getGallery();
-        if (this$gallery == null ? other$gallery != null : !this$gallery.equals(other$gallery)) {return false;}
-        final Object this$goodsCategoryId = this.getGoodsCategoryId();
-        final Object other$goodsCategoryId = other.getGoodsCategoryId();
-        if (this$goodsCategoryId == null ? other$goodsCategoryId != null : !this$goodsCategoryId.equals(other$goodsCategoryId))
-        {   return false;}
-        final Object this$brandId = this.getBrandId();
-        final Object other$brandId = other.getBrandId();
-        if (this$brandId == null ? other$brandId != null : !this$brandId.equals(other$brandId)) {return false;}
-        final Object this$weight = this.getWeight();
-        final Object other$weight = other.getWeight();
-        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) {return false;}
-        final Object this$volume = this.getVolume();
-        final Object other$volume = other.getVolume();
-        if (this$volume == null ? other$volume != null : !this$volume.equals(other$volume)) {return false;}
-        final Object this$specialFreightId = this.getSpecialFreightId();
-        final Object other$specialFreightId = other.getSpecialFreightId();
-        if (this$specialFreightId == null ? other$specialFreightId != null : !this$specialFreightId.equals(other$specialFreightId))
-        {   return false;}
-        final Object this$beSpecial = this.getBeSpecial();
-        final Object other$beSpecial = other.getBeSpecial();
-        if (this$beSpecial == null ? other$beSpecial != null : !this$beSpecial.equals(other$beSpecial)) {return false;}
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        if (this$price == null ? other$price != null : !this$price.equals(other$price)){ return false;}
-        final Object this$beDeleted = this.getBeDeleted();
-        final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
-        final Object this$gmtCreate = this.getGmtCreate();
-        final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
-        final Object this$gmtModified = this.getGmtModified();
-        final Object other$gmtModified = other.getGmtModified();
-        if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-        {   return false;}
         return true;
     }
 
@@ -338,51 +266,8 @@ public class GoodsPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $id = this.getId();
-        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final Object $name = this.getName();
-        result = result * PRIME + ($name == null ? 43 : $name.hashCode());
-        final Object $goodsSn = this.getGoodsSn();
-        result = result * PRIME + ($goodsSn == null ? 43 : $goodsSn.hashCode());
-        final Object $shortName = this.getShortName();
-        result = result * PRIME + ($shortName == null ? 43 : $shortName.hashCode());
-        final Object $description = this.getDescription();
-        result = result * PRIME + ($description == null ? 43 : $description.hashCode());
-        final Object $brief = this.getBrief();
-        result = result * PRIME + ($brief == null ? 43 : $brief.hashCode());
-        final Object $picUrl = this.getPicUrl();
-        result = result * PRIME + ($picUrl == null ? 43 : $picUrl.hashCode());
-        final Object $detail = this.getDetail();
-        result = result * PRIME + ($detail == null ? 43 : $detail.hashCode());
-        final Object $statusCode = this.getStatusCode();
-        result = result * PRIME + ($statusCode == null ? 43 : $statusCode.hashCode());
-        final Object $shareUrl = this.getShareUrl();
-        result = result * PRIME + ($shareUrl == null ? 43 : $shareUrl.hashCode());
-        final Object $gallery = this.getGallery();
-        result = result * PRIME + ($gallery == null ? 43 : $gallery.hashCode());
-        final Object $goodsCategoryId = this.getGoodsCategoryId();
-        result = result * PRIME + ($goodsCategoryId == null ? 43 : $goodsCategoryId.hashCode());
-        final Object $brandId = this.getBrandId();
-        result = result * PRIME + ($brandId == null ? 43 : $brandId.hashCode());
-        final Object $weight = this.getWeight();
-        result = result * PRIME + ($weight == null ? 43 : $weight.hashCode());
-        final Object $volume = this.getVolume();
-        result = result * PRIME + ($volume == null ? 43 : $volume.hashCode());
-        final Object $specialFreightId = this.getSpecialFreightId();
-        result = result * PRIME + ($specialFreightId == null ? 43 : $specialFreightId.hashCode());
-        final Object $beSpecial = this.getBeSpecial();
-        result = result * PRIME + ($beSpecial == null ? 43 : $beSpecial.hashCode());
-        final Object $price = this.getPrice();
-        result = result * PRIME + ($price == null ? 43 : $price.hashCode());
-        final Object $beDeleted = this.getBeDeleted();
-        result = result * PRIME + ($beDeleted == null ? 43 : $beDeleted.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * PRIME + ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        final Object $gmtModified = this.getGmtModified();
-        result = result * PRIME + ($gmtModified == null ? 43 : $gmtModified.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

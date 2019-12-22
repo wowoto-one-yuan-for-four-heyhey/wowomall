@@ -121,23 +121,8 @@ public class CartItemPo {
 
     @Override
     public int hashCode() {
-        final int prime= 59;
-        int result = 1;
-        final Object $id = this.getId();
-        result = result * prime+ ($id == null ? 43 : $id.hashCode());
-        final Object $userId = this.getUserId();
-        result = result * prime+ ($userId == null ? 43 : $userId.hashCode());
-        final Object $productId = this.getProductId();
-        result = result * prime+ ($productId == null ? 43 : $productId.hashCode());
-        final Object $beCheck = this.getBeCheck();
-        result = result * prime+ ($beCheck == null ? 43 : $beCheck.hashCode());
-        final Object $number = this.getNumber();
-        result = result * prime+ ($number == null ? 43 : $number.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * prime+ ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        final Object $gmtModified = this.getGmtModified();
-        result = result * prime+ ($gmtModified == null ? 43 : $gmtModified.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

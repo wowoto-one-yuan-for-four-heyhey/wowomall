@@ -286,88 +286,7 @@ public class OrderPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof OrderPo)) {return false;}
-        final OrderPo other = (OrderPo) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
-        final Object this$userId = this.getUserId();
-        final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) {return false;}
-        final Object this$orderSn = this.getOrderSn();
-        final Object other$orderSn = other.getOrderSn();
-        if (this$orderSn == null ? other$orderSn != null : !this$orderSn.equals(other$orderSn)) {return false;}
-        final Object this$statusCode = this.getStatusCode();
-        final Object other$statusCode = other.getStatusCode();
-        if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-        {return false;}
-        final Object this$consignee = this.getConsignee();
-        final Object other$consignee = other.getConsignee();
-        if (this$consignee == null ? other$consignee != null : !this$consignee.equals(other$consignee)) {return false;}
-        final Object this$mobile = this.getMobile();
-        final Object other$mobile = other.getMobile();
-        if (this$mobile == null ? other$mobile != null : !this$mobile.equals(other$mobile)) {return false;}
-        final Object this$message = this.getMessage();
-        final Object other$message = other.getMessage();
-        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {return false;}
-        final Object this$goodsPrice = this.getGoodsPrice();
-        final Object other$goodsPrice = other.getGoodsPrice();
-        if (this$goodsPrice == null ? other$goodsPrice != null : !this$goodsPrice.equals(other$goodsPrice))
-        {return false;}
-        final Object this$couponPrice = this.getCouponPrice();
-        final Object other$couponPrice = other.getCouponPrice();
-        if (this$couponPrice == null ? other$couponPrice != null : !this$couponPrice.equals(other$couponPrice))
-        {return false;}
-        final Object this$rebatePrice = this.getRebatePrice();
-        final Object other$rebatePrice = other.getRebatePrice();
-        if (this$rebatePrice == null ? other$rebatePrice != null : !this$rebatePrice.equals(other$rebatePrice))
-        {return false;}
-        final Object this$freightPrice = this.getFreightPrice();
-        final Object other$freightPrice = other.getFreightPrice();
-        if (this$freightPrice == null ? other$freightPrice != null : !this$freightPrice.equals(other$freightPrice))
-        {return false;}
-        final Object this$integralPrice = this.getIntegralPrice();
-        final Object other$integralPrice = other.getIntegralPrice();
-        if (this$integralPrice == null ? other$integralPrice != null : !this$integralPrice.equals(other$integralPrice))
-        {return false;}
-        final Object this$shipSn = this.getShipSn();
-        final Object other$shipSn = other.getShipSn();
-        if (this$shipSn == null ? other$shipSn != null : !this$shipSn.equals(other$shipSn)) {return false;}
-        final Object this$shipChannel = this.getShipChannel();
-        final Object other$shipChannel = other.getShipChannel();
-        if (this$shipChannel == null ? other$shipChannel != null : !this$shipChannel.equals(other$shipChannel))
-        {return false;}
-        final Object this$shipTime = this.getShipTime();
-        final Object other$shipTime = other.getShipTime();
-        if (this$shipTime == null ? other$shipTime != null : !this$shipTime.equals(other$shipTime)) {return false;}
-        final Object this$confirmTime = this.getConfirmTime();
-        final Object other$confirmTime = other.getConfirmTime();
-        if (this$confirmTime == null ? other$confirmTime != null : !this$confirmTime.equals(other$confirmTime))
-        {return false;}
-        final Object this$endTime = this.getEndTime();
-        final Object other$endTime = other.getEndTime();
-        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) {return false;}
-        final Object this$payTime = this.getPayTime();
-        final Object other$payTime = other.getPayTime();
-        if (this$payTime == null ? other$payTime != null : !this$payTime.equals(other$payTime)) {return false;}
-        final Object this$parentId = this.getParentId();
-        final Object other$parentId = other.getParentId();
-        if (this$parentId == null ? other$parentId != null : !this$parentId.equals(other$parentId)) {return false;}
-        final Object this$address = this.getAddress();
-        final Object other$address = other.getAddress();
-        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {return false;}
-        final Object this$gmtCreate = this.getGmtCreate();
-        final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
-        final Object this$gmtModified = this.getGmtModified();
-        final Object other$gmtModified = other.getGmtModified();
-        if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-        {return false;}
-        final Object this$beDeleted = this.getBeDeleted();
-        final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
+
         return true;
     }
 
@@ -377,55 +296,8 @@ public class OrderPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $id = this.getId();
-        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final Object $userId = this.getUserId();
-        result = result * PRIME + ($userId == null ? 43 : $userId.hashCode());
-        final Object $orderSn = this.getOrderSn();
-        result = result * PRIME + ($orderSn == null ? 43 : $orderSn.hashCode());
-        final Object $statusCode = this.getStatusCode();
-        result = result * PRIME + ($statusCode == null ? 43 : $statusCode.hashCode());
-        final Object $consignee = this.getConsignee();
-        result = result * PRIME + ($consignee == null ? 43 : $consignee.hashCode());
-        final Object $mobile = this.getMobile();
-        result = result * PRIME + ($mobile == null ? 43 : $mobile.hashCode());
-        final Object $message = this.getMessage();
-        result = result * PRIME + ($message == null ? 43 : $message.hashCode());
-        final Object $goodsPrice = this.getGoodsPrice();
-        result = result * PRIME + ($goodsPrice == null ? 43 : $goodsPrice.hashCode());
-        final Object $couponPrice = this.getCouponPrice();
-        result = result * PRIME + ($couponPrice == null ? 43 : $couponPrice.hashCode());
-        final Object $rebatePrice = this.getRebatePrice();
-        result = result * PRIME + ($rebatePrice == null ? 43 : $rebatePrice.hashCode());
-        final Object $freightPrice = this.getFreightPrice();
-        result = result * PRIME + ($freightPrice == null ? 43 : $freightPrice.hashCode());
-        final Object $integralPrice = this.getIntegralPrice();
-        result = result * PRIME + ($integralPrice == null ? 43 : $integralPrice.hashCode());
-        final Object $shipSn = this.getShipSn();
-        result = result * PRIME + ($shipSn == null ? 43 : $shipSn.hashCode());
-        final Object $shipChannel = this.getShipChannel();
-        result = result * PRIME + ($shipChannel == null ? 43 : $shipChannel.hashCode());
-        final Object $shipTime = this.getShipTime();
-        result = result * PRIME + ($shipTime == null ? 43 : $shipTime.hashCode());
-        final Object $confirmTime = this.getConfirmTime();
-        result = result * PRIME + ($confirmTime == null ? 43 : $confirmTime.hashCode());
-        final Object $endTime = this.getEndTime();
-        result = result * PRIME + ($endTime == null ? 43 : $endTime.hashCode());
-        final Object $payTime = this.getPayTime();
-        result = result * PRIME + ($payTime == null ? 43 : $payTime.hashCode());
-        final Object $parentId = this.getParentId();
-        result = result * PRIME + ($parentId == null ? 43 : $parentId.hashCode());
-        final Object $address = this.getAddress();
-        result = result * PRIME + ($address == null ? 43 : $address.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * PRIME + ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        final Object $gmtModified = this.getGmtModified();
-        result = result * PRIME + ($gmtModified == null ? 43 : $gmtModified.hashCode());
-        final Object $beDeleted = this.getBeDeleted();
-        result = result * PRIME + ($beDeleted == null ? 43 : $beDeleted.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

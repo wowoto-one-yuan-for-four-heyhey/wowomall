@@ -39,11 +39,8 @@ public class CartItem extends CartItemPo {
 
     @Override
     public int hashCode() {
-        final int prime= 59;
-        int result = super.hashCode();
-        final Object $product = this.getProduct();
-        result = result * prime+ ($product == null ? 43 : $product.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

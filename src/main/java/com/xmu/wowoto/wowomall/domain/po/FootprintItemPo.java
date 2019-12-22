@@ -66,25 +66,7 @@ public class FootprintItemPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof FootprintItemPo)) {return false;}
-        final FootprintItemPo other = (FootprintItemPo) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
-        final Object this$birthTime = this.getBirthTime();
-        final Object other$birthTime = other.getBirthTime();
-        if (this$birthTime == null ? other$birthTime != null : !this$birthTime.equals(other$birthTime)) {return false;}
-        final Object this$userId = this.getUserId();
-        final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) {return false;}
-        final Object this$goodsId = this.getGoodsId();
-        final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)){ return false;}
-        final Object this$gmtCreate = this.getGmtCreate();
-        final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
+
         return true;
     }
 
@@ -94,19 +76,8 @@ public class FootprintItemPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $id = this.getId();
-        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final Object $birthTime = this.getBirthTime();
-        result = result * PRIME + ($birthTime == null ? 43 : $birthTime.hashCode());
-        final Object $userId = this.getUserId();
-        result = result * PRIME + ($userId == null ? 43 : $userId.hashCode());
-        final Object $goodsId = this.getGoodsId();
-        result = result * PRIME + ($goodsId == null ? 43 : $goodsId.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * PRIME + ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

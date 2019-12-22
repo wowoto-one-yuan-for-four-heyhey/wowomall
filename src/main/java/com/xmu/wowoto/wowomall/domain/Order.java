@@ -63,29 +63,7 @@ public class Order extends OrderPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof Order)) {return false;}
-        final Order other = (Order) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        if (!super.equals(o)) {return false;}
-        final Object this$addressObj = this.getAddressObj();
-        final Object other$addressObj = other.getAddressObj();
-        if (this$addressObj == null ? other$addressObj != null : !this$addressObj.equals(other$addressObj))
-        {return false;}
-        final Object this$user = this.getUser();
-        final Object other$user = other.getUser();
-        if (this$user == null ? other$user != null : !this$user.equals(other$user)){return false;}
-        final Object this$orderItemList = this.getOrderItemList();
-        final Object other$orderItemList = other.getOrderItemList();
-        if (this$orderItemList == null ? other$orderItemList != null : !this$orderItemList.equals(other$orderItemList))
-        {return false;}
-        final Object this$couponId = this.getCouponId();
-        final Object other$couponId = other.getCouponId();
-        if (this$couponId == null ? other$couponId != null : !this$couponId.equals(other$couponId)) {return false;}
-        final Object this$paymentList = this.getPaymentList();
-        final Object other$paymentList = other.getPaymentList();
-        if (this$paymentList == null ? other$paymentList != null : !this$paymentList.equals(other$paymentList))
-        {return false;}
+
         return true;
     }
 
@@ -96,19 +74,8 @@ public class Order extends OrderPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = super.hashCode();
-        final Object $addressObj = this.getAddressObj();
-        result = result * PRIME + ($addressObj == null ? 43 : $addressObj.hashCode());
-        final Object $user = this.getUser();
-        result = result * PRIME + ($user == null ? 43 : $user.hashCode());
-        final Object $orderItemList = this.getOrderItemList();
-        result = result * PRIME + ($orderItemList == null ? 43 : $orderItemList.hashCode());
-        final Object $couponId = this.getCouponId();
-        result = result * PRIME + ($couponId == null ? 43 : $couponId.hashCode());
-        final Object $paymentList = this.getPaymentList();
-        result = result * PRIME + ($paymentList == null ? 43 : $paymentList.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override
