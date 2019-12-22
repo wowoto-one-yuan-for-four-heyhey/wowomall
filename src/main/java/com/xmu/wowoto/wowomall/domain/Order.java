@@ -61,6 +61,7 @@ public class Order extends OrderPo {
         this.paymentList = paymentList;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this) {return true;}
         if (!(o instanceof Order)) {return false;}
@@ -88,10 +89,12 @@ public class Order extends OrderPo {
         return true;
     }
 
+    @Override
     protected boolean canEqual(final Object other) {
         return other instanceof Order;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = super.hashCode();
@@ -152,13 +155,13 @@ public class Order extends OrderPo {
     public void setAddressString(Address address){
         StringBuilder stringBuilder = new StringBuilder();
         if(address.getProvince() != null)
-            stringBuilder.append(address.getProvince());
+        {    stringBuilder.append(address.getProvince());}
         if(address.getCounty() != null)
-            stringBuilder.append(address.getCounty());
+        {  stringBuilder.append(address.getCounty());}
         if(address.getCity() != null)
-            stringBuilder.append(address.getCity());
+        {   stringBuilder.append(address.getCity());}
         if(address.getAddressDetail() != null)
-            stringBuilder.append(address.getAddressDetail());
+        {   stringBuilder.append(address.getAddressDetail());}
         this.setAddress(stringBuilder.toString());
     }
 
@@ -179,15 +182,15 @@ public class Order extends OrderPo {
         BigDecimal integral = BigDecimal.ZERO;
         integral = integral.add(this.getGoodsPrice());
         if(this.getFreightPrice() != null)
-            integral = integral.add(this.getFreightPrice());
+        {   integral = integral.add(this.getFreightPrice());}
         if(this.getCouponPrice() != null)
-            integral = integral.subtract(this.getCouponPrice());
+        {   integral = integral.subtract(this.getCouponPrice());}
         if(this.getRebatePrice() != null)
-            integral = integral.subtract(this.getRebatePrice());
+        {  integral = integral.subtract(this.getRebatePrice());}
         this.setIntegralPrice(integral);
 
         if(this.getRebatePrice() != null && this.getRebatePrice().compareTo(BigDecimal.ZERO) != 0)
-            this.distributePrice();
+        {   this.distributePrice();}
     }
 
     public void cacuPayment(){
@@ -202,11 +205,11 @@ public class Order extends OrderPo {
             Payment payment = new Payment(this);
             BigDecimal price = this.getGoodsPrice();
             if(this.getFreightPrice() != null)
-                price = price.add(this.getFreightPrice());
+            {    price = price.add(this.getFreightPrice());}
             if (this.getCouponPrice() != null)
-                price = price.subtract(this.getCouponPrice());
+            {   price = price.subtract(this.getCouponPrice());}
             if(this.getRebatePrice() != null)
-                price = price.subtract(this.getRebatePrice());
+            {    price = price.subtract(this.getRebatePrice());}
             payment.setActualPrice(price);
             payment.setEndTime(LocalDateTime.now().plusMinutes(30));
             payment.setBeginTime(LocalDateTime.now());

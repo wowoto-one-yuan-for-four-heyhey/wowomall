@@ -215,6 +215,7 @@ public class User {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this) {return true;}
         if (!(o instanceof User)) {return false;}
@@ -281,10 +282,12 @@ public class User {
         return true;
     }
 
+
     protected boolean canEqual(final Object other) {
         return other instanceof User;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -327,6 +330,7 @@ public class User {
         return result;
     }
 
+    @Override
     public String toString() {
         return "User(id=" + this.getId() + ", name=" + this.getName() + ", nickname=" + this.getNickname() + ", password=" + this.getPassword() + ", gender=" + this.getGender() + ", birthday=" + this.getBirthday() + ", mobile=" + this.getMobile() + ", rebate=" + this.getRebate() + ", avatar=" + this.getAvatar() + ", lastLoginTime=" + this.getLastLoginTime() + ", lastLoginIp=" + this.getLastLoginIp() + ", userLevel=" + this.getUserLevel() + ", wxOpenId=" + this.getWxOpenId() + ", sessionKey=" + this.getSessionKey() + ", roleId=" + this.getRoleId() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

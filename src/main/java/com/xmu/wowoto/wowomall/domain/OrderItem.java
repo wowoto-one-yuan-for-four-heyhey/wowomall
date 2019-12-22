@@ -28,6 +28,7 @@ public class OrderItem extends OrderItemPo {
         return newItem;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this) {return true;}
         if (!(o instanceof OrderItem)) {return false;}
@@ -40,10 +41,12 @@ public class OrderItem extends OrderItemPo {
         return true;
     }
 
+    @Override
     protected boolean canEqual(final Object other) {
         return other instanceof OrderItem;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = super.hashCode();
@@ -52,6 +55,7 @@ public class OrderItem extends OrderItemPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "OrderItem(product=" + this.getProduct() + ")";
     }
