@@ -159,12 +159,6 @@ public class Order extends OrderPo {
             stringBuilder.append(address.getCity());
         if(address.getAddressDetail() != null)
             stringBuilder.append(address.getAddressDetail());
-        stringBuilder.append(" ");
-        if(address.getConsignee() != null)
-            stringBuilder.append(address.getConsignee());
-        stringBuilder.append(" ");
-        if(address.getPostalCode() != null)
-            stringBuilder.append(address.getPostalCode());
         this.setAddress(stringBuilder.toString());
     }
 

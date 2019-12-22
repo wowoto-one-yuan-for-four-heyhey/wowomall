@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("userInfoService")
 public interface RemoteUserService {
 
-    @GetMapping("user/{id}")
-    String getUserById(@PathVariable("id") Integer userId);
+    @GetMapping("in/user")
+    String getUserById(@RequestParam Integer userId);
 
     @PutMapping("user/rebate")
     String updateUserRebate(@RequestParam("id") Integer userId, @RequestParam("userRebate") Integer rebate);

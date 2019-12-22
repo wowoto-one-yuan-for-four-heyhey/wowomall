@@ -25,8 +25,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserById(Integer userId) {
-        String json = remoteUserService.getUserById(userId);
-        return JacksonUtil.parseObject(json, "data", User.class);
+        return JacksonUtil.parseObject(remoteUserService.getUserById(userId), User.class);
     }
 
     /**
