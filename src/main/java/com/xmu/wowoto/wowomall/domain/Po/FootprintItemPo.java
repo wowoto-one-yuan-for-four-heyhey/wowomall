@@ -65,25 +65,25 @@ public class FootprintItemPo {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof FootprintItemPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof FootprintItemPo)) {return false;}
         final FootprintItemPo other = (FootprintItemPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$birthTime = this.getBirthTime();
         final Object other$birthTime = other.getBirthTime();
-        if (this$birthTime == null ? other$birthTime != null : !this$birthTime.equals(other$birthTime)) return false;
+        if (this$birthTime == null ? other$birthTime != null : !this$birthTime.equals(other$birthTime)) {return false;}
         final Object this$userId = this.getUserId();
         final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) return false;
+        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) {return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)){ return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
         return true;
     }
 
@@ -91,6 +91,7 @@ public class FootprintItemPo {
         return other instanceof FootprintItemPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -107,6 +108,7 @@ public class FootprintItemPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "FootprintItemPo(id=" + this.getId() + ", birthTime=" + this.getBirthTime() + ", userId=" + this.getUserId() + ", goodsId=" + this.getGoodsId() + ", gmtCreate=" + this.getGmtCreate() + ")";
     }

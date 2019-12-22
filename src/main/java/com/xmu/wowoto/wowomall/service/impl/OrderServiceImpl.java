@@ -186,16 +186,12 @@ public class OrderServiceImpl implements OrderService {
             //异常抛错
         }
         if(rebatePrice != null) {
-            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divide(goodsPrice, 3);
+
+            BigDecimal rebate = (rebatePrice.multiply(orderItemPrice)).divideToIntegralValue(goodsPrice, 3);
             userService.updateUserRebate(order.getUserId(),rebate.intValue());
         }
 
         orderDao.updateOrderItem(orderItem);
-
-        //对用户 钱进行更新
-        // 对价格进行更新
-
-            //return ResponseUtil.ok(updateNum);
 
         return orderItem;
     }
@@ -208,7 +204,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public HashMap<String,Integer> payOrder(Order oneOrder) {
 
-        HashMap<String,Integer> result=new HashMap<>();
+        HashMap<String,Integer> result=new HashMap<>(8);
         if (Order.StatusCode.PAYED.getValue() > oneOrder.getStatusCode()) {
             List<OrderItem> orderItems = oneOrder.getOrderItemList();
             for (OrderItem item : orderItems) {
@@ -333,7 +329,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal aa = item.getDealPrice();
             Integer a = aa.intValue();
             Double dealPrice = a * rate;
-            BigDecimal decimal = new BigDecimal(Double.toString(dealPrice));
+            BigDecimal decimal = new BigDecimal(dealPrice);
             orderItemList.get(0).setDealPrice(decimal);
             order.setIntegralPrice(decimal);
 

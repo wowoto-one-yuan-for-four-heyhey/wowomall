@@ -16,6 +16,12 @@ import java.math.BigDecimal;
 @FeignClient("freightService")
 public interface RemoteFreightService {
 
+
+    /**
+     * 更新一项order
+     * @param order
+     * @return
+     */
     @PostMapping("/freightPrice")
     String caculateFreight(Order order);
 }

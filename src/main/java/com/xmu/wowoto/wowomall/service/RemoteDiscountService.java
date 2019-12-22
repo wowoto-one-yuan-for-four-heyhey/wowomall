@@ -20,6 +20,11 @@ import java.util.List;
 @FeignClient("discountService")
 public interface RemoteDiscountService {
 
+    /**
+     * 更新一项order
+     * @param order
+     * @return
+     */
     @PostMapping(value = "/discount/orders")
     String caculatePrice(Order order);
 

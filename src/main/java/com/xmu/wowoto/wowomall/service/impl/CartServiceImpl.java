@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
     public CartItem findCartItemById(Integer id){
         String json = remoteCartService.findCartItemById(id);
         if(!JacksonUtil.parseInteger(json, "errno").equals(0))
-            return null;
+        {   return null;}
         return JacksonUtil.parseObject(json, "data", CartItem.class);
     }
 

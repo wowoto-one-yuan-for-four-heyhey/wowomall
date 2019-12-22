@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @Author: Tens
+ * @Description:
+ * @Date: 2019/12/14 20:13
+ */
 @Repository
 @Mapper
 public interface OrderItemMapper {

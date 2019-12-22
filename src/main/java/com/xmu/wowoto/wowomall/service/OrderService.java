@@ -71,7 +71,13 @@ public interface OrderService {
 
 
 
-
+    /**
+     * 删除订单
+     *
+     * @param orderItem order项
+     * @param order 订单
+     * @return 操作结果
+     */
     OrderItem refundOrderItem(OrderItem orderItem, Order order);
 
     /**
@@ -110,6 +116,7 @@ public interface OrderService {
      * @param goodId
      * @param startTime
      * @param endTime
+     * @param rate
      * @return
      */
     List<Payment> refundGrouponOrders(Integer goodId, LocalDateTime startTime, LocalDateTime endTime, Double rate);

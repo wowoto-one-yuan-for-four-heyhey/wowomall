@@ -107,41 +107,42 @@ public class GrouponRulePo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof GrouponRulePo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof GrouponRulePo)) {return false;}
         final GrouponRulePo other = (GrouponRulePo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)){ return false;}
         final Object this$startTime = this.getStartTime();
         final Object other$startTime = other.getStartTime();
-        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) return false;
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {return false;}
         final Object this$endTime = this.getEndTime();
         final Object other$endTime = other.getEndTime();
-        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) return false;
+        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)){ return false;}
         final Object this$statusCode = this.getStatusCode();
         final Object other$statusCode = other.getStatusCode();
         if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-            return false;
+        {   return false;}
         final Object this$grouponLevelStragety = this.getGrouponLevelStragety();
         final Object other$grouponLevelStragety = other.getGrouponLevelStragety();
         if (this$grouponLevelStragety == null ? other$grouponLevelStragety != null : !this$grouponLevelStragety.equals(other$grouponLevelStragety))
-            return false;
+        {  return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {   return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -149,6 +150,7 @@ public class GrouponRulePo {
         return other instanceof GrouponRulePo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -173,6 +175,7 @@ public class GrouponRulePo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "GrouponRulePo(id=" + this.getId() + ", startTime=" + this.getStartTime() + ", endTime=" + this.getEndTime() + ", statusCode=" + this.getStatusCode() + ", grouponLevelStragety=" + this.getGrouponLevelStragety() + ", goodsId=" + this.getGoodsId() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

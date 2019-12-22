@@ -84,33 +84,34 @@ public class CartItemPo {
         this.gmtModified = gmtModified;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof CartItemPo)) return false;
+        if (o == this){ return true;}
+        if (!(o instanceof CartItemPo)) {return false;}
         final CartItemPo other = (CartItemPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)){ return false;}
         final Object this$userId = this.getUserId();
         final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) return false;
+        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) {return false;}
         final Object this$productId = this.getProductId();
         final Object other$productId = other.getProductId();
-        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) return false;
+        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) {return false;}
         final Object this$beCheck = this.getBeCheck();
         final Object other$beCheck = other.getBeCheck();
-        if (this$beCheck == null ? other$beCheck != null : !this$beCheck.equals(other$beCheck)) return false;
+        if (this$beCheck == null ? other$beCheck != null : !this$beCheck.equals(other$beCheck)) {return false;}
         final Object this$number = this.getNumber();
         final Object other$number = other.getNumber();
-        if (this$number == null ? other$number != null : !this$number.equals(other$number)) return false;
+        if (this$number == null ? other$number != null : !this$number.equals(other$number)){ return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         return true;
     }
 
@@ -118,6 +119,7 @@ public class CartItemPo {
         return other instanceof CartItemPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;

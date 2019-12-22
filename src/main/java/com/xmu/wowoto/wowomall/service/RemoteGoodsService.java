@@ -17,9 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Service
 @FeignClient("goodsInfoService")
 public interface RemoteGoodsService {
+    /**
+     * 更新一项order
+     * @param productId
+     * @return
+     */
     @GetMapping("products/{id}")
     String getProductById(@PathVariable("id") Integer productId);
 
+    /**
+     * 更新一项order
+     * @param productId
+     * @param product
+     * @return
+     */
     @PutMapping("products/{id}")
     String updateProductById(@PathVariable("id") Integer productId, @RequestBody Product product);
 }

@@ -27,6 +27,7 @@ public interface RemoteCartService {
     /**
      * 清空购物车里的指定项目
      * @param cartItems 待清空的项目
+     * @return string
      */
     @DeleteMapping(value = "cartItems")
     String clearCartItem(@RequestBody List<CartItem> cartItems);
@@ -34,6 +35,7 @@ public interface RemoteCartService {
     /**
      * 删除购物车里的指定项目
      * @param id 待清空的项目
+     * @return string
      */
     @DeleteMapping(value = "cartItems/{id}")
     String deleteCartItem(@PathVariable("id") Integer id);

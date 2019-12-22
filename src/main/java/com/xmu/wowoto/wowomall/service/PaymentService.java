@@ -27,6 +27,11 @@ public interface PaymentService {
      */
     List<Payment> getPaymentByOrderId(Integer orderId);
 
+    /**
+     * 根据orderId拿到payment
+     * @param id
+     * @return
+     */
     Payment payPayment(Integer id);
 
 

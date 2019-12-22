@@ -106,40 +106,41 @@ public class CommentPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof CommentPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof CommentPo)) {return false;}
         final CommentPo other = (CommentPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$userId = this.getUserId();
         final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) return false;
+        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) {return false;}
         final Object this$content = this.getContent();
         final Object other$content = other.getContent();
-        if (this$content == null ? other$content != null : !this$content.equals(other$content)) return false;
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)){ return false;}
         final Object this$statusCode = this.getStatusCode();
         final Object other$statusCode = other.getStatusCode();
         if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-            return false;
+        {    return false;}
         final Object this$star = this.getStar();
         final Object other$star = other.getStar();
-        if (this$star == null ? other$star != null : !this$star.equals(other$star)) return false;
+        if (this$star == null ? other$star != null : !this$star.equals(other$star)) {return false;}
         final Object this$productId = this.getProductId();
         final Object other$productId = other.getProductId();
-        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) return false;
+        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {    return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -147,6 +148,7 @@ public class CommentPo {
         return other instanceof CommentPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -170,7 +172,7 @@ public class CommentPo {
         result = result * PRIME + ($beDeleted == null ? 43 : $beDeleted.hashCode());
         return result;
     }
-
+    @Override
     public String toString() {
         return "CommentPo(id=" + this.getId() + ", userId=" + this.getUserId() + ", content=" + this.getContent() + ", statusCode=" + this.getStatusCode() + ", star=" + this.getStar() + ", productId=" + this.getProductId() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }
