@@ -83,39 +83,6 @@ public class Log {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof Log)){ return false;}
-        final Log other = (Log) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object thisId = this.getId();
-        final Object otherId = other.getId();
-        if (thisId == null ? otherId != null : !thisId.equals(otherId)) {return false;}
-        final Object thisAdminId = this.getAdminId();
-        final Object otherAdminId = other.getAdminId();
-        if (thisAdminId == null ? otherAdminId != null : !thisAdminId.equals(otherAdminId)) {return false;}
-        final Object thisIp = this.getIp();
-        final Object otherIp = other.getIp();
-        if (thisIp == null ? otherIp != null : !thisIp.equals(otherIp)) {return false;}
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        if (this$type == null ? other$type != null : !this$type.equals(other$type)){ return false;}
-        final Object thisActions = this.getActions();
-        final Object otherActions = other.getActions();
-        if (thisActions == null ? otherActions != null : !thisActions.equals(otherActions)) {return false;}
-        final Object this$statusCode = this.getStatusCode();
-        final Object other$statusCode = other.getStatusCode();
-        if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-        { return false;}
-        final Object thisActionId = this.getActionId();
-        final Object otherActionId = other.getActionId();
-        if (thisActionId == null ? otherActionId != null : !thisActionId.equals(otherActionId)) {return false;}
-        final Object this$gmtCreate = this.getGmtCreate();
-        final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
-        final Object this$gmtModified = this.getGmtModified();
-        final Object other$gmtModified = other.getGmtModified();
-        if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-        {return false;}
         return true;
     }
 
@@ -125,27 +92,8 @@ public class Log {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object Id = this.getId();
-        result = result * PRIME + (Id == null ? 43 : Id.hashCode());
-        final Object AdminId = this.getAdminId();
-        result = result * PRIME + (AdminId == null ? 43 : AdminId.hashCode());
-        final Object Ip = this.getIp();
-        result = result * PRIME + (Ip == null ? 43 : Ip.hashCode());
-        final Object $type = this.getType();
-        result = result * PRIME + ($type == null ? 43 : $type.hashCode());
-        final Object Actions = this.getActions();
-        result = result * PRIME + (Actions == null ? 43 : Actions.hashCode());
-        final Object $statusCode = this.getStatusCode();
-        result = result * PRIME + ($statusCode == null ? 43 : $statusCode.hashCode());
-        final Object ActionId = this.getActionId();
-        result = result * PRIME + (ActionId == null ? 43 : ActionId.hashCode());
-        final Object $gmtCreate = this.getGmtCreate();
-        result = result * PRIME + ($gmtCreate == null ? 43 : $gmtCreate.hashCode());
-        final Object $gmtModified = this.getGmtModified();
-        result = result * PRIME + ($gmtModified == null ? 43 : $gmtModified.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

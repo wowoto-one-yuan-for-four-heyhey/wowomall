@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.Po.CartItemPo;
+import com.xmu.wowoto.wowomall.domain.po.CartItemPo;
 
 /**
  * @Author: 数据库与对象模型标准组
@@ -26,9 +26,9 @@ public class CartItem extends CartItemPo {
         final CartItem other = (CartItem) o;
         if (!other.canEqual((Object) this)){ return false;}
         if (!super.equals(o)) {return false;}
-        final Object this$product = this.getProduct();
-        final Object other$product = other.getProduct();
-        if (this$product == null ? other$product != null : !this$product.equals(other$product)) {return false;}
+        final Object thisProduct = this.getProduct();
+        final Object otherProduct = other.getProduct();
+        if (thisProduct == null ? otherProduct != null : !thisProduct.equals(otherProduct)) {return false;}
         return true;
     }
 
@@ -39,13 +39,14 @@ public class CartItem extends CartItemPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime= 59;
         int result = super.hashCode();
         final Object $product = this.getProduct();
-        result = result * PRIME + ($product == null ? 43 : $product.hashCode());
+        result = result * prime+ ($product == null ? 43 : $product.hashCode());
         return result;
     }
 
+    @Override
     public String toString() {
         return "CartItem(product=" + this.getProduct() + ")";
     }

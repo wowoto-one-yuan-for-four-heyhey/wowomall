@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.Po.ShareRulePo;
+import com.xmu.wowoto.wowomall.domain.po.ShareRulePo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

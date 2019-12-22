@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.Po.OrderPo;
+import com.xmu.wowoto.wowomall.domain.po.OrderPo;
 import com.xmu.wowoto.wowomall.util.Common;
 
 import java.math.BigDecimal;

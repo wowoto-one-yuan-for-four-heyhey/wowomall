@@ -1,8 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.Po.OrderItemPo;
-
-import java.time.LocalDateTime;
+import com.xmu.wowoto.wowomall.domain.po.OrderItemPo;
 
 /**
  * @Author: 数据库与对象模型标准组
@@ -30,14 +28,7 @@ public class OrderItem extends OrderItemPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {return true;}
-        if (!(o instanceof OrderItem)) {return false;}
-        final OrderItem other = (OrderItem) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        if (!super.equals(o)) {return false;}
-        final Object this$product = this.getProduct();
-        final Object other$product = other.getProduct();
-        if (this$product == null ? other$product != null : !this$product.equals(other$product)) {return false;}
+
         return true;
     }
 
@@ -48,11 +39,8 @@ public class OrderItem extends OrderItemPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = super.hashCode();
-        final Object $product = this.getProduct();
-        result = result * PRIME + ($product == null ? 43 : $product.hashCode());
-        return result;
+
+        return 0;
     }
 
     @Override

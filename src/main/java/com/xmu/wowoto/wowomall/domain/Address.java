@@ -1,6 +1,6 @@
 package com.xmu.wowoto.wowomall.domain;
 
-import com.xmu.wowoto.wowomall.domain.Po.AddressPo;
+import com.xmu.wowoto.wowomall.domain.po.AddressPo;
 
 /**
  * @Author: 数据库与对象模型标准组
@@ -46,15 +46,15 @@ public class Address extends AddressPo {
         final Address other = (Address) o;
         if (!other.canEqual((Object) this)) {return false;}
         if (!super.equals(o)) {return false;}
-        final Object this$province = this.getProvince();
-        final Object other$province = other.getProvince();
-        if (this$province == null ? other$province != null : !this$province.equals(other$province)) {return false;}
-        final Object this$city = this.getCity();
-        final Object other$city = other.getCity();
-        if (this$city == null ? other$city != null : !this$city.equals(other$city)) {return false;}
-        final Object this$county = this.getCounty();
-        final Object other$county = other.getCounty();
-        if (this$county == null ? other$county != null : !this$county.equals(other$county)) {return false;}
+        final Object thisgmtCreate = this.getProvince();
+        final Object othergmtCreate = other.getProvince();
+        if (thisgmtCreate == null ? othergmtCreate != null : !thisgmtCreate.equals(othergmtCreate)) {return false;}
+        final Object thiscity = this.getCity();
+        final Object othercity = other.getCity();
+        if (thiscity == null ? othercity != null : !thiscity.equals(othercity)) {return false;}
+        final Object thiscounty = this.getCounty();
+        final Object othercounty = other.getCounty();
+        if (thiscounty == null ? othercounty != null : !thiscounty.equals(othercounty)) {return false;}
         return true;
     }
 
@@ -65,14 +65,14 @@ public class Address extends AddressPo {
 
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = super.hashCode();
-        final Object $province = this.getProvince();
-        result = result * PRIME + ($province == null ? 43 : $province.hashCode());
-        final Object $city = this.getCity();
-        result = result * PRIME + ($city == null ? 43 : $city.hashCode());
-        final Object $county = this.getCounty();
-        result = result * PRIME + ($county == null ? 43 : $county.hashCode());
+        final Object gmtCreate = this.getProvince();
+        result = result * prime + (gmtCreate == null ? 43 : gmtCreate.hashCode());
+        final Object city = this.getCity();
+        result = result * prime + (city == null ? 43 : city.hashCode());
+        final Object county = this.getCounty();
+        result = result * prime + (county == null ? 43 : county.hashCode());
         return result;
     }
 
