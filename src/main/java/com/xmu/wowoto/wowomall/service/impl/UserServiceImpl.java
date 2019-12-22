@@ -24,9 +24,9 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User getUserById(Integer userId) {
-        return JacksonUtil.parseObject(remoteUserService.getUserById(userId), User.class);
-    }
+            public User getUserById(Integer userId) {
+                return JacksonUtil.parseObject(remoteUserService.getUserById(userId), User.class);
+            }
 
     /**
      * 添加用户返点

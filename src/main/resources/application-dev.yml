@@ -46,7 +46,7 @@ eureka:
     non-secure-port: 30020
 
 wowomall:
-  preDeductStock: 5
+  preDeductStock: 30
 
 rocketmq:
   # 生产者配置
