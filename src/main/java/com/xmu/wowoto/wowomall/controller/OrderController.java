@@ -532,5 +532,6 @@ public class OrderController {
         }
         Order result= orderService.autoCancelOrder(order);
         return ResponseUtil.ok(result);
+
     }
 }
