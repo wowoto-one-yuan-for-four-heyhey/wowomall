@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient("afterSalesService")
 public interface RemoteAftersalesService {
 
+    /**
+     * 更新一项order
+     * @param id
+     * @return
+     */
     @GetMapping("afterSaleServices/{id}")
     String getAftersales(@PathVariable("id") Integer id);
 

@@ -255,79 +255,80 @@ public class GoodsPo {
         this.gmtModified = gmtModified;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof GoodsPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof GoodsPo)) {return false;}
         final GoodsPo other = (GoodsPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$name = this.getName();
         final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {return false;}
         final Object this$goodsSn = this.getGoodsSn();
         final Object other$goodsSn = other.getGoodsSn();
-        if (this$goodsSn == null ? other$goodsSn != null : !this$goodsSn.equals(other$goodsSn)) return false;
+        if (this$goodsSn == null ? other$goodsSn != null : !this$goodsSn.equals(other$goodsSn)) {return false;}
         final Object this$shortName = this.getShortName();
         final Object other$shortName = other.getShortName();
-        if (this$shortName == null ? other$shortName != null : !this$shortName.equals(other$shortName)) return false;
+        if (this$shortName == null ? other$shortName != null : !this$shortName.equals(other$shortName)) {return false;}
         final Object this$description = this.getDescription();
         final Object other$description = other.getDescription();
         if (this$description == null ? other$description != null : !this$description.equals(other$description))
-            return false;
+        { return false;}
         final Object this$brief = this.getBrief();
         final Object other$brief = other.getBrief();
-        if (this$brief == null ? other$brief != null : !this$brief.equals(other$brief)) return false;
+        if (this$brief == null ? other$brief != null : !this$brief.equals(other$brief)){ return false;}
         final Object this$picUrl = this.getPicUrl();
         final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) return false;
+        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) {return false;}
         final Object this$detail = this.getDetail();
         final Object other$detail = other.getDetail();
-        if (this$detail == null ? other$detail != null : !this$detail.equals(other$detail)) return false;
+        if (this$detail == null ? other$detail != null : !this$detail.equals(other$detail)) {return false;}
         final Object this$statusCode = this.getStatusCode();
         final Object other$statusCode = other.getStatusCode();
         if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-            return false;
+        {  return false;}
         final Object this$shareUrl = this.getShareUrl();
         final Object other$shareUrl = other.getShareUrl();
-        if (this$shareUrl == null ? other$shareUrl != null : !this$shareUrl.equals(other$shareUrl)) return false;
+        if (this$shareUrl == null ? other$shareUrl != null : !this$shareUrl.equals(other$shareUrl)){ return false;}
         final Object this$gallery = this.getGallery();
         final Object other$gallery = other.getGallery();
-        if (this$gallery == null ? other$gallery != null : !this$gallery.equals(other$gallery)) return false;
+        if (this$gallery == null ? other$gallery != null : !this$gallery.equals(other$gallery)) {return false;}
         final Object this$goodsCategoryId = this.getGoodsCategoryId();
         final Object other$goodsCategoryId = other.getGoodsCategoryId();
         if (this$goodsCategoryId == null ? other$goodsCategoryId != null : !this$goodsCategoryId.equals(other$goodsCategoryId))
-            return false;
+        {   return false;}
         final Object this$brandId = this.getBrandId();
         final Object other$brandId = other.getBrandId();
-        if (this$brandId == null ? other$brandId != null : !this$brandId.equals(other$brandId)) return false;
+        if (this$brandId == null ? other$brandId != null : !this$brandId.equals(other$brandId)) {return false;}
         final Object this$weight = this.getWeight();
         final Object other$weight = other.getWeight();
-        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) return false;
+        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) {return false;}
         final Object this$volume = this.getVolume();
         final Object other$volume = other.getVolume();
-        if (this$volume == null ? other$volume != null : !this$volume.equals(other$volume)) return false;
+        if (this$volume == null ? other$volume != null : !this$volume.equals(other$volume)) {return false;}
         final Object this$specialFreightId = this.getSpecialFreightId();
         final Object other$specialFreightId = other.getSpecialFreightId();
         if (this$specialFreightId == null ? other$specialFreightId != null : !this$specialFreightId.equals(other$specialFreightId))
-            return false;
+        {   return false;}
         final Object this$beSpecial = this.getBeSpecial();
         final Object other$beSpecial = other.getBeSpecial();
-        if (this$beSpecial == null ? other$beSpecial != null : !this$beSpecial.equals(other$beSpecial)) return false;
+        if (this$beSpecial == null ? other$beSpecial != null : !this$beSpecial.equals(other$beSpecial)) {return false;}
         final Object this$price = this.getPrice();
         final Object other$price = other.getPrice();
-        if (this$price == null ? other$price != null : !this$price.equals(other$price)) return false;
+        if (this$price == null ? other$price != null : !this$price.equals(other$price)){ return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {   return false;}
         return true;
     }
 
@@ -335,6 +336,7 @@ public class GoodsPo {
         return other instanceof GoodsPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -383,6 +385,7 @@ public class GoodsPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "GoodsPo(id=" + this.getId() + ", name=" + this.getName() + ", goodsSn=" + this.getGoodsSn() + ", shortName=" + this.getShortName() + ", description=" + this.getDescription() + ", brief=" + this.getBrief() + ", picUrl=" + this.getPicUrl() + ", detail=" + this.getDetail() + ", statusCode=" + this.getStatusCode() + ", shareUrl=" + this.getShareUrl() + ", gallery=" + this.getGallery() + ", goodsCategoryId=" + this.getGoodsCategoryId() + ", brandId=" + this.getBrandId() + ", weight=" + this.getWeight() + ", volume=" + this.getVolume() + ", specialFreightId=" + this.getSpecialFreightId() + ", beSpecial=" + this.getBeSpecial() + ", price=" + this.getPrice() + ", beDeleted=" + this.getBeDeleted() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ")";
     }

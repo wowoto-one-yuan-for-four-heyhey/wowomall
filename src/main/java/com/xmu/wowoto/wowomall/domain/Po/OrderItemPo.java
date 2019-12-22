@@ -167,56 +167,57 @@ public class OrderItemPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof OrderItemPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof OrderItemPo)) {return false;}
         final OrderItemPo other = (OrderItemPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)){return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$orderId = this.getOrderId();
         final Object other$orderId = other.getOrderId();
-        if (this$orderId == null ? other$orderId != null : !this$orderId.equals(other$orderId)) return false;
+        if (this$orderId == null ? other$orderId != null : !this$orderId.equals(other$orderId)) {return false;}
         final Object this$itemType = this.getItemType();
         final Object other$itemType = other.getItemType();
-        if (this$itemType == null ? other$itemType != null : !this$itemType.equals(other$itemType)) return false;
+        if (this$itemType == null ? other$itemType != null : !this$itemType.equals(other$itemType)) {return false;}
         final Object this$statusCode = this.getStatusCode();
         final Object other$statusCode = other.getStatusCode();
         if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-            return false;
+        {return false;}
         final Object this$number = this.getNumber();
         final Object other$number = other.getNumber();
-        if (this$number == null ? other$number != null : !this$number.equals(other$number)) return false;
+        if (this$number == null ? other$number != null : !this$number.equals(other$number)) {return false;}
         final Object this$price = this.getPrice();
         final Object other$price = other.getPrice();
-        if (this$price == null ? other$price != null : !this$price.equals(other$price)) return false;
+        if (this$price == null ? other$price != null : !this$price.equals(other$price)) {return false;}
         final Object this$dealPrice = this.getDealPrice();
         final Object other$dealPrice = other.getDealPrice();
-        if (this$dealPrice == null ? other$dealPrice != null : !this$dealPrice.equals(other$dealPrice)) return false;
+        if (this$dealPrice == null ? other$dealPrice != null : !this$dealPrice.equals(other$dealPrice)) {return false;}
         final Object this$productId = this.getProductId();
         final Object other$productId = other.getProductId();
-        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) return false;
+        if (this$productId == null ? other$productId != null : !this$productId.equals(other$productId)) {return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) {return false;}
         final Object this$nameWithSpecifications = this.getNameWithSpecifications();
         final Object other$nameWithSpecifications = other.getNameWithSpecifications();
         if (this$nameWithSpecifications == null ? other$nameWithSpecifications != null : !this$nameWithSpecifications.equals(other$nameWithSpecifications))
-            return false;
+        {return false;}
         final Object this$picUrl = this.getPicUrl();
         final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) return false;
+        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -224,6 +225,7 @@ public class OrderItemPo {
         return other instanceof OrderItemPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -258,6 +260,7 @@ public class OrderItemPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "OrderItemPo(id=" + this.getId() + ", orderId=" + this.getOrderId() + ", itemType=" + this.getItemType() + ", statusCode=" + this.getStatusCode() + ", number=" + this.getNumber() + ", price=" + this.getPrice() + ", dealPrice=" + this.getDealPrice() + ", productId=" + this.getProductId() + ", goodsId=" + this.getGoodsId() + ", nameWithSpecifications=" + this.getNameWithSpecifications() + ", picUrl=" + this.getPicUrl() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

@@ -72,31 +72,32 @@ public class TopicPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof TopicPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof TopicPo)) {return false;}
         final TopicPo other = (TopicPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$picUrlList = this.getPicUrlList();
         final Object other$picUrlList = other.getPicUrlList();
         if (this$picUrlList == null ? other$picUrlList != null : !this$picUrlList.equals(other$picUrlList))
-            return false;
+        {   return false;}
         final Object this$content = this.getContent();
         final Object other$content = other.getContent();
-        if (this$content == null ? other$content != null : !this$content.equals(other$content)) return false;
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)){ return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -104,6 +105,7 @@ public class TopicPo {
         return other instanceof TopicPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -122,6 +124,7 @@ public class TopicPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "TopicPo(id=" + this.getId() + ", picUrlList=" + this.getPicUrlList() + ", content=" + this.getContent() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

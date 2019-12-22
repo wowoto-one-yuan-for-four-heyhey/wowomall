@@ -85,35 +85,36 @@ public class DefaultPieceFreightPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof DefaultPieceFreightPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof DefaultPieceFreightPo)) {return false;}
         final DefaultPieceFreightPo other = (DefaultPieceFreightPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$destination = this.getDestination();
         final Object other$destination = other.getDestination();
         if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination))
-            return false;
+        {    return false;}
         final Object this$unitRate = this.getUnitRate();
         final Object other$unitRate = other.getUnitRate();
-        if (this$unitRate == null ? other$unitRate != null : !this$unitRate.equals(other$unitRate)) return false;
+        if (this$unitRate == null ? other$unitRate != null : !this$unitRate.equals(other$unitRate)) {return false;}
         final Object this$requireDays = this.getRequireDays();
         final Object other$requireDays = other.getRequireDays();
         if (this$requireDays == null ? other$requireDays != null : !this$requireDays.equals(other$requireDays))
-            return false;
+        {    return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {    return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)){ return false;}
         return true;
     }
 
@@ -121,6 +122,7 @@ public class DefaultPieceFreightPo {
         return other instanceof DefaultPieceFreightPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -141,6 +143,7 @@ public class DefaultPieceFreightPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "DefaultPieceFreightPo(id=" + this.getId() + ", destination=" + this.getDestination() + ", unitRate=" + this.getUnitRate() + ", requireDays=" + this.getRequireDays() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

@@ -15,6 +15,7 @@ public interface DiscountService {
      * 算价格
      *
      * @param order   订单详情
+     * @return Order
      */
     Order caculatePrice(Order order);
 }

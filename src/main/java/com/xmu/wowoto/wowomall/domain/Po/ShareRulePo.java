@@ -72,31 +72,32 @@ public class ShareRulePo {
         this.gmtModified = gmtModified;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ShareRulePo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof ShareRulePo)) {return false;}
         final ShareRulePo other = (ShareRulePo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)){return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$shareLevelStrategy = this.getShareLevelStrategy();
         final Object other$shareLevelStrategy = other.getShareLevelStrategy();
         if (this$shareLevelStrategy == null ? other$shareLevelStrategy != null : !this$shareLevelStrategy.equals(other$shareLevelStrategy))
-            return false;
+        {return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         return true;
     }
 
@@ -104,6 +105,7 @@ public class ShareRulePo {
         return other instanceof ShareRulePo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -122,6 +124,7 @@ public class ShareRulePo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "ShareRulePo(id=" + this.getId() + ", shareLevelStrategy=" + this.getShareLevelStrategy() + ", goodsId=" + this.getGoodsId() + ", beDeleted=" + this.getBeDeleted() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ")";
     }

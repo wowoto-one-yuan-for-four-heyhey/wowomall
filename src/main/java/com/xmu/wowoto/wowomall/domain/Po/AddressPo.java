@@ -156,52 +156,53 @@ public class AddressPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof AddressPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof AddressPo)){ return false;}
         final AddressPo other = (AddressPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)){ return false;}
         final Object this$userId = this.getUserId();
         final Object other$userId = other.getUserId();
-        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)) return false;
+        if (this$userId == null ? other$userId != null : !this$userId.equals(other$userId)){ return false;}
         final Object this$cityId = this.getCityId();
         final Object other$cityId = other.getCityId();
-        if (this$cityId == null ? other$cityId != null : !this$cityId.equals(other$cityId)) return false;
+        if (this$cityId == null ? other$cityId != null : !this$cityId.equals(other$cityId)) {return false;}
         final Object this$provinceId = this.getProvinceId();
         final Object other$provinceId = other.getProvinceId();
         if (this$provinceId == null ? other$provinceId != null : !this$provinceId.equals(other$provinceId))
-            return false;
+        {return false;}
         final Object this$countyId = this.getCountyId();
         final Object other$countyId = other.getCountyId();
-        if (this$countyId == null ? other$countyId != null : !this$countyId.equals(other$countyId)) return false;
+        if (this$countyId == null ? other$countyId != null : !this$countyId.equals(other$countyId)) {return false;}
         final Object this$addressDetail = this.getAddressDetail();
         final Object other$addressDetail = other.getAddressDetail();
         if (this$addressDetail == null ? other$addressDetail != null : !this$addressDetail.equals(other$addressDetail))
-            return false;
+        { return false;}
         final Object this$mobile = this.getMobile();
         final Object other$mobile = other.getMobile();
-        if (this$mobile == null ? other$mobile != null : !this$mobile.equals(other$mobile)) return false;
+        if (this$mobile == null ? other$mobile != null : !this$mobile.equals(other$mobile)) {return false;}
         final Object this$postalCode = this.getPostalCode();
         final Object other$postalCode = other.getPostalCode();
         if (this$postalCode == null ? other$postalCode != null : !this$postalCode.equals(other$postalCode))
-            return false;
+        { return false;}
         final Object this$consignee = this.getConsignee();
         final Object other$consignee = other.getConsignee();
-        if (this$consignee == null ? other$consignee != null : !this$consignee.equals(other$consignee)) return false;
-        if (this.isBeDefault() != other.isBeDefault()) return false;
+        if (this$consignee == null ? other$consignee != null : !this$consignee.equals(other$consignee)) {return false;}
+        if (this.isBeDefault() != other.isBeDefault()) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        { return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -209,6 +210,7 @@ public class AddressPo {
         return other instanceof AddressPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -240,6 +242,7 @@ public class AddressPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "AddressPo(id=" + this.getId() + ", userId=" + this.getUserId() + ", cityId=" + this.getCityId() + ", provinceId=" + this.getProvinceId() + ", countyId=" + this.getCountyId() + ", addressDetail=" + this.getAddressDetail() + ", mobile=" + this.getMobile() + ", postalCode=" + this.getPostalCode() + ", consignee=" + this.getConsignee() + ", beDefault=" + this.isBeDefault() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

@@ -40,20 +40,20 @@ public class Address extends AddressPo {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Address)) return false;
+        if (o == this){ return true;}
+        if (!(o instanceof Address)) {return false;}
         final Address other = (Address) o;
-        if (!other.canEqual((Object) this)) return false;
-        if (!super.equals(o)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
+        if (!super.equals(o)) {return false;}
         final Object this$province = this.getProvince();
         final Object other$province = other.getProvince();
-        if (this$province == null ? other$province != null : !this$province.equals(other$province)) return false;
+        if (this$province == null ? other$province != null : !this$province.equals(other$province)) {return false;}
         final Object this$city = this.getCity();
         final Object other$city = other.getCity();
-        if (this$city == null ? other$city != null : !this$city.equals(other$city)) return false;
+        if (this$city == null ? other$city != null : !this$city.equals(other$city)) {return false;}
         final Object this$county = this.getCounty();
         final Object other$county = other.getCounty();
-        if (this$county == null ? other$county != null : !this$county.equals(other$county)) return false;
+        if (this$county == null ? other$county != null : !this$county.equals(other$county)) {return false;}
         return true;
     }
 

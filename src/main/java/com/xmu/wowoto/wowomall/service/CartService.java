@@ -23,12 +23,14 @@ public interface CartService {
     /**
      * 清空购物车里的指定项目
      * @param cartItems 待清空的项目
+     * @return boolean
      */
     boolean clearCartItem(List<CartItem> cartItems);
 
     /**
      * 删除购物车里的指定项目
      * @param cartItemId 待清空的项目
+     * @return boolean
      */
     boolean deleteCartItem(Integer cartItemId);
 }

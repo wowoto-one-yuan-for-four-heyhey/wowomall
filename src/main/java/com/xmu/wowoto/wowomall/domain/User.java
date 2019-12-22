@@ -216,68 +216,68 @@ public class User {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof User)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof User)) {return false;}
         final User other = (User) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$name = this.getName();
         final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {return false;}
         final Object this$nickname = this.getNickname();
         final Object other$nickname = other.getNickname();
-        if (this$nickname == null ? other$nickname != null : !this$nickname.equals(other$nickname)) return false;
+        if (this$nickname == null ? other$nickname != null : !this$nickname.equals(other$nickname)){return false;}
         final Object this$password = this.getPassword();
         final Object other$password = other.getPassword();
-        if (this$password == null ? other$password != null : !this$password.equals(other$password)) return false;
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {return false;}
         final Object this$gender = this.getGender();
         final Object other$gender = other.getGender();
-        if (this$gender == null ? other$gender != null : !this$gender.equals(other$gender)) return false;
+        if (this$gender == null ? other$gender != null : !this$gender.equals(other$gender)) {return false;}
         final Object this$birthday = this.getBirthday();
         final Object other$birthday = other.getBirthday();
-        if (this$birthday == null ? other$birthday != null : !this$birthday.equals(other$birthday)) return false;
+        if (this$birthday == null ? other$birthday != null : !this$birthday.equals(other$birthday)) {return false;}
         final Object this$mobile = this.getMobile();
         final Object other$mobile = other.getMobile();
-        if (this$mobile == null ? other$mobile != null : !this$mobile.equals(other$mobile)) return false;
+        if (this$mobile == null ? other$mobile != null : !this$mobile.equals(other$mobile)) {return false;}
         final Object this$rebate = this.getRebate();
         final Object other$rebate = other.getRebate();
-        if (this$rebate == null ? other$rebate != null : !this$rebate.equals(other$rebate)) return false;
+        if (this$rebate == null ? other$rebate != null : !this$rebate.equals(other$rebate)) {return false;}
         final Object this$avatar = this.getAvatar();
         final Object other$avatar = other.getAvatar();
-        if (this$avatar == null ? other$avatar != null : !this$avatar.equals(other$avatar)) return false;
+        if (this$avatar == null ? other$avatar != null : !this$avatar.equals(other$avatar)) {return false;}
         final Object this$lastLoginTime = this.getLastLoginTime();
         final Object other$lastLoginTime = other.getLastLoginTime();
         if (this$lastLoginTime == null ? other$lastLoginTime != null : !this$lastLoginTime.equals(other$lastLoginTime))
-            return false;
+        {return false;}
         final Object this$lastLoginIp = this.getLastLoginIp();
         final Object other$lastLoginIp = other.getLastLoginIp();
         if (this$lastLoginIp == null ? other$lastLoginIp != null : !this$lastLoginIp.equals(other$lastLoginIp))
-            return false;
+        {return false;}
         final Object this$userLevel = this.getUserLevel();
         final Object other$userLevel = other.getUserLevel();
-        if (this$userLevel == null ? other$userLevel != null : !this$userLevel.equals(other$userLevel)) return false;
+        if (this$userLevel == null ? other$userLevel != null : !this$userLevel.equals(other$userLevel)) {return false;}
         final Object this$wxOpenId = this.getWxOpenId();
         final Object other$wxOpenId = other.getWxOpenId();
-        if (this$wxOpenId == null ? other$wxOpenId != null : !this$wxOpenId.equals(other$wxOpenId)) return false;
+        if (this$wxOpenId == null ? other$wxOpenId != null : !this$wxOpenId.equals(other$wxOpenId)) {return false;}
         final Object this$sessionKey = this.getSessionKey();
         final Object other$sessionKey = other.getSessionKey();
         if (this$sessionKey == null ? other$sessionKey != null : !this$sessionKey.equals(other$sessionKey))
-            return false;
+        {return false;}
         final Object this$roleId = this.getRoleId();
         final Object other$roleId = other.getRoleId();
-        if (this$roleId == null ? other$roleId != null : !this$roleId.equals(other$roleId)) return false;
+        if (this$roleId == null ? other$roleId != null : !this$roleId.equals(other$roleId)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 

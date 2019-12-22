@@ -4,6 +4,12 @@ import com.xmu.wowoto.wowomall.domain.Address;
 
 import java.util.List;
 
+
+/**
+ *
+ * @author wowoto
+ * @date 12/21/2019
+ */
 public class SubmitOrderVo {
     public Integer getRebate() {
         return rebate;

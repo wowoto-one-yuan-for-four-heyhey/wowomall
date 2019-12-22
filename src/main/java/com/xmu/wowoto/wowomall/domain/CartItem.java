@@ -20,14 +20,14 @@ public class CartItem extends CartItemPo {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof CartItem)) return false;
+        if (o == this){ return true;}
+        if (!(o instanceof CartItem)){ return false;}
         final CartItem other = (CartItem) o;
-        if (!other.canEqual((Object) this)) return false;
-        if (!super.equals(o)) return false;
+        if (!other.canEqual((Object) this)){ return false;}
+        if (!super.equals(o)) {return false;}
         final Object this$product = this.getProduct();
         final Object other$product = other.getProduct();
-        if (this$product == null ? other$product != null : !this$product.equals(other$product)) return false;
+        if (this$product == null ? other$product != null : !this$product.equals(other$product)) {return false;}
         return true;
     }
 

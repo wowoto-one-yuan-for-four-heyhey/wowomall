@@ -83,34 +83,35 @@ public class BrandPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof BrandPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof BrandPo)) {return false;}
         final BrandPo other = (BrandPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$name = this.getName();
         final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {return false;}
         final Object this$description = this.getDescription();
         final Object other$description = other.getDescription();
         if (this$description == null ? other$description != null : !this$description.equals(other$description))
-            return false;
+        {return false;}
         final Object this$picUrl = this.getPicUrl();
         final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) return false;
+        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -118,6 +119,7 @@ public class BrandPo {
         return other instanceof BrandPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -138,6 +140,7 @@ public class BrandPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "BrandPo(id=" + this.getId() + ", name=" + this.getName() + ", description=" + this.getDescription() + ", picUrl=" + this.getPicUrl() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

@@ -144,56 +144,57 @@ public class DefaultFreightPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof DefaultFreightPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof DefaultFreightPo)) {return false;}
         final DefaultFreightPo other = (DefaultFreightPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$destination = this.getDestination();
         final Object other$destination = other.getDestination();
         if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination))
-            return false;
+        {    return false;}
         final Object this$firstHeavyPrice = this.getFirstHeavyPrice();
         final Object other$firstHeavyPrice = other.getFirstHeavyPrice();
         if (this$firstHeavyPrice == null ? other$firstHeavyPrice != null : !this$firstHeavyPrice.equals(other$firstHeavyPrice))
-            return false;
+        {   return false;}
         final Object this$continueHeavyPrice = this.getContinueHeavyPrice();
         final Object other$continueHeavyPrice = other.getContinueHeavyPrice();
         if (this$continueHeavyPrice == null ? other$continueHeavyPrice != null : !this$continueHeavyPrice.equals(other$continueHeavyPrice))
-            return false;
+        {    return false;}
         final Object this$over10Price = this.getOver10Price();
         final Object other$over10Price = other.getOver10Price();
         if (this$over10Price == null ? other$over10Price != null : !this$over10Price.equals(other$over10Price))
-            return false;
+        {    return false;}
         final Object this$over50Price = this.getOver50Price();
         final Object other$over50Price = other.getOver50Price();
         if (this$over50Price == null ? other$over50Price != null : !this$over50Price.equals(other$over50Price))
-            return false;
+        {    return false;}
         final Object this$over100Price = this.getOver100Price();
         final Object other$over100Price = other.getOver100Price();
         if (this$over100Price == null ? other$over100Price != null : !this$over100Price.equals(other$over100Price))
-            return false;
+        {   return false;}
         final Object this$over300Price = this.getOver300Price();
         final Object other$over300Price = other.getOver300Price();
         if (this$over300Price == null ? other$over300Price != null : !this$over300Price.equals(other$over300Price))
-            return false;
+        {   return false;}
         final Object this$requireDays = this.getRequireDays();
         final Object other$requireDays = other.getRequireDays();
         if (this$requireDays == null ? other$requireDays != null : !this$requireDays.equals(other$requireDays))
-            return false;
+        {   return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {   return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -201,6 +202,7 @@ public class DefaultFreightPo {
         return other instanceof DefaultFreightPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -231,6 +233,7 @@ public class DefaultFreightPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "DefaultFreightPo(id=" + this.getId() + ", destination=" + this.getDestination() + ", firstHeavyPrice=" + this.getFirstHeavyPrice() + ", continueHeavyPrice=" + this.getContinueHeavyPrice() + ", over10Price=" + this.getOver10Price() + ", over50Price=" + this.getOver50Price() + ", over100Price=" + this.getOver100Price() + ", over300Price=" + this.getOver300Price() + ", requireDays=" + this.getRequireDays() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

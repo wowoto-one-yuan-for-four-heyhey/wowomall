@@ -144,50 +144,50 @@ public class PresaleRule {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof PresaleRule)) return false;
+        if (o == this){ return true;}
+        if (!(o instanceof PresaleRule)) {return false;}
         final PresaleRule other = (PresaleRule) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$startTime = this.getStartTime();
         final Object other$startTime = other.getStartTime();
-        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) return false;
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)){return false;}
         final Object this$adEndTime = this.getAdEndTime();
         final Object other$adEndTime = other.getAdEndTime();
-        if (this$adEndTime == null ? other$adEndTime != null : !this$adEndTime.equals(other$adEndTime)) return false;
+        if (this$adEndTime == null ? other$adEndTime != null : !this$adEndTime.equals(other$adEndTime)) {return false;}
         final Object this$finalStartTime = this.getFinalStartTime();
         final Object other$finalStartTime = other.getFinalStartTime();
         if (this$finalStartTime == null ? other$finalStartTime != null : !this$finalStartTime.equals(other$finalStartTime))
-            return false;
+        {return false;}
         final Object this$endTime = this.getEndTime();
         final Object other$endTime = other.getEndTime();
-        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) return false;
+        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)){return false;}
         final Object this$statusCode = this.getStatusCode();
         final Object other$statusCode = other.getStatusCode();
         if (this$statusCode == null ? other$statusCode != null : !this$statusCode.equals(other$statusCode))
-            return false;
+        {return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) {return false;}
         final Object this$deposit = this.getDeposit();
         final Object other$deposit = other.getDeposit();
-        if (this$deposit == null ? other$deposit != null : !this$deposit.equals(other$deposit)) return false;
+        if (this$deposit == null ? other$deposit != null : !this$deposit.equals(other$deposit)) {return false;}
         final Object this$finalPayment = this.getFinalPayment();
         final Object other$finalPayment = other.getFinalPayment();
         if (this$finalPayment == null ? other$finalPayment != null : !this$finalPayment.equals(other$finalPayment))
-            return false;
+        {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 

@@ -111,41 +111,42 @@ public class ProductPo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ProductPo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof ProductPo)) {return false;}
         final ProductPo other = (ProductPo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$goodsId = this.getGoodsId();
         final Object other$goodsId = other.getGoodsId();
-        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) return false;
+        if (this$goodsId == null ? other$goodsId != null : !this$goodsId.equals(other$goodsId)) {return false;}
         final Object this$picUrl = this.getPicUrl();
         final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) return false;
+        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) {return false;}
         final Object this$specifications = this.getSpecifications();
         final Object other$specifications = other.getSpecifications();
         if (this$specifications == null ? other$specifications != null : !this$specifications.equals(other$specifications))
-            return false;
+        {return false;}
         final Object this$price = this.getPrice();
         final Object other$price = other.getPrice();
-        if (this$price == null ? other$price != null : !this$price.equals(other$price)) return false;
+        if (this$price == null ? other$price != null : !this$price.equals(other$price)) {return false;}
         final Object this$safetyStock = this.getSafetyStock();
         final Object other$safetyStock = other.getSafetyStock();
         if (this$safetyStock == null ? other$safetyStock != null : !this$safetyStock.equals(other$safetyStock))
-            return false;
+        {return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) {return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -153,6 +154,7 @@ public class ProductPo {
         return other instanceof ProductPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -177,6 +179,7 @@ public class ProductPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "ProductPo(id=" + this.getId() + ", goodsId=" + this.getGoodsId() + ", picUrl=" + this.getPicUrl() + ", specifications=" + this.getSpecifications() + ", price=" + this.getPrice() + ", safetyStock=" + this.getSafetyStock() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

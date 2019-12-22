@@ -183,61 +183,62 @@ public class CouponRulePo {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof CouponRulePo)) return false;
+        if (o == this) {return true;}
+        if (!(o instanceof CouponRulePo)) {return false;}
         final CouponRulePo other = (CouponRulePo) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual((Object) this)) {return false;}
         final Object this$id = this.getId();
         final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {return false;}
         final Object this$name = this.getName();
         final Object other$name = other.getName();
-        if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)){ return false;}
         final Object this$brief = this.getBrief();
         final Object other$brief = other.getBrief();
-        if (this$brief == null ? other$brief != null : !this$brief.equals(other$brief)) return false;
+        if (this$brief == null ? other$brief != null : !this$brief.equals(other$brief)) {return false;}
         final Object this$beginTime = this.getBeginTime();
         final Object other$beginTime = other.getBeginTime();
-        if (this$beginTime == null ? other$beginTime != null : !this$beginTime.equals(other$beginTime)) return false;
+        if (this$beginTime == null ? other$beginTime != null : !this$beginTime.equals(other$beginTime)){ return false;}
         final Object this$endTime = this.getEndTime();
         final Object other$endTime = other.getEndTime();
-        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) return false;
+        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) {return false;}
         final Object this$picUrl = this.getPicUrl();
         final Object other$picUrl = other.getPicUrl();
-        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)) return false;
+        if (this$picUrl == null ? other$picUrl != null : !this$picUrl.equals(other$picUrl)){ return false;}
         final Object this$validPeriod = this.getValidPeriod();
         final Object other$validPeriod = other.getValidPeriod();
         if (this$validPeriod == null ? other$validPeriod != null : !this$validPeriod.equals(other$validPeriod))
-            return false;
+        {   return false;}
         final Object this$strategy = this.getStrategy();
         final Object other$strategy = other.getStrategy();
-        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) return false;
+        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) {return false;}
         final Object this$total = this.getTotal();
         final Object other$total = other.getTotal();
-        if (this$total == null ? other$total != null : !this$total.equals(other$total)) return false;
+        if (this$total == null ? other$total != null : !this$total.equals(other$total)){ return false;}
         final Object this$collectedNum = this.getCollectedNum();
         final Object other$collectedNum = other.getCollectedNum();
         if (this$collectedNum == null ? other$collectedNum != null : !this$collectedNum.equals(other$collectedNum))
-            return false;
+        {    return false;}
         final Object this$goodsList1 = this.getGoodsList1();
         final Object other$goodsList1 = other.getGoodsList1();
         if (this$goodsList1 == null ? other$goodsList1 != null : !this$goodsList1.equals(other$goodsList1))
-            return false;
+        {  return false;}
         final Object this$goodsList2 = this.getGoodsList2();
         final Object other$goodsList2 = other.getGoodsList2();
         if (this$goodsList2 == null ? other$goodsList2 != null : !this$goodsList2.equals(other$goodsList2))
-            return false;
+        {   return false;}
         final Object this$gmtCreate = this.getGmtCreate();
         final Object other$gmtCreate = other.getGmtCreate();
-        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)) return false;
+        if (this$gmtCreate == null ? other$gmtCreate != null : !this$gmtCreate.equals(other$gmtCreate)){ return false;}
         final Object this$gmtModified = this.getGmtModified();
         final Object other$gmtModified = other.getGmtModified();
         if (this$gmtModified == null ? other$gmtModified != null : !this$gmtModified.equals(other$gmtModified))
-            return false;
+        {    return false;}
         final Object this$beDeleted = this.getBeDeleted();
         final Object other$beDeleted = other.getBeDeleted();
-        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) return false;
+        if (this$beDeleted == null ? other$beDeleted != null : !this$beDeleted.equals(other$beDeleted)) {return false;}
         return true;
     }
 
@@ -245,6 +246,7 @@ public class CouponRulePo {
         return other instanceof CouponRulePo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -281,6 +283,7 @@ public class CouponRulePo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "CouponRulePo(id=" + this.getId() + ", name=" + this.getName() + ", brief=" + this.getBrief() + ", beginTime=" + this.getBeginTime() + ", endTime=" + this.getEndTime() + ", picUrl=" + this.getPicUrl() + ", validPeriod=" + this.getValidPeriod() + ", strategy=" + this.getStrategy() + ", total=" + this.getTotal() + ", collectedNum=" + this.getCollectedNum() + ", goodsList1=" + this.getGoodsList1() + ", goodsList2=" + this.getGoodsList2() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

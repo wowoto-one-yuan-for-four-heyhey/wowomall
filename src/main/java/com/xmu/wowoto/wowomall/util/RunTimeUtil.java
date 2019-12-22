@@ -6,7 +6,11 @@ import java.lang.management.RuntimeMXBean;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+/**
+ * @Author: Tens
+ * @Description:
+ * @Date: 2019/12/15 18:15
+ */
 public class RunTimeUtil {
         private static AtomicInteger index = new AtomicInteger();
 
