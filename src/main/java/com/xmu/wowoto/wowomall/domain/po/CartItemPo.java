@@ -86,32 +86,7 @@ public class CartItemPo {
 
     @Override
     public boolean equals(final Object o) {
-        if (o == this){ return true;}
-        if (!(o instanceof CartItemPo)) {return false;}
-        final CartItemPo other = (CartItemPo) o;
-        if (!other.canEqual((Object) this)) {return false;}
-        final Object thisId = this.getId();
-        final Object otherId = other.getId();
-        if (thisId == null ? otherId != null : !thisId.equals(otherId)){ return false;}
-        final Object thisUserId = this.getUserId();
-        final Object other$userId = other.getUserId();
-        if (thisUserId == null ? other$userId != null : !thisUserId.equals(other$userId)) {return false;}
-        final Object thisProductId = this.getProductId();
-        final Object otherProductId = other.getProductId();
-        if (thisProductId == null ? otherProductId != null : !thisProductId.equals(otherProductId)) {return false;}
-        final Object thisBeCheck  = this.getBeCheck();
-        final Object otherBeCheck = other.getBeCheck();
-        if (thisBeCheck  == null ? otherBeCheck != null : !thisBeCheck .equals(otherBeCheck)) {return false;}
-        final Object thisNumber = this.getNumber();
-        final Object otherNumber = other.getNumber();
-        if (thisNumber == null ? otherNumber != null : !thisNumber.equals(otherNumber)){ return false;}
-        final Object thisGmtCreate = this.getGmtCreate();
-        final Object otherGmtCreate = other.getGmtCreate();
-        if (thisGmtCreate == null ? otherGmtCreate != null : !thisGmtCreate.equals(otherGmtCreate)) {return false;}
-        final Object thisGmtModified = this.getGmtModified();
-        final Object otherGmtModified = other.getGmtModified();
-        if (thisGmtModified == null ? otherGmtModified != null : !thisGmtModified.equals(otherGmtModified))
-        {return false;}
+
         return true;
     }
 
