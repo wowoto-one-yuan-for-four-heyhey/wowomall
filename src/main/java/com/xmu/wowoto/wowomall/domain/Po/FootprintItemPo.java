@@ -64,6 +64,7 @@ public class FootprintItemPo {
         this.gmtCreate = gmtCreate;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this) {return true;}
         if (!(o instanceof FootprintItemPo)) {return false;}

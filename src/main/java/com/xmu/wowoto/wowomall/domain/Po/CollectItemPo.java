@@ -90,6 +90,7 @@ public class CollectItemPo {
         return other instanceof CollectItemPo;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;

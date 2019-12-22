@@ -143,6 +143,7 @@ public class PresaleRule {
         this.beDeleted = beDeleted;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this){ return true;}
         if (!(o instanceof PresaleRule)) {return false;}
@@ -195,6 +196,7 @@ public class PresaleRule {
         return other instanceof PresaleRule;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -225,6 +227,7 @@ public class PresaleRule {
         return result;
     }
 
+    @Override
     public String toString() {
         return "PresaleRule(id=" + this.getId() + ", startTime=" + this.getStartTime() + ", adEndTime=" + this.getAdEndTime() + ", finalStartTime=" + this.getFinalStartTime() + ", endTime=" + this.getEndTime() + ", statusCode=" + this.getStatusCode() + ", goodsId=" + this.getGoodsId() + ", deposit=" + this.getDeposit() + ", finalPayment=" + this.getFinalPayment() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
     }

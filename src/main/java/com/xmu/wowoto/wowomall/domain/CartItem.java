@@ -19,6 +19,7 @@ public class CartItem extends CartItemPo {
         this.product = product;
     }
 
+    @Override
     public boolean equals(final Object o) {
         if (o == this){ return true;}
         if (!(o instanceof CartItem)){ return false;}
@@ -31,10 +32,12 @@ public class CartItem extends CartItemPo {
         return true;
     }
 
+    @Override
     protected boolean canEqual(final Object other) {
         return other instanceof CartItem;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = super.hashCode();

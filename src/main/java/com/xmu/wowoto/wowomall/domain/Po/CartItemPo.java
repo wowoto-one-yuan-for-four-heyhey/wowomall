@@ -140,6 +140,7 @@ public class CartItemPo {
         return result;
     }
 
+    @Override
     public String toString() {
         return "CartItemPo(id=" + this.getId() + ", userId=" + this.getUserId() + ", productId=" + this.getProductId() + ", beCheck=" + this.getBeCheck() + ", number=" + this.getNumber() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ")";
     }
