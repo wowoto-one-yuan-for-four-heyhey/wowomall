@@ -1,5 +1,10 @@
 package com.xmu.wowoto.wowomall.domain.po;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -8,6 +13,10 @@ import java.time.LocalDateTime;
  * @Description: 产品信息
  * @Date: Created in 16:00 2019/12/11
  **/
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class ProductPo {
 
     private Integer id;
@@ -39,96 +48,4 @@ public class ProductPo {
     private LocalDateTime gmtModified;
     private Boolean beDeleted;
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public Integer getGoodsId() {
-        return this.goodsId;
-    }
-
-    public String getPicUrl() {
-        return this.picUrl;
-    }
-
-    public String getSpecifications() {
-        return this.specifications;
-    }
-
-    public BigDecimal getPrice() {
-        return this.price;
-    }
-
-    public Integer getSafetyStock() {
-        return this.safetyStock;
-    }
-
-    public LocalDateTime getGmtCreate() {
-        return this.gmtCreate;
-    }
-
-    public LocalDateTime getGmtModified() {
-        return this.gmtModified;
-    }
-
-    public Boolean getBeDeleted() {
-        return this.beDeleted;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setSafetyStock(Integer safetyStock) {
-        this.safetyStock = safetyStock;
-    }
-
-    public void setGmtCreate(LocalDateTime gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public void setGmtModified(LocalDateTime gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
-    public void setBeDeleted(Boolean beDeleted) {
-        this.beDeleted = beDeleted;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-
-        return true;
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof ProductPo;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return 0;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductPo(id=" + this.getId() + ", goodsId=" + this.getGoodsId() + ", picUrl=" + this.getPicUrl() + ", specifications=" + this.getSpecifications() + ", price=" + this.getPrice() + ", safetyStock=" + this.getSafetyStock() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModified=" + this.getGmtModified() + ", beDeleted=" + this.getBeDeleted() + ")";
-    }
 }
