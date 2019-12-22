@@ -11,5 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Service
 public interface LogService {
+    /**
+     * wowoto
+     * @param log
+     * @return
+     */
     Log addLog(@RequestBody Log log);
 }

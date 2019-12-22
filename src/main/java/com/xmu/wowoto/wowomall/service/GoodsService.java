@@ -15,10 +15,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Service
 public interface GoodsService {
 
+    /**
+     * wowoto
+     * @param productId
+     * @return
+     */
     Product getProductById(Integer productId);
 
+    /**
+     * wowoto
+     * @param cartItem
+     * @return
+     */
     boolean deductStock(CartItem cartItem);
 
+    /**
+     * wowoto
+     * @param orderItem
+     * @return
+     */
     boolean restoreStock(OrderItem orderItem);
 
 }

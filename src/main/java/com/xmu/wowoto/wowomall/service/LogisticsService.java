@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LogisticsService {
 
+    /**
+     * wowoto
+     * @return
+     */
     String getShipSn();
 
 }

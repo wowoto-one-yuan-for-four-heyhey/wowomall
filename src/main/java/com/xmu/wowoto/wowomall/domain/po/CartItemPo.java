@@ -94,8 +94,8 @@ public class CartItemPo {
         final Object otherId = other.getId();
         if (thisId == null ? otherId != null : !thisId.equals(otherId)){ return false;}
         final Object thisUserId = this.getUserId();
-        final Object other$userId = other.getUserId();
-        if (thisUserId == null ? other$userId != null : !thisUserId.equals(other$userId)) {return false;}
+        final Object otheruserId = other.getUserId();
+        if (thisUserId == null ? otheruserId != null : !thisUserId.equals(otheruserId)) {return false;}
         final Object thisProductId = this.getProductId();
         final Object otherProductId = other.getProductId();
         if (thisProductId == null ? otherProductId != null : !thisProductId.equals(otherProductId)) {return false;}

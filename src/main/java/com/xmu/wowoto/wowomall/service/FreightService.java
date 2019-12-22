@@ -13,5 +13,10 @@ import java.math.BigDecimal;
 @Service
 public interface FreightService {
 
+    /**
+     * 计算运费
+     * @param order
+     * @return
+     */
     BigDecimal caculateFreight(Order order);
 }

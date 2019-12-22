@@ -71,10 +71,6 @@ public class OrderDao {
         List<Order> orders = orderMapper.getOrdersByStatusCode(userId, statusCode, page, limit);
         for (Order order: orders) {
             List<OrderItem> orderItems = orderItemMapper.getOrderItemsByOrderId(order.getId());
-//            for (OrderItem orderItem: orderItems){
-//                Product product = goodsService.getProductById(orderItem.getProductId());
-//                orderItem.setProduct(product);
-//            }
             order.setOrderItemList(orderItems);
         }
         return orders;

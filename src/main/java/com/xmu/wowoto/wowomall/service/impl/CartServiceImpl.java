@@ -33,7 +33,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem findCartItemById(Integer id){
         String json = remoteCartService.findCartItemById(id);
-        if(!JacksonUtil.parseInteger(json, "errno").equals(0))
+        String errno = "errno";
+        if(!JacksonUtil.parseInteger(json, errno).equals(0))
         {   return null;}
         return JacksonUtil.parseObject(json, "data", CartItem.class);
     }

@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
+
     public Order submit(Order order, List<CartItem> cartItems){
         Order newOrder = null;
         if(this.createOrderItemFromCartItem(order, cartItems)){
@@ -329,7 +329,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal aa = item.getDealPrice();
             Integer a = aa.intValue();
             Double dealPrice = a * rate;
-            BigDecimal decimal = new BigDecimal(dealPrice);
+            BigDecimal decimal = BigDecimal.valueOf(dealPrice);
             orderItemList.get(0).setDealPrice(decimal);
             order.setIntegralPrice(decimal);
 

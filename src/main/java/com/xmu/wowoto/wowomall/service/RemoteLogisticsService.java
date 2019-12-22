@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface RemoteLogisticsService {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
+    /**
+     *  大声点阿萨德 萨达
+     * @return
+     */
     @GetMapping(value = "/logistics")
     String getShipSn();
 }

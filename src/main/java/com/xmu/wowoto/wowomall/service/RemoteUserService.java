@@ -16,9 +16,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("userInfoService")
 public interface RemoteUserService {
 
+    /**
+     * wowoto
+     * @param userId
+     * @return
+     */
     @GetMapping("in/user")
     String getUserById(@RequestParam Integer userId);
 
+    /**
+     * wowoto
+     * @param userId
+     * @param rebate
+     * @return
+     */
     @PutMapping("user/rebate")
     String updateUserRebate(@RequestParam("id") Integer userId, @RequestParam("userRebate") Integer rebate);
 }

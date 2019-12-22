@@ -42,6 +42,7 @@ public interface OrderMapper {
      * 8:已评价
      * @param page     分页页数
      * @param limit     分页大小
+     * @param statusCode
      * @return 订单列表
      */
     List<Order> getOrdersByStatusCode(Integer userId, Integer statusCode,
@@ -62,6 +63,14 @@ public interface OrderMapper {
      */
     Integer updateOrderSelective(Order order);
 
+    /**
+     * wowoto
+     * @param goodId
+     * @param statusCode
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     Integer getGrouponOrdersById(Integer goodId, Integer statusCode, LocalDateTime startTime,LocalDateTime endTime);
 
     /**

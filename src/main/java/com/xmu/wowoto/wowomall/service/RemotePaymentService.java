@@ -14,9 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient("paymentService")
 public interface RemotePaymentService {
 
+    /**
+     * wowoto
+     * @param payment
+     * @return
+     */
     @PostMapping("payment")
     String createPayment(@RequestBody Payment payment);
 
+    /**
+     * wowoto
+     * @param id
+     * @return
+     */
     @PutMapping("payment/{id}")
     String payPayment(@PathVariable("id") Integer id);
 

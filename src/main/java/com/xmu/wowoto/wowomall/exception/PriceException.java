@@ -5,5 +5,5 @@ package com.xmu.wowoto.wowomall.exception;
  * @Description:
  * @Date: 2019/12/18 11:15
  */
-public class PriceError extends Exception {
+public class PriceException extends Exception {
 }

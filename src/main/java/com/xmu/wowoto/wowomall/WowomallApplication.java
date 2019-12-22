@@ -12,6 +12,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @MapperScan("com.xmu.wowoto.wowomall.mapper")
 @EnableEurekaClient
 @EnableScheduling
+/**
+ * @author wowoto
+ */
 public class WowomallApplication {
     public static void main(String[] args) {
         SpringApplication.run(WowomallApplication.class, args);

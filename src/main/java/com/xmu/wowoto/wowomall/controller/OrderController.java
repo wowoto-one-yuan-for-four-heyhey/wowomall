@@ -56,7 +56,7 @@ public class OrderController {
     @Autowired
     private RemoteLogService remoteLogService;
 
-    private final static List<Short> emptyArrayList=new ArrayList<>();
+
 
     /**
      * 获取用户订单列表
@@ -102,7 +102,10 @@ public class OrderController {
         if(null == adminId ) {
             return ResponseUtil.unlogin();
         }
-        if((userId!=null&&userId<0)||page<1||limit<0){
+        if((userId!=null&&userId<0)){
+            return ResponseUtil.badArgumentValue();
+        }
+        if(page<1||limit<0){
             return ResponseUtil.badArgumentValue();
         }
         if(null==userId){
@@ -299,9 +302,9 @@ public class OrderController {
         Integer adminId = Integer.valueOf(request.getHeader("id"));
         Order order = orderService.getOrder(orderId);
 
-        if(order == null) { return ResponseUtil.badArgumentValue(); }
-        if(!order.getUserId().equals(adminId)) { return
-                ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
+        if(order == null) { return ResponseUtil.fail(ORDER_INVAILD.getCode(),ORDER_INVAILD.getMessage()); }
+        if(!order.getUserId().equals(adminId)) {
+            return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
                 ResponseCode.ORDER_INVAILD_OPERATION.getMessage()); }
         if(!order.getStatusCode().equals(Order.StatusCode.PAYED)){
             return ResponseUtil.fail(ResponseCode.ORDER_INVAILD_OPERATION.getCode(),
@@ -309,7 +312,7 @@ public class OrderController {
         }
         order = orderService.shipOrder(order);
         if(order == null){
-            return ResponseUtil.illegal();
+            return ResponseUtil.fail(ORDER_STATUS_CHANGE_FAILED.getCode(),ORDER_STATUS_CHANGE_FAILED.getMessage());
         }
         Log log=new Log();
         log.setType(2);
@@ -405,10 +408,12 @@ public class OrderController {
         if(order == null){ return ResponseUtil.badArgumentValue(); }
 
         HashMap<String,Integer> result=orderService.payOrder(order);
-        if(result.containsKey("orderItem")){
+        String orderItem="orderItem";
+        if(result.containsKey(orderItem)){
             return ResponseUtil.fail();
         }
-        Integer payStatus=result.get("order");
+        String order1= "order";
+        Integer payStatus=result.get(order1);
         if(payStatus > -1){
 
             return ResponseUtil.ok(1);
