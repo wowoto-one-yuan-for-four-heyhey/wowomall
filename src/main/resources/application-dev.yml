@@ -7,6 +7,10 @@ spring:
     url: jdbc:mysql://47.52.88.176:3306/DB2_1?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: user2_1
     password: ooad1
+#    url: jdbc:mysql://148.70.28.112/wowomall?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+#    username: wowoto
+#    password: zqhlovekly
+
 
     driver-class-name: com.mysql.jdbc.Driver
 
@@ -39,11 +43,21 @@ mybatis:
 eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
-      defaultZone: http://139.196.253.120:8761/eureka
+      defaultZone: http://139.196.253.120:8761/eureka/
   instance:
     prefer-ip-address: true
     ip-address: 148.70.28.112
     non-secure-port: 30020
+
+#eureka:
+#  client: # 客户端进行Eureka注册的配置
+#    service-url:
+#      defaultZone: http://47.96.159.71:8888/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 120.27.244.59
+#    non-secure-port: 30020
+
 
 wowomall:
   preDeductStock: 30

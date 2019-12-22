@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: zx
 
 ribbon:
   ReadTimeout: 50000
